@@ -65,8 +65,24 @@
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="507dp" />
 
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login Activity"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="313dp" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register Activity"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="392dp" />
 
     </LinearLayout>
+
 
 
 
