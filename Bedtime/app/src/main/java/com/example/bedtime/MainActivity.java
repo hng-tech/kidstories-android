@@ -1,5 +1,6 @@
 package com.example.bedtime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,8 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Button btn_onboarding,btn_bookmark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        btn_onboarding=findViewById(R.id.button);
+        btn_bookmark=findViewById(R.id.button3);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +32,25 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        //Onclick OnboardingButton to route to onboarding activity
+        btn_onboarding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent onboarding_intent=new Intent(MainActivity.this,Onboarding.class);
+                startActivity(onboarding_intent);
+            }
+        });
+
+        btn_bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bookmark_intent=new Intent(MainActivity.this,Bookmark.class);
+                startActivity(bookmark_intent);
+            }
+        });
+
     }
 
     @Override
