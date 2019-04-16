@@ -74,4 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void startRegister(View view){
+        Intent intent = new Intent(this,RegisterActivity.class);
+        startActivity(intent);
+    }
+
 }
