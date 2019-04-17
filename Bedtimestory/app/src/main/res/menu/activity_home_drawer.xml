@@ -32,10 +32,14 @@
     <item
         android:title="">
         <menu>
+            <!--<item-->
+                <!--android:fontFamily="@font/worksans_regular"-->
+                <!--android:id="@+id/nav_signout"-->
+                <!--android:title="Sign Out" />-->
             <item
                 android:fontFamily="@font/worksans_regular"
-                android:id="@+id/nav_signout"
-                android:title="Sign Out" />
+                android:id="@+id/nav_login"
+                android:title="@string/log_in" />
         </menu>
     </item>
 
