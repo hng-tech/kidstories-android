@@ -6,42 +6,32 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    android:background="@drawable/splash"
+    android:background="@drawable/splash_demo"
     tools:showIn="@layout/activity_main">
 
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        />
 
         <ImageView
-            android:layout_width="77dp"
-            android:layout_height="77dp"
-            android:layout_marginTop="93dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/icon"/>
-
-        <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/worksans_regular"
-            android:layout_marginTop="13dp"
             android:layout_gravity="center_horizontal"
-            android:text="Kidstories"
-            android:textColor="#fff"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/worksans_regular"
+            android:src="@drawable/splash_ic"
+
             />
 
     </LinearLayout>

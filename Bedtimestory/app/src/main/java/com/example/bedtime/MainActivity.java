@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     sleep(3*1000);
 
                     // After 5 seconds redirect to another intent
-                    Intent i=new Intent(getBaseContext(),RegisterActivity.class);
+                    Intent i=new Intent(getBaseContext(),Onboarding.class);
                     startActivity(i);
 
                     //Remove activity

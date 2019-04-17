@@ -1,8 +1,12 @@
 package com.example.bedtime;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,9 +17,29 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.bedtime.Adapters.CategoriesAdapter;
+import com.example.bedtime.Adapters.StoryListingAdapter;
+import com.example.bedtime.Api.ApiInterface;
+import com.example.bedtime.Api.Client;
+import com.example.bedtime.Api.Responses.CategoryAllResponse;
+import com.example.bedtime.Api.Responses.StoryAllResponse;
+import com.example.bedtime.Model.Category;
+import com.example.bedtime.Model.Story;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    RecyclerView mStoriesRecycler,mCategoriesRecycler;
+    StoryListingAdapter mAdapter;
+    List<Story> mStories;
+    List<Category> mCategories;
+    CategoriesAdapter mCategoriesAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +47,20 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        getSupportActionBar().setElevation(0);
+
+        mStoriesRecycler = findViewById(R.id.stories_rv);
+        mCategoriesRecycler = findViewById(R.id.cat_rv);
+        mStories = new ArrayList<>();
+        mCategories = new ArrayList<>();
+        mCategoriesAdapter = new CategoriesAdapter(this,mCategories,"home");
+        mCategoriesRecycler.setAdapter(mCategoriesAdapter);
+        mAdapter = new StoryListingAdapter(this,mStories);
+        mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mStoriesRecycler.setAdapter(mAdapter);
+        loadData();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -45,37 +83,37 @@ public class Home extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.home, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -89,16 +127,72 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_categories) {
 
+            //start category activity .
+            Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
+            startActivity(i);
+
         } else if (id == R.id.nav_bookmarks) {
 
-        } else if (id == R.id.nav_signout) {
+        } else if (id == R.id.nav_profile) {
+
+            //start Profile activity .
+            Intent i = new Intent(getBaseContext(), ProfileActivity.class);
+            startActivity(i);
+        }
+        else if (id == R.id.nav_login) {
+            //start Login activity .
+            Intent i = new Intent(getBaseContext(), Login.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_addstory) {
 
+            //start addstory activity .
+            Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
+            startActivity(i);
+
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void loadData(){
+        Client.getInstance().create(ApiInterface.class).getAllCategories().enqueue(new Callback<CategoryAllResponse>() {
+            @Override
+            public void onResponse(Call<CategoryAllResponse> call, Response<CategoryAllResponse> response) {
+                if(response.isSuccessful()){
+                    CategoryAllResponse  categoryList = response.body();
+                    List<Category> cl= categoryList.getData();
+                    if(cl !=null){
+                        mCategoriesAdapter.addCategories(cl);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryAllResponse> call, Throwable t) {
+
+            }
+        });
+        Client.getInstance().create(ApiInterface.class).getAllStories().enqueue(new Callback<StoryAllResponse>() {
+            @Override
+            public void onResponse(Call<StoryAllResponse> call, Response<StoryAllResponse> response) {
+                if(response.isSuccessful()){
+                    StoryAllResponse  storyAllResponse = response.body();
+                    List<Story> story= storyAllResponse.getData().getStories();
+                    if(story !=null){
+                        mAdapter.addStories(story);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StoryAllResponse> call, Throwable t) {
+                Log.e("Story = " , t.toString());
+            }
+        });
+
+    }
 }
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<!-- "shadow" -->
+<item>
+    <shape android:shape="oval" >
+        <solid android:color="#000000"/>
+        <corners android:radius="12dp" />
+    </shape>
+</item>
+
+    <solid android:color="#fff" />
+    <corners android:radius="22dp"/>
+
+    <size
+        android:height="100dp"
+        android:width="300dp" />
+
+    <padding
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp" />
+
+<item android:bottom="10px">
+    <shape android:shape="oval">
+        <solid android:color="#90ffffff"/>
+        <corners android:radius="12dp" />
+    </shape>
+</item>
+
+</layer-list>
