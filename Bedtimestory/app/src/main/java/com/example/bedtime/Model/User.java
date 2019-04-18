@@ -2,40 +2,40 @@ package com.example.bedtime.Model;
 
 public class User {
 
-    private String mEmail;
-    private String mPassword;
-    private String mName;
-    private String mDesignation;
+    private String email;
+    private String password;
+    private String name;
+    private String designation;
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
     public void setEmail(String email) {
-        mEmail = email;
+        this.email = email;
     }
 
     public String getPassword() {
-        return mPassword;
+        return password;
     }
 
     public void setPassword(String password) {
-        mPassword = password;
+        this.password = password;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
     public String getDesignation() {
-        return mDesignation;
+        return designation;
     }
 
     public void setDesignation(String designation) {
-        mDesignation = designation;
+        this.designation = designation;
     }
 }
