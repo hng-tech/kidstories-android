@@ -9,7 +9,12 @@
     android:fontFamily="@font/worksans_regular"
     tools:showIn="@layout/app_bar_home">
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Design in progress..."
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_height="match_parent" />
 
     <!--<LinearLayout-->
         <!--android:layout_width="wrap_content"-->
@@ -48,15 +53,15 @@
 
     <!--</LinearLayout>-->
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/logged_in_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp"
-        />
+    <!--<include-->
+        <!--android:id="@+id/include"-->
+        <!--layout="@layout/logged_in_nav"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--tools:layout_editor_absoluteY="0dp"-->
+        <!--/>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stories_rv"
@@ -75,7 +80,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cat_rv"
-        android:layout_width="344dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
