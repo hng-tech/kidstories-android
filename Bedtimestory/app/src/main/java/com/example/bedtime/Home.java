@@ -25,8 +25,10 @@ import com.example.bedtime.Api.ApiInterface;
 import com.example.bedtime.Api.Client;
 import com.example.bedtime.Api.Responses.CategoryAllResponse;
 import com.example.bedtime.Api.Responses.StoryAllResponse;
+import com.example.bedtime.Database.Helper.BedTimeDbHelper;
 import com.example.bedtime.Model.Category;
 import com.example.bedtime.Model.Story;
+import com.example.bedtime.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ public class Home extends AppCompatActivity
     List<Story> mStories;
     List<Category> mCategories;
     CategoriesAdapter mCategoriesAdapter;
+    User mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +55,14 @@ public class Home extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         getSupportActionBar().setElevation(0);
-
+        Intent intent = getIntent();
+        if(intent.hasExtra(Config.USER_ID)){
+            String id = intent.getStringExtra(Config.USER_ID);
+            if(!id.isEmpty()){
+                BedTimeDbHelper dbHelper = new BedTimeDbHelper(this);
+                mUser = dbHelper.getUserById(id);
+            }
+        }
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mStories = new ArrayList<>();
@@ -62,6 +72,7 @@ public class Home extends AppCompatActivity
         mAdapter = new StoryListingAdapter(this,mStories);
         mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
         mStoriesRecycler.setAdapter(mAdapter);
+
         loadData();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -151,8 +162,12 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
 
             //start Profile activity .
-            Intent i = new Intent(getBaseContext(), ProfileActivity.class);
-            startActivity(i);
+            if(mUser !=null ){
+                Intent i = new Intent(getBaseContext(), ProfileActivity.class);
+                i.putExtra(Config.USER_ID,mUser.getId());
+                startActivity(i);
+            }
+
         }
         else if (id == R.id.nav_login) {
             //start Login activity .

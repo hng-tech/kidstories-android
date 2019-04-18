@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.bedtime.Api.ApiInterface;
 import com.example.bedtime.Api.Client;
 import com.example.bedtime.Api.Responses.LoginResponse;
+import com.example.bedtime.Database.Helper.BedTimeDbHelper;
 import com.example.bedtime.Model.User;
 
 import retrofit2.Call;
@@ -47,15 +48,21 @@ public class Login extends AppCompatActivity {
         mEmail = mEmailField.getText().toString().trim();
         mPassword = mPasswordField.getText().toString();
         if(validate()){
-            User user = new User();
+            final User user = new User();
             user.setEmail(mEmail);
             user.setEmail(mPassword);
             Client.getInstance().create(ApiInterface.class).loginUser(mEmail,mPassword).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                     if(response.isSuccessful()){
+
+                        User userResponse = response.body().getUser();
+                        BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);
+                        dbHelper.addUser(userResponse);
+
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this,Home.class);
+                        intent.putExtra(Config.USER_ID,userResponse.getId());
                         startActivity(intent);
                     }else{
                         Toast.makeText(Login.this,"Invalid Login details",Toast.LENGTH_SHORT).show();
