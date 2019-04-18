@@ -14,13 +14,12 @@
     android:fitsSystemWindows="true"
     android:theme="@style/ThemeOverlay.AppCompat.Light">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <ImageButton
+        android:id="@+id/nav_close_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="60dp"
         android:layout_marginRight="30dp"
-
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:background="@mipmap/close_nav" />

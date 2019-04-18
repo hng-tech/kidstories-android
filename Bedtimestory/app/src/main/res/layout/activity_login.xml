@@ -8,7 +8,7 @@
     tools:context=".RegisterActivity">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/nav_close_button"
             android:layout_width="75dp"
             android:layout_height="82dp"
             android:layout_marginStart="16dp"
@@ -29,7 +29,7 @@
             android:fontFamily="@font/worksans_regular"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/nav_close_button"
             style="@style/TextAppearance.AppCompat.Title"/>
 
         <TextView
