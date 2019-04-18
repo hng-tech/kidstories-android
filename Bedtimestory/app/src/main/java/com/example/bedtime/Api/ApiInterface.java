@@ -1,6 +1,7 @@
 package com.example.bedtime.Api;
 
 import com.example.bedtime.Api.Responses.CategoryAllResponse;
+import com.example.bedtime.Api.Responses.LoginResponse;
 import com.example.bedtime.Api.Responses.StoryAllResponse;
 import com.example.bedtime.Model.User;
 
@@ -24,7 +25,7 @@ public interface ApiInterface {
 
     @POST("user/login")
     @FormUrlEncoded
-    Call<User> loginUser(@Field("email") String email, @Field("password") String password);
+    Call<LoginResponse> loginUser(@Field("email") String email, @Field("password") String password);
 
     @GET("user/profile/{id}")
     Call<User> getProfile(@Path("id") String id);

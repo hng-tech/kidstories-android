@@ -46,24 +46,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <EditText
-            android:id="@+id/reg_email"
-            style="@style/EditTextWhite"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/worksans_regular"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+    <EditText
+        android:id="@+id/login_email"
+        style="@style/EditTextWhite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:fontFamily="@font/worksans_regular"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <EditText
-            android:id="@+id/reg_password"
+            android:id="@+id/login_password"
             style="@style/EditTextWhite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             android:background="@color/colorAsh"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reg_password" />
+            app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
         <TextView
             android:id="@+id/textView3"
@@ -115,13 +115,14 @@
             android:text="@string/register"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:onClick="goToRegister"
             android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/login_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -154,6 +155,6 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reg_email" />
+            app:layout_constraintTop_toBottomOf="@+id/login_email" />
     </android.support.constraint.ConstraintLayout>
 
