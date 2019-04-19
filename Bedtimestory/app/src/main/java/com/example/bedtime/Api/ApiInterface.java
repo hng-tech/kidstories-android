@@ -19,6 +19,10 @@ import retrofit2.http.Path;
 public interface ApiInterface {
     @GET("category/all")
     Call<CategoryAllResponse> getAllCategories();
+
+    @GET("category/{id}")
+    Call<CategoryAllResponse> getCategory(@Path("id") String id);
+
     @GET("story")
     Call<StoryAllResponse> getAllStories();
 
