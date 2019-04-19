@@ -25,6 +25,12 @@
             android:id="@+id/nav_categories"
             android:title="Categories" />
 
+        <!--<item-->
+            <!--android:id="@+id/nav_singlestory"-->
+            <!--android:title="Test Single story" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_testactivity"-->
+            <!--android:title="Testing UI" />-->
 
 
     </group>
@@ -39,7 +45,7 @@
             <item
                 android:fontFamily="@font/worksans_regular"
                 android:id="@+id/nav_login"
-                android:title="@string/log_in" />
+                android:title="" />
         </menu>
     </item>
 

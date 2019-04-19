@@ -154,12 +154,13 @@ public class Home extends AppCompatActivity
             Intent i = new Intent(getBaseContext(), ProfileActivity.class);
             startActivity(i);
         }
-        else if (id == R.id.nav_login) {
-            //start Login activity .
-            Intent i = new Intent(getBaseContext(), Login.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_addstory) {
+//        else if (id == R.id.nav_login) {
+//            //start Login activity .
+//            Intent i = new Intent(getBaseContext(), Login.class);
+//            startActivity(i);
+//
+//        }
+            else if (id == R.id.nav_addstory) {
 
             //start addstory activity .
             Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
