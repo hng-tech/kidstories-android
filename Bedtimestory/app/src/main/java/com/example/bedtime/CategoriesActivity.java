@@ -34,6 +34,8 @@ public class CategoriesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_primary);
         getSupportActionBar().setElevation(0);
 
         TextView mTitle =  toolbar.findViewById(R.id.toolbar_title);

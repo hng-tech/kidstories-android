@@ -1,14 +1,15 @@
+
 package com.example.bedtime.Model;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Story {
+
     @SerializedName("cat_id")
     @Expose
-    private List<Category> catId = null;
+    private List<Category> mCategories = null;
     @SerializedName("_id")
     @Expose
     private String id;
@@ -18,6 +19,9 @@ public class Story {
     @SerializedName("likes")
     @Expose
     private List<Object> likes = null;
+    @SerializedName("comments")
+    @Expose
+    private List<Object> comments = null;
     @SerializedName("title")
     @Expose
     private String title;
@@ -40,12 +44,12 @@ public class Story {
     @Expose
     private Integer v;
 
-    public List<Category> getCatId() {
-        return catId;
+    public List<Category> getCategories() {
+        return mCategories;
     }
 
-    public void setCatId(List<Category> catId) {
-        this.catId = catId;
+    public void setCategories(List<Category> categories) {
+        this.mCategories = categories;
     }
 
     public String getId() {
@@ -70,6 +74,14 @@ public class Story {
 
     public void setLikes(List<Object> likes) {
         this.likes = likes;
+    }
+
+    public List<Object> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Object> comments) {
+        this.comments = comments;
     }
 
     public String getTitle() {
@@ -127,4 +139,5 @@ public class Story {
     public void setV(Integer v) {
         this.v = v;
     }
+
 }
