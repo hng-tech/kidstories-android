@@ -10,11 +10,11 @@
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="android:fontFamily">@font/worksans_regular</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+    <!--<style name="AppTheme.NoActionBar">-->
+        <!--<item name="android:fontFamily">@font/worksans_regular</item>-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
+    <!--</style>-->
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

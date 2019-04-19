@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import com.example.bedtime.Adapters.CategoriesAdapter;
 import com.example.bedtime.Adapters.StoryListingAdapter;
@@ -71,13 +73,26 @@ public class Home extends AppCompatActivity
 //            }
 //        });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public boolean onOptionsItemSelected(MenuItem item) {
+//                drawer.openDrawer(Gravity.START);
+                return super.onOptionsItemSelected(item);
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        ImageButton close = navigationView.getHeaderView(0).findViewById(R.id.nav_close_button);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.closeDrawers();
+            }
+        });
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -139,12 +154,13 @@ public class Home extends AppCompatActivity
             Intent i = new Intent(getBaseContext(), ProfileActivity.class);
             startActivity(i);
         }
-        else if (id == R.id.nav_login) {
-            //start Login activity .
-            Intent i = new Intent(getBaseContext(), Login.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_addstory) {
+//        else if (id == R.id.nav_login) {
+//            //start Login activity .
+//            Intent i = new Intent(getBaseContext(), Login.class);
+//            startActivity(i);
+//
+//        }
+            else if (id == R.id.nav_addstory) {
 
             //start addstory activity .
             Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
@@ -152,8 +168,8 @@ public class Home extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

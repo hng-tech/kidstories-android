@@ -37,6 +37,7 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
     public void onBindViewHolder(@NonNull StoryHolder storyHolder, int i) {
         Story story = mStories.get(i);
         storyHolder.mTitle.setText(story.getTitle());
+        storyHolder.mImgTitle.setText(story.getTitle());
         storyHolder.mTime.setText(story.getReleaseDate());
         Glide.with(mContext).load(story.getImage()).into(storyHolder.mImage);
     }
@@ -62,13 +63,14 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
     }
     class StoryHolder extends RecyclerView.ViewHolder  {
         ImageButton mLike,mDislike;
-        TextView mTitle,mTime;
+        TextView mTitle,mTime ,mImgTitle;
         ImageView mImage,mAuthor_image;
         public StoryHolder(@NonNull View itemView) {
             super(itemView);
             mImage = itemView.findViewById(R.id.story_banner);
             mAuthor_image = itemView.findViewById(R.id.author_image);
             mTitle = itemView.findViewById(R.id.story_title);
+            mImgTitle = itemView.findViewById(R.id.story_imgtitle);
             mTime = itemView.findViewById(R.id.story_publish_time);
             mLike = itemView.findViewById(R.id.like_button);
             mDislike = itemView.findViewById(R.id.dislike_button);
