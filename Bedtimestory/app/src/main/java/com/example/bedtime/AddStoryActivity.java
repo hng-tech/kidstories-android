@@ -30,7 +30,7 @@ public class AddStoryActivity extends AppCompatActivity {
 //                finish();
 //            }
 //        });
-//        initViews();
+        initViews();
 
 
     }

@@ -10,13 +10,6 @@
     android:fontFamily="@font/worksans_regular"
     tools:showIn="@layout/app_bar_home">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:text="Design in progress..."
-        android:textSize="20sp"
-        android:gravity="center"
-        android:layout_height="match_parent" />
-
     <!--<LinearLayout-->
         <!--android:layout_width="wrap_content"-->
         <!--android:orientation="vertical"-->
@@ -68,9 +61,9 @@
         android:id="@+id/stories_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:padding="8dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:padding="1dp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
