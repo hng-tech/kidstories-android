@@ -48,6 +48,8 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
 
         getSupportActionBar().setElevation(0);
         Intent intent = getIntent();
@@ -135,6 +137,11 @@ public class Home extends AppCompatActivity
 //
 //        return super.onOptionsItemSelected(item);
 //    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
