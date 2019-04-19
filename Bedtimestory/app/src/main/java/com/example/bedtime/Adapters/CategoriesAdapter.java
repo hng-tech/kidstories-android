@@ -1,6 +1,7 @@
 package com.example.bedtime.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bedtime.AddStoryActivity;
 import com.example.bedtime.Model.Category;
 import com.example.bedtime.R;
 
@@ -94,4 +96,18 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         }
     }
+//    class AddNewHolder extends RecyclerView.ViewHolder {
+//        public AddNewHolder(View itemView) {
+//
+//            super(itemView);
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(mContext,AddStoryActivity.class);
+//                    mContext.startActivity(intent);
+//                }
+//            });
+//
+//        }
+//    }
 }

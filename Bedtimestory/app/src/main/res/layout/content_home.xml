@@ -69,19 +69,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cat_rv"
+       app:layout_constraintTop_toBottomOf="@id/topd"
         tools:listitem="@layout/post_single" />
+    <LinearLayout
+        android:id="@+id/topd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"      >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/cat_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:listitem="@layout/category_home_single" />
+            <ImageView
+                android:id="@+id/btn_addnew"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/add" />
+
+
+            <TextView
+                android:id="@+id/add_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="0dp"
+                android:gravity="center"
+                android:text="Add new"
+                android:textColor="#9C000000"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cat_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include"
+            tools:listitem="@layout/category_home_single" />
+
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

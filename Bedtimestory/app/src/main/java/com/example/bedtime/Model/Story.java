@@ -18,7 +18,7 @@ public class Story {
     private String releaseDate;
     @SerializedName("likes")
     @Expose
-    private List<Object> likes = null;
+    private int likes ;
     @SerializedName("comments")
     @Expose
     private List<Object> comments = null;
@@ -68,11 +68,11 @@ public class Story {
         this.releaseDate = releaseDate;
     }
 
-    public List<Object> getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public void setLikes(List<Object> likes) {
+    public void setLikes(int likes) {
         this.likes = likes;
     }
 

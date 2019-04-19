@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.bedtime.Adapters.CategoriesAdapter;
 import com.example.bedtime.Adapters.StoryListingAdapter;
@@ -40,6 +41,7 @@ public class Home extends AppCompatActivity
     List<Category> mCategories;
     CategoriesAdapter mCategoriesAdapter;
     User mUser;
+    ImageView mAddNew;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,14 @@ public class Home extends AppCompatActivity
         }
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
+        mAddNew = findViewById(R.id.btn_addnew);
+        mAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(Home.this,AddStoryActivity.class);
+                startActivity(intent1);
+            }
+        });
         mStories = new ArrayList<>();
         mCategories = new ArrayList<>();
         mCategoriesAdapter = new CategoriesAdapter(this,mCategories,"home");
