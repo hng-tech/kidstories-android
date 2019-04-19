@@ -133,7 +133,7 @@ public class Onboarding extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        finish();
+//        finish();
         super.onResume();
     }
 }
