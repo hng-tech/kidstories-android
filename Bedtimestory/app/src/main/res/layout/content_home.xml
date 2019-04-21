@@ -73,8 +73,9 @@
         tools:listitem="@layout/post_single" />
     <LinearLayout
         android:id="@+id/topd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"      >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,14 +96,15 @@
 
             <TextView
                 android:id="@+id/add_new"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="0dp"
                 android:gravity="center"
                 android:text="Add new"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:textColor="#9C000000"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 />
         </LinearLayout>
         <android.support.v7.widget.RecyclerView
