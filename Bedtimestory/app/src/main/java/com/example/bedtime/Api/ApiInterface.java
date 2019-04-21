@@ -3,6 +3,7 @@ package com.example.bedtime.Api;
 import com.example.bedtime.Api.Responses.CategoryAllResponse;
 import com.example.bedtime.Api.Responses.LoginResponse;
 import com.example.bedtime.Api.Responses.StoryAllResponse;
+import com.example.bedtime.Api.Responses.StoryCategoryResponse;
 import com.example.bedtime.Api.Responses.StoryResponse;
 import com.example.bedtime.Model.User;
 
@@ -20,8 +21,8 @@ public interface ApiInterface {
     @GET("category/all")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("category/{id}")
-    Call<CategoryAllResponse> getCategory(@Path("id") String id);
+    @GET("story/category/{id}")
+    Call<StoryCategoryResponse> getCategory(@Path("id") String id);
 
     @GET("story")
     Call<StoryAllResponse> getAllStories();

@@ -1,7 +1,9 @@
 package com.example.bedtime;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -215,7 +217,7 @@ public class Home extends AppCompatActivity
 
             @Override
             public void onFailure(Call<CategoryAllResponse> call, Throwable t) {
-
+                showNetworkError();
             }
         });
         Client.getInstance().create(ApiInterface.class).getAllStories().enqueue(new Callback<StoryAllResponse>() {
@@ -226,6 +228,7 @@ public class Home extends AppCompatActivity
                     List<Story> story = storyAllResponse.getData().getStories();
                     if(story !=null){
                         mAdapter.addStories(story);
+
                     }
                 }
             }
@@ -233,8 +236,20 @@ public class Home extends AppCompatActivity
             @Override
             public void onFailure(Call<StoryAllResponse> call, Throwable t) {
                 Log.e("Story = " , t.toString());
+                showNetworkError();
             }
         });
+    }
+    public void showNetworkError(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setMessage("Unable to connect")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        loadData();
+                    }
+                });
+        builder.create().show();
 
     }
 }

@@ -30,12 +30,14 @@
 
         <TextView
             android:id="@+id/cat_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Myths"
+            android:text="Night story"
+            android:layout_gravity="center"
             android:textColor="#9C000000"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            style="@style/TextAppearance.AppCompat.Title"
             android:gravity="center"
              />
     </LinearLayout>

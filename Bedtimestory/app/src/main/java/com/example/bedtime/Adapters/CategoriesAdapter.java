@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.bedtime.AddStoryActivity;
 import com.example.bedtime.Model.Category;
 import com.example.bedtime.R;
+import com.example.bedtime.StoryListingActivity;
 
 import java.util.List;
 
@@ -21,6 +22,16 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     Context mContext;
     List<Category> mCategories;
     String mType;
+    OnclickListener mListener = new OnclickListener() {
+        @Override
+        public void click( int pos) {
+            startListing( pos);
+        }
+    };
+
+     public interface OnclickListener {
+        void click(int pos );
+    }
 
     public CategoriesAdapter(Context context, List<Category> categories,String type) {
         mContext = context;
@@ -32,6 +43,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+
+
         if(mType.equals("home")){
              view = LayoutInflater.from(mContext).inflate(R.layout.category_home_single,
                     parent,false);
@@ -61,6 +74,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public int getItemCount() {
         return mCategories != null ? mCategories.size() : 0;
     }
@@ -83,7 +101,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             mImage = itemView.findViewById(R.id.category_image);
             mName = itemView.findViewById(R.id.category_name);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.click(getAdapterPosition());
+                }
+            });
         }
     }
     class CategoryHolderRound extends RecyclerView.ViewHolder {
@@ -93,21 +116,36 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             mImage = itemView.findViewById(R.id.cat_image);
             mName = itemView.findViewById(R.id.cat_name);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.click(getAdapterPosition());
+                }
+            });
+
+        }
+
+
+    }
+    private void startListing(int pos) {
+         Intent intent = new Intent(mContext,StoryListingActivity.class);
+        intent.putExtra(StoryListingActivity.CATEGORY_ID,mCategories.get(pos).getId());
+        intent.putExtra(StoryListingActivity.CATEGORY_NAME,mCategories.get(pos).getName());
+
+        mContext.startActivity(intent);
+    }
+    class AddNewHolder extends RecyclerView.ViewHolder {
+        public AddNewHolder(View itemView) {
+
+            super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext,AddStoryActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
 
         }
     }
-//    class AddNewHolder extends RecyclerView.ViewHolder {
-//        public AddNewHolder(View itemView) {
-//
-//            super(itemView);
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(mContext,AddStoryActivity.class);
-//                    mContext.startActivity(intent);
-//                }
-//            });
-//
-//        }
-//    }
 }
