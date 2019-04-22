@@ -233,11 +233,11 @@ public class Home extends AppCompatActivity
                     List<Story> story = storyAllResponse.getData().getStories();
                     if(story !=null){
                         mAdapter.addStories(story);
-                        mProgressBar.setVisibility(View.GONE);
 
 
                     }
                 }
+                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override

@@ -57,9 +57,9 @@ public class StoryDetail extends AppCompatActivity {
                                     .into(mStoryImage);
                             mTitle.setText(story.getTitle());
                             mDetail.setText(story.getStory());
-                            mProgressBar.setVisibility(View.GONE);
-                            mLinearLayout.setVisibility(View.VISIBLE);
                         }
+                        mProgressBar.setVisibility(View.GONE);
+                        mLinearLayout.setVisibility(View.VISIBLE);
                     }
 
                     @Override
