@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.bedtime.AddStoryActivity;
 import com.example.bedtime.Model.Category;
 import com.example.bedtime.R;
@@ -66,9 +68,18 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if(mType.equals("home")){
             CategoryHolderRound hold = (CategoryHolderRound) holder;
             hold.mName.setText(category.getName());
+            if(category.getImage() != null){
+                Glide.with(mContext).load(category.getImage())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(((CategoryHolderRound) holder).mImage);
+            }
         }else {
             CategoryHolder hold = (CategoryHolder) holder;
             hold.mName.setText(category.getName());
+            if(category.getImage() != null){
+                Glide.with(mContext).load(category.getImage())
+                        .into(hold.mImage);
+            }
         }
 
     }

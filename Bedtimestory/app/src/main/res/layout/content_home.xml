@@ -57,6 +57,21 @@
         <!--tools:layout_editor_absoluteY="0dp"-->
         <!--/>-->
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stories_rv"
         android:layout_width="0dp"
@@ -120,6 +135,4 @@
             tools:listitem="@layout/category_home_single" />
 
     </LinearLayout>
-
-
 </android.support.constraint.ConstraintLayout>

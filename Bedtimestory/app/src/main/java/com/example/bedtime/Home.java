@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.bedtime.Adapters.CategoriesAdapter;
 import com.example.bedtime.Adapters.StoryListingAdapter;
@@ -44,6 +45,8 @@ public class Home extends AppCompatActivity
     CategoriesAdapter mCategoriesAdapter;
     User mUser;
     ImageView mAddNew;
+    ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +69,7 @@ public class Home extends AppCompatActivity
         }
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
+        mProgressBar = findViewById(R.id.progressBar);
         mAddNew = findViewById(R.id.btn_addnew);
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +207,7 @@ public class Home extends AppCompatActivity
     }
 
     public void loadData(){
+        mProgressBar.setVisibility(View.VISIBLE);
         Client.getInstance().create(ApiInterface.class).getAllCategories().enqueue(new Callback<CategoryAllResponse>() {
             @Override
             public void onResponse(Call<CategoryAllResponse> call, Response<CategoryAllResponse> response) {
@@ -228,6 +233,8 @@ public class Home extends AppCompatActivity
                     List<Story> story = storyAllResponse.getData().getStories();
                     if(story !=null){
                         mAdapter.addStories(story);
+                        mProgressBar.setVisibility(View.GONE);
+
 
                     }
                 }
