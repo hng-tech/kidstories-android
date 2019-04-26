@@ -10,13 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bedtime.Api.ApiInterface;
+import com.example.bedtime.Api.Client;
 import com.example.bedtime.Model.Story;
 import com.example.bedtime.R;
 import com.example.bedtime.StoryDetail;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapter.StoryHolder> {
     Context mContext;
@@ -37,11 +44,13 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
 
     @Override
     public void onBindViewHolder(@NonNull StoryHolder storyHolder, int i) {
-        Story story = mStories.get(i);
+        final Story story = mStories.get(i);
         storyHolder.mTitle.setText(story.getTitle());
         storyHolder.mImgTitle.setText(story.getTitle());
         storyHolder.mTime.setText(story.getReleaseDate());
         Glide.with(mContext).load(story.getImage()).into(storyHolder.mImage);
+
+        storyHolder.mLike.setOnClickListener(v -> reactToStory(true, story.getId()));
     }
 
     @Override
@@ -84,6 +93,26 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
                     mContext.startActivity(intent);
                 }
             });
+        }
+    }
+
+    private void reactToStory(boolean isLike, String storyId){
+
+        if (isLike){
+            Client.getInstance().create(ApiInterface.class).reactToStory(storyId).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()){
+                        Toast.makeText(mContext, "Story liked!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
     }
 }
