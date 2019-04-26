@@ -34,6 +34,9 @@ public interface ApiInterface {
     @POST("user/register")
     Call<String> registerUser(@Body User user);
 
+    @GET("api/v1/story/like/{storyId}")
+    Call<String> reactToStory(@Path("storyId") String storyId);
+
     @POST("user/login")
     @FormUrlEncoded
     Call<LoginResponse> loginUser(@Field("email") String email, @Field("password") String password);
