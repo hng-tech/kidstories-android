@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.bedtime.Api.ApiInterface;
 import com.example.bedtime.Api.Client;
+import com.example.bedtime.Api.Responses.BaseResponse;
+import com.example.bedtime.Api.Responses.StoryReactionResponse;
 import com.example.bedtime.Model.Story;
 import com.example.bedtime.R;
 import com.example.bedtime.StoryDetail;
@@ -99,23 +101,23 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
 
     private void reactToStory(boolean isLike, String storyId){
 
-        if (isLike){
-            Client.getInstance().create(ApiInterface.class).reactToStory(storyId).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.isSuccessful()){
-                        Toast.makeText(mContext, "Story liked!", Toast.LENGTH_SHORT).show();
-                    }
+        Client.getInstance().create(ApiInterface.class).reactToStory(storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<StoryReactionResponse>> call, Response<BaseResponse<StoryReactionResponse>> response) {
+                if (response.isSuccessful()){
+                    assert response.body() != null;
+                    StoryReactionResponse reactionResponse = response.body().getData();
 
-                    else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                else Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+            }
 
-        }
+            @Override
+            public void onFailure(Call<BaseResponse<StoryReactionResponse>> call, Throwable t) {
+                Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

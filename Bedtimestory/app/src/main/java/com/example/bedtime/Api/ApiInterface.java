@@ -1,9 +1,11 @@
 package com.example.bedtime.Api;
 
+import com.example.bedtime.Api.Responses.BaseResponse;
 import com.example.bedtime.Api.Responses.CategoryAllResponse;
 import com.example.bedtime.Api.Responses.LoginResponse;
 import com.example.bedtime.Api.Responses.StoryAllResponse;
 import com.example.bedtime.Api.Responses.StoryCategoryResponse;
+import com.example.bedtime.Api.Responses.StoryReactionResponse;
 import com.example.bedtime.Api.Responses.StoryResponse;
 import com.example.bedtime.Model.User;
 
@@ -35,7 +37,7 @@ public interface ApiInterface {
     Call<String> registerUser(@Body User user);
 
     @GET("story/like/{storyId}")
-    Call<String> reactToStory(@Path("storyId") String storyId);
+    Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("storyId") String storyId);
 
     @POST("user/login")
     @FormUrlEncoded
