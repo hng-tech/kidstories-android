@@ -101,7 +101,8 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
 
     private void reactToStory(boolean isLike, String storyId){
 
-        Client.getInstance().create(ApiInterface.class).reactToStory(storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
+        String action = isLike?  "like" :  "dislike";
+        Client.getInstance().create(ApiInterface.class).reactToStory(action, storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
             @Override
             public void onResponse(Call<BaseResponse<StoryReactionResponse>> call, Response<BaseResponse<StoryReactionResponse>> response) {
                 if (response.isSuccessful()){

@@ -36,8 +36,8 @@ public interface ApiInterface {
     @POST("user/register")
     Call<String> registerUser(@Body User user);
 
-    @GET("story/like/{storyId}")
-    Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("storyId") String storyId);
+    @GET("story/{action}/{storyId}")
+    Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
     @POST("user/login")
     @FormUrlEncoded
