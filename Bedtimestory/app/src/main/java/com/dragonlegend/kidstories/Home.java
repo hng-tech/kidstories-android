@@ -194,22 +194,24 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_bookmarks) {
 
-        } else if (id == R.id.nav_donate) {
-
-            String url = "https://paystack.com/pay/kidstoriesapp";
-
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-
-        } else if (id == R.id.nav_profile) {
-
-            //start Profile activity .
-//            if(mUser !=null ){
-//                Intent i = new Intent(getBaseContext(), ProfileActivity.class);
-//                i.putExtra(Config.USER_ID,mUser.getId());
-//                startActivity(i);
-//            }
+         }else if (id == R.id.nav_profile) {
+//
+//            //start Profile activity .
+            if(mUser !=null ){
+                Intent i = new Intent(getBaseContext(), ProfileActivity.class);
+                i.putExtra(Config.USER_ID,mUser.getId());
+                startActivity(i);
+            }
+//
+// else if (id == R.id.nav_donate) {
+//
+//            String url = "https://paystack.com/pay/kidstoriesapp";
+//
+//            Intent i = new Intent(Intent.ACTION_VIEW);
+//            i.setData(Uri.parse(url));
+//            startActivity(i);
+//
+//        }
             ShowSnackbar();
 
         }
@@ -221,10 +223,10 @@ public class Home extends AppCompatActivity
 //        }
         else if (id == R.id.nav_addstory) {
 
-            //start addstory activity .
-//            Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
-//            startActivity(i);
-            ShowSnackbar();
+//            start addstory activity .
+            Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
+            startActivity(i);
+//            ShowSnackbar();
 
         }
 

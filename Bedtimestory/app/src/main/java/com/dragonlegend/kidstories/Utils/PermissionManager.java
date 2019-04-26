@@ -1,4 +1,4 @@
-package com.example.bedtime.Utils;
+package com.dragonlegend.kidstories.Utils;
 
 import android.Manifest;
 import android.app.Activity;

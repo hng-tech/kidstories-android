@@ -1,20 +1,14 @@
-package com.example.bedtime.Utils;
+package com.dragonlegend.kidstories.Utils;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
-import android.widget.Toast;
 
-import com.example.bedtime.Api.ApiInterface;
-import com.example.bedtime.Api.Client;
+import com.dragonlegend.kidstories.Api.ApiInterface;
+import com.dragonlegend.kidstories.Api.Client;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -45,7 +39,8 @@ public class UploadImage {
 
         //UploadImage.getInstance();
         // use the FileUtils to get the actual imageFile by uri
-        File imageFile = new File(fileUri);
+        Uri uri = Uri.parse(fileUri);
+        File imageFile = new File(Uri.decode(fileUri));
 //        try {
 //            imageFile = new File(new URI(fileUri));
 //        } catch (URISyntaxException e) {
