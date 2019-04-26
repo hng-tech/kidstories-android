@@ -94,6 +94,8 @@ public class AddStoryActivity extends AppCompatActivity {
         mTypeContentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String title = mTitleField.getText().toString().trim();
+                Prefs.putString("title", title);
                 Log.d("TAG", "onClick: " + Prefs.getString("filePath",""));
                 Intent intent = new Intent(AddStoryActivity.this,AddStoriesContentActivity.class);
                 startActivity(intent);
