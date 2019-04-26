@@ -51,7 +51,6 @@ public class UploadImage {
 
 
 //        Uri ImageUri = Uri.parse(fileUri);
-        Log.d(TAG, "uploadFile: " + imageFile.getAbsolutePath());
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("image/*"),imageFile);
 
@@ -79,6 +78,7 @@ public class UploadImage {
                     Log.d(TAG, "onResponse: " + response.body().toString());
 
                 }else {
+                    Log.d(TAG, "onResponse: " + response.message());
                     showNetworkError(context);
                 }
             }

@@ -3,7 +3,9 @@ package com.dragonlegend.kidstories;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -109,7 +111,7 @@ public class AddStoryActivity extends AppCompatActivity {
     private void PickPicture() {
         Intent pickPictureIntent = new Intent();
         pickPictureIntent.setType("image/*");
-        pickPictureIntent.setAction(Intent.ACTION_GET_CONTENT);
+        pickPictureIntent.setAction(Intent.ACTION_PICK);
         startActivityForResult(pickPictureIntent,PICK_IMAGE_REQUEST);
     }
 
@@ -117,14 +119,28 @@ public class AddStoryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null  && data.getData() != null){
-            filePath = data.getData();
-            String filePathString = filePath.toString();
-            String FilePathReal = filePath.getPath();
-            Log.d("TAG", "onActivityResult: " + FilePathReal);
-            Prefs.putString("filePath",filePathString);
-            Prefs.putString("filePathReal", FilePathReal);
-            mImagePath.setText(filePath.getPath());
+//            filePath = data.getData();
+//            String filePathString = filePath.toString();
+//            String FilePathReal = filePath.getPath();
+//            Log.d("TAG", "onActivityResult: " + FilePathReal);
+//            Prefs.putString("filePath",filePathString);
+//            Prefs.putString("filePathReal", FilePathReal);
+//            mImagePath.setText(filePath.getPath());
 
+            // Get the Image from data
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            assert cursor != null;
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePathString= cursor.getString(columnIndex);
+            mImagePath.setText(selectedImage.getPath());
+            Prefs.putString("filePath",filePathString);
+
+            cursor.close();
 
         }
     }

@@ -71,7 +71,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
     private void AddStory() {
         content = mContentField.getText().toString().trim();
         title = Prefs.getString("title", "");
-        String imageFileUri = Prefs.getString("filePathReal","");
+        String imageFileUri = Prefs.getString("filePath","");
         Log.d("TAG", "AddStory: " + imageFileUri);
         UploadImage.uploadFile(imageFileUri,name,title,content,this);
     }
