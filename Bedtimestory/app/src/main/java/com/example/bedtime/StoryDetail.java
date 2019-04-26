@@ -67,6 +67,13 @@ public class StoryDetail extends AppCompatActivity {
 
                     }
                 });
+        mAddComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(StoryDetail.this,CommentsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void initViews(){
