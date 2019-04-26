@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dragonlegend.kidstories.R;
 import com.example.bedtime.Utils.UploadImage;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -74,10 +75,6 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
         content = mContentField.getText().toString().trim();
         title = Prefs.getString("title", "");
         String imageFileUri = Prefs.getString("filePath","");
-
-//        Uri fileUri = Uri.parse(Prefs.getString("filePath",""));
-//        String filePath =
-//        String filePath = getImageAbsolutePath(fileUri,this);
         UploadImage.uploadFile(imageFileUri,name,title,content,this);
     }
 
