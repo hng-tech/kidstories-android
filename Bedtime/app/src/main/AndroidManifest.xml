@@ -22,12 +22,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Bookmark"
+            android:label="Bookmark"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".Onboarding"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.NoAction"></activity>
+            android:theme="@style/AppTheme.NoAction">
+
+        </activity>
         <activity android:name=".ProfileRegisterActivity"
             android:theme="@style/AppTheme.NoAction"
-            android:parentActivityName=".RegisterActivity"></activity>
+            android:parentActivityName=".RegisterActivity">
+
+        </activity>
+
     </application>
 
 </manifest>

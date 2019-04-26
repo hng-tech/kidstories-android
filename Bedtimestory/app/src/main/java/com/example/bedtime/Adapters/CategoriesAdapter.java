@@ -1,6 +1,7 @@
 package com.example.bedtime.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.bedtime.AddStoryActivity;
 import com.example.bedtime.Model.Category;
 import com.example.bedtime.R;
+import com.example.bedtime.StoryListingActivity;
 
 import java.util.List;
 
@@ -19,6 +24,16 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     Context mContext;
     List<Category> mCategories;
     String mType;
+    OnclickListener mListener = new OnclickListener() {
+        @Override
+        public void click( int pos) {
+            startListing( pos);
+        }
+    };
+
+     public interface OnclickListener {
+        void click(int pos );
+    }
 
     public CategoriesAdapter(Context context, List<Category> categories,String type) {
         mContext = context;
@@ -30,6 +45,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+
+
         if(mType.equals("home")){
              view = LayoutInflater.from(mContext).inflate(R.layout.category_home_single,
                     parent,false);
@@ -51,11 +68,25 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if(mType.equals("home")){
             CategoryHolderRound hold = (CategoryHolderRound) holder;
             hold.mName.setText(category.getName());
+            if(category.getImage() != null){
+                Glide.with(mContext).load(category.getImage())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(((CategoryHolderRound) holder).mImage);
+            }
         }else {
             CategoryHolder hold = (CategoryHolder) holder;
             hold.mName.setText(category.getName());
+            if(category.getImage() != null){
+                Glide.with(mContext).load(category.getImage())
+                        .into(hold.mImage);
+            }
         }
 
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override
@@ -81,7 +112,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             mImage = itemView.findViewById(R.id.category_image);
             mName = itemView.findViewById(R.id.category_name);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.click(getAdapterPosition());
+                }
+            });
         }
     }
     class CategoryHolderRound extends RecyclerView.ViewHolder {
@@ -91,6 +127,35 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             mImage = itemView.findViewById(R.id.cat_image);
             mName = itemView.findViewById(R.id.cat_name);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.click(getAdapterPosition());
+                }
+            });
+
+        }
+
+
+    }
+    private void startListing(int pos) {
+         Intent intent = new Intent(mContext,StoryListingActivity.class);
+        intent.putExtra(StoryListingActivity.CATEGORY_ID,mCategories.get(pos).getId());
+        intent.putExtra(StoryListingActivity.CATEGORY_NAME,mCategories.get(pos).getName());
+
+        mContext.startActivity(intent);
+    }
+    class AddNewHolder extends RecyclerView.ViewHolder {
+        public AddNewHolder(View itemView) {
+
+            super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext,AddStoryActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
 
         }
     }

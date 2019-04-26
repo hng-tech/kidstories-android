@@ -23,30 +23,30 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-        <string name="skip">Skip</string>
-        <string-array name="onboarding_title">
-            <item>Bedtime Stories For Kids</item>
-            <item>Add Your own Stories</item>
-        </string-array>
-        <string-array name="onboarding_bodies">
-            <item>Read free bedtime stories, fairy tales, poems for kids and short stories for kids</item>
-            <item>You can add your own bedtime stories, fairy tales, poems for kids and short stories for kids</item>
-        </string-array>
+    <string name="skip">Skip</string>
+    <string-array name="onboarding_title">
+        <item>Bedtime Stories For Kids</item>
+        <item>Add Your own Stories</item>
+    </string-array>
+    <string-array name="onboarding_bodies">
+        <item>Read free bedtime stories, fairy tales, poems for kids and short stories for kids</item>
+        <item>You can add your own bedtime stories, fairy tales, poems for kids and short stories for kids</item>
+    </string-array>
 
-        <!-- TODO: Remove or change this placeholder text -->
-        <string name="hello_blank_fragment">Hello blank fragment</string>
-        <string name="add_new_story">Add New Story</string>
-        <string name="no_image_uploaded">No image Uploaded</string>
-        <string name="upload_image">Upload Image</string>
-        <string name="type_content">Type Content</string>
-        <string name="cover_image">Cover Image</string>
-        <string name="add_content_hint">And the fish happened to grow wings...</string>
-        <string name="discard">Discard</string>
-        <string name="content">Content</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_new_story">Add New Story</string>
+    <string name="no_image_uploaded">No image Uploaded</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="type_content">Type Content</string>
+    <string name="cover_image">Cover Image</string>
+    <string name="add_content_hint">And the fish happened to grow wings...</string>
+    <string name="discard">Discard</string>
+    <string name="content">Content</string>
     <string name="phone_number">Phone Number</string>
     <string-array name="designation_array">
-            <item>Kid</item>
-            <item>Adult</item>
-        </string-array>
+        <item>Kid</item>
+        <item>Adult</item>
+    </string-array>
 
 </resources>

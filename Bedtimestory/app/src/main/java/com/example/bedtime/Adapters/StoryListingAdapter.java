@@ -1,6 +1,7 @@
 package com.example.bedtime.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bedtime.Model.Story;
 import com.example.bedtime.R;
+import com.example.bedtime.StoryDetail;
 
 import java.util.List;
 
@@ -74,6 +76,14 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             mTime = itemView.findViewById(R.id.story_publish_time);
             mLike = itemView.findViewById(R.id.like_button);
             mDislike = itemView.findViewById(R.id.dislike_button);
+            mImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext.getApplicationContext(),StoryDetail.class);
+                    intent.putExtra(StoryDetail.STORY_ID,mStories.get(getAdapterPosition()).getId());
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.bedtime;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +14,15 @@ import android.widget.TextView;
 import com.example.bedtime.Adapters.OnBoardingAdapter;
 
 public class Onboarding extends AppCompatActivity {
+
+    public static final String PREF_NAME = Onboarding.class.getSimpleName();
+    public static final String HAS_BOARDED = "has_boarded";
     ViewPager mSlidePager;
     Button mSkipButton, mNextButton, mStartReadingButton;
     LinearLayout mSquareLayout, mBottomLayout;
     TextView[] mSquares;
     String[] titles;
+    SharedPreferences preferences;
     OnBoardingAdapter mOnBoardingAdapter;
     ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -49,6 +54,8 @@ public class Onboarding extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkOnboarding();
         setContentView(R.layout.activity_onboarding);
         mSlidePager = findViewById(R.id.onboarding_vp);
         mSkipButton = findViewById(R.id.skip_on_boarding);
@@ -90,10 +97,22 @@ public class Onboarding extends AppCompatActivity {
 
     }
 
+    private void checkOnboarding() {
+        preferences = getSharedPreferences(PREF_NAME,0);
+        if(preferences.contains(HAS_BOARDED)){
+            startNextActivity();
+        }
+    }
+
     //intent method to parse onclick events
     private void startNextActivity() {
+
+        setOnboardingComplete();
         Intent intent = new Intent(Onboarding.this, Home.class);
         startActivity(intent);
+    }
+    private void setOnboardingComplete(){
+        preferences.edit().putBoolean(HAS_BOARDED,true).apply();
     }
 
     public void addDotIndicator(int position) {
@@ -110,5 +129,11 @@ public class Onboarding extends AppCompatActivity {
         if (mSquares.length > 0) {
             mSquares[position].setTextColor(getResources().getColor(R.color.colorPrimary));
         }
+    }
+
+    @Override
+    protected void onResume() {
+//        finish();
+        super.onResume();
     }
 }

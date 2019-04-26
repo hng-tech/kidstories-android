@@ -11,6 +11,9 @@ public class Category {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("image")
+    @Expose
+    private String image;
 
     public Category(String name) {
         this.name = name;
@@ -30,5 +33,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

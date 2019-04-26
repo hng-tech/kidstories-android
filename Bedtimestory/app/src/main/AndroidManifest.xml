@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.example.bedtime">
+
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Onboarding"></activity>
+        <activity android:name=".Onboarding" />
         <activity android:name=".Login" />
         <activity
             android:name=".Home"
@@ -37,7 +38,6 @@
             android:name=".ProfileRegisterActivity"
             android:parentActivityName=".RegisterActivity"
             android:theme="@style/AppTheme.NoAction" />
-
         <activity
             android:name=".CategoriesActivity"
             android:parentActivityName=".MainActivity" />
@@ -48,9 +48,10 @@
             android:name=".AddStoryActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".AddStoriesContentActivity" />
-
+        <activity
+            android:name=".StoryDetail"
+            android:parentActivityName=".Home" />
+        <activity android:name=".StoryListingActivity"></activity>
     </application>
 
-
 </manifest>
-

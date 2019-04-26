@@ -31,6 +31,11 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+    <ProgressBar
+    android:id="@+id/progress_b"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/category_rv"
@@ -38,5 +43,6 @@
         android:layout_height="match_parent"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/category_single_card" />
+
 
 </LinearLayout>
