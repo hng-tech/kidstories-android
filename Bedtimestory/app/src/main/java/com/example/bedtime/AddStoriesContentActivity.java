@@ -28,7 +28,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
 //                finish();
 //            }
 //        });
-//        initViews();
+         initViews();
     }
 
     public void initViews(){
@@ -38,6 +38,8 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
         mDiscardButton.setOnClickListener(this);
         mSaveButton.setOnClickListener(this);
     }
+
+
 
     @Override
     public void onClick(View v) {

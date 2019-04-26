@@ -73,7 +73,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/discard_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/story_content_field" />
+        app:layout_constraintTop_toBottomOf="@+id/story_content_field"
+        />
 
     <Button
         android:id="@+id/discard_content"
@@ -89,6 +90,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/save_content"
-        app:layout_constraintTop_toBottomOf="@+id/story_content_field" />
+        app:layout_constraintTop_toBottomOf="@+id/story_content_field"
+        />
 
 </android.support.constraint.ConstraintLayout>
