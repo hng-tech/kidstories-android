@@ -10,13 +10,22 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bedtime.Api.ApiInterface;
+import com.example.bedtime.Api.Client;
+import com.example.bedtime.Api.Responses.BaseResponse;
+import com.example.bedtime.Api.Responses.StoryReactionResponse;
 import com.example.bedtime.Model.Story;
 import com.example.bedtime.R;
 import com.example.bedtime.StoryDetail;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapter.StoryHolder> {
     Context mContext;
@@ -37,11 +46,14 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
 
     @Override
     public void onBindViewHolder(@NonNull StoryHolder storyHolder, int i) {
-        Story story = mStories.get(i);
+        final Story story = mStories.get(i);
         storyHolder.mTitle.setText(story.getTitle());
         storyHolder.mImgTitle.setText(story.getTitle());
         storyHolder.mTime.setText(story.getReleaseDate());
         Glide.with(mContext).load(story.getImage()).into(storyHolder.mImage);
+
+        storyHolder.mLike.setOnClickListener(v -> reactToStory(true, story.getId()));
+        storyHolder.mDislike.setOnClickListener(v -> reactToStory(false, story.getId()));
     }
 
     @Override
@@ -85,5 +97,28 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
                 }
             });
         }
+    }
+
+    private void reactToStory(boolean isLike, String storyId){
+
+        String action = isLike?  "like" :  "dislike";
+        Client.getInstance().create(ApiInterface.class).reactToStory(action, storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<StoryReactionResponse>> call, Response<BaseResponse<StoryReactionResponse>> response) {
+                if (response.isSuccessful()){
+                    assert response.body() != null;
+                    StoryReactionResponse reactionResponse = response.body().getData();
+
+                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                else Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<StoryReactionResponse>> call, Throwable t) {
+                Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
