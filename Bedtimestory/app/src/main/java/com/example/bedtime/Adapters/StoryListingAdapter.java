@@ -51,6 +51,7 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
         Glide.with(mContext).load(story.getImage()).into(storyHolder.mImage);
 
         storyHolder.mLike.setOnClickListener(v -> reactToStory(true, story.getId()));
+        storyHolder.mDislike.setOnClickListener(v -> reactToStory(false, story.getId()));
     }
 
     @Override
@@ -105,6 +106,8 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
                     if (response.isSuccessful()){
                         Toast.makeText(mContext, "Story liked!", Toast.LENGTH_SHORT).show();
                     }
+
+                    else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

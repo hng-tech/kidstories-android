@@ -34,7 +34,7 @@ public interface ApiInterface {
     @POST("user/register")
     Call<String> registerUser(@Body User user);
 
-    @GET("api/v1/story/like/{storyId}")
+    @GET("story/like/{storyId}")
     Call<String> reactToStory(@Path("storyId") String storyId);
 
     @POST("user/login")
