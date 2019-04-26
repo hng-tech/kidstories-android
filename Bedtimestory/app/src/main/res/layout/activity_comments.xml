@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CommentsActivity">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="390dp"
+        android:layout_height="335dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@id/relativelayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="392dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_white_background"
+        android:padding="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerview">
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="140dp"
+            android:layout_height="54dp"
+            android:layout_alignTop="@+id/add_comment"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="27dp"
+            android:background="@drawable/black_background"
+            android:gravity="center"
+            android:hint="Name" />
+
+        <EditText
+            android:id="@+id/add_comment"
+            android:layout_width="291dp"
+            android:layout_height="65dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="118dp"
+            android:layout_marginBottom="139dp"
+            android:background="#fff"
+            android:gravity="center"
+            android:hint="Add a coment"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/post"
+            android:layout_width="48dp"
+            android:layout_height="59dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="106dp"
+            android:layout_marginEnd="39dp"
+            android:background="@null"
+            android:text="post"
+            android:textColor="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
