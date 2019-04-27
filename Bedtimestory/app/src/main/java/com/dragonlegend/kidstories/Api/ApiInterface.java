@@ -44,6 +44,9 @@ public interface ApiInterface {
     @GET("user/profile/{id}")
     Call<User> getProfile(@Path("id") String id);
 
+    @GET("story/{action}/{storyId}")
+    Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
+
 
     @Multipart
     @POST("story/create")
