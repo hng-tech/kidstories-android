@@ -1,6 +1,7 @@
 package com.dragonlegend.kidstories;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +50,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
 //                finish();
 //            }
 //        });
+
         initViews();
     }
 
@@ -59,10 +61,38 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
         chooseCategory = findViewById(R.id.choose_category);
         mDiscardButton.setOnClickListener(this);
         mSaveButton.setOnClickListener(this);
+
+        //set color for selected Item on create
+        chooseCategory.setSelection(0, true);
+        View v = chooseCategory.getSelectedView();
+        ((TextView)v).setTextColor(Color.WHITE);
+
         chooseCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //set color for selected Item
 
+                ((TextView) view).setTextColor(Color.WHITE);
+
+                // Get Selected Class name from the list
+                String selectedCategory = adapterView.getItemAtPosition(i).toString();
+                    switch (selectedCategory) {
+                        case "Poem" :
+                            category = Prefs.getString("poem", "");
+                            Log.d("TAG", "onItemSelected:-> " + category);
+                            break;
+                        case "Fantasy" :
+                            category = Prefs.getString("fantasy", "");
+                            Log.d("TAG", "onItemSelected:-> " + category);
+                            break;
+                        case "Moral" :
+                            category = Prefs.getString("moral","");
+                            Log.d("TAG", "onItemSelected:-> " + category);
+                            break;
+                        case "Category":
+                            category = "";
+                            break;
+                    }
             }
 
             @Override
@@ -91,13 +121,21 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
 
     private void AddStory() {
         content = mContentField.getText().toString().trim();
-        title = Prefs.getString("title", "");
-        String imageFileUri = Prefs.getString("filePath","");
-        Log.d("TAG", "AddStory: " + imageFileUri);
-        if (category.isEmpty()){
-            ShowSnackbar("Category cannot be empty");
+        if (content.isEmpty()) {
+           ShowSnackbar("Cntent cannot be empty");
         }
-        UploadImage.uploadFile(imageFileUri,name,title,content,this,category);
+        else {
+
+            title = Prefs.getString("title", "");
+            String imageFileUri = Prefs.getString("filePath","");
+            Log.d("TAG", "AddStory: " + imageFileUri);
+            if (category == ""){
+                ShowSnackbar("Category cannot be empty");
+            }else{
+
+                UploadImage.uploadFile(imageFileUri,name,title,content,this,category);
+            }
+        }
     }
 
 
