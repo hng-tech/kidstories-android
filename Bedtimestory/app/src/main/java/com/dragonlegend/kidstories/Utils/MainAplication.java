@@ -1,4 +1,4 @@
-package com.example.bedtime.Utils;
+package com.dragonlegend.kidstories.Utils;
 
 import android.app.Application;
 import android.content.ContextWrapper;
