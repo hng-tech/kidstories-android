@@ -1,0 +1,50 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/worksans_regular</item>
+        <item name="drawerArrowStyle">@style/DrawerIcon</item>
+    </style>
+
+    <!--<style name="AppTheme.NoActionBar">-->
+        <!--<item name="android:fontFamily">@font/worksans_regular</item>-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
+    <!--</style>-->
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoAction" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_primary</item>
+        <item name="android:fontFamily">@font/worksans_regular</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Drawer icon style-->
+    <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/hamburgerBlack</item>
+    </style>
+
+    <!-- splash screen style-->
+    <style name="Splashscreen"  parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="EditTextWhite">
+        <item name="android:background">@drawable/edittext_white_background</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:fontFamily">@font/worksans_regular</item>
+    </style>
+
+
+
+
+</resources>

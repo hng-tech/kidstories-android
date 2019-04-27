@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:fontFamily="@font/worksans_regular"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_addstory"
+
+            android:title="Add Story" />
+        <item
+            android:id="@+id/nav_bookmarks"
+            android:title="Bookmarks" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_categories"
+            android:title="Categories" />
+
+        <item
+            android:fontFamily="@font/worksans_regular"
+            android:id="@+id/nav_login"
+            android:title="Login" />
+
+        <!--<item-->
+            <!--android:id="@+id/nav_singlestory"-->
+            <!--android:title="Test Single story" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_testactivity"-->
+            <!--android:title="Testing UI" />-->
+
+
+    </group>
+
+    <item
+        android:title="">
+        <menu>
+            <!--<item-->
+                <!--android:fontFamily="@font/worksans_regular"-->
+                <!--android:id="@+id/nav_signout"-->
+                <!--android:title="Sign Out" />-->
+            <item
+                android:fontFamily="@font/worksans_regular"
+                android:id="@+id/nav_login_two"
+                android:title="" />
+        </menu>
+    </item>
+
+</menu>
