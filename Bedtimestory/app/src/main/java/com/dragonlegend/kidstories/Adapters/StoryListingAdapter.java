@@ -10,13 +10,22 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.dragonlegend.kidstories.Api.ApiInterface;
+import com.dragonlegend.kidstories.Api.Client;
+import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
+import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.R;
 import com.dragonlegend.kidstories.StoryDetail;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapter.StoryHolder> {
     Context mContext;
@@ -85,5 +94,27 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
                 }
             });
         }
+    }
+    private void reactToStory(boolean isLike, String storyId){
+
+        String action = isLike?  "like" :  "dislike";
+        Client.getInstance().create(ApiInterface.class).reactToStory(action, storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<StoryReactionResponse>> call, Response<BaseResponse<StoryReactionResponse>> response) {
+                if (response.isSuccessful()){
+                    assert response.body() != null;
+                    StoryReactionResponse reactionResponse = response.body().getData();
+
+                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                else Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<StoryReactionResponse>> call, Throwable t) {
+                Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
