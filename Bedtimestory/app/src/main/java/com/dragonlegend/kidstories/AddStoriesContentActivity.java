@@ -109,7 +109,6 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
         switch (v.getId()){
             case R.id.save_content:
                 AddStory();
-                Toast.makeText(this,"Content Saved",Toast.LENGTH_SHORT).show();
                 break;
             default:
                 Intent intent = new Intent(this, Home.class);
@@ -120,22 +119,30 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
     }
 
     private void AddStory() {
-        content = mContentField.getText().toString().trim();
-        if (content.isEmpty()) {
-           ShowSnackbar("Cntent cannot be empty");
-        }
-        else {
-
-            title = Prefs.getString("title", "");
-            String imageFileUri = Prefs.getString("filePath","");
-            Log.d("TAG", "AddStory: " + imageFileUri);
-            if (category == ""){
-                ShowSnackbar("Category cannot be empty");
-            }else{
-
-                UploadImage.uploadFile(imageFileUri,name,title,content,this,category);
+        if (Prefs.getBoolean("isLoggedIn", false) == true){
+            content = mContentField.getText().toString().trim();
+            if (content.isEmpty()) {
+                ShowSnackbar("Content cannot be empty");
             }
+            else {
+
+                title = Prefs.getString("title", "");
+                String imageFileUri = Prefs.getString("filePath","");
+                Log.d("TAG", "AddStory: " + imageFileUri);
+                if (category == ""){
+                    ShowSnackbar("Category cannot be empty");
+                }else{
+
+                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category);
+                }
+            }
+        } else {
+            Intent i = new Intent(this, Login.class);
+            startActivity(i);
+            finish();
+            ShowSnackbar("Please log in to add story");
         }
+
     }
 
 

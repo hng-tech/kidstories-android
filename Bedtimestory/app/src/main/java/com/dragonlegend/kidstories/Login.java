@@ -61,6 +61,7 @@ public class Login extends AppCompatActivity {
                         User userResponse = response.body().getUser();
                         Log.d("TAG", "userResponse: -> " + userResponse.getToken() );
                         Prefs.putString("token", userResponse.getToken());
+                        Prefs.putBoolean("isLoggedIn", true);
                         Log.d("TAG", "tokenResponse: -> " + Prefs.getString("token", ""));
                         BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);
                         dbHelper.addUser(userResponse);
@@ -95,5 +96,13 @@ public class Login extends AppCompatActivity {
         }
         return true;
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(this, Home.class);
+        startActivity(i);
+        finish();
     }
 }
