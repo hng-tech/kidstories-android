@@ -1,12 +1,15 @@
 package com.dragonlegend.kidstories.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
+import com.dragonlegend.kidstories.Home;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.io.File;
 
@@ -26,26 +29,11 @@ public class UploadImage {
 
     public static final String BASE_URL = "https://dragon-legend-5.herokuapp.com/api/v1/";
 
-    public  static Retrofit getInstance(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        return retrofit;
-    }
+    public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody, final Context context, String storyCategory) {
 
-    public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody, final Context context) {
-        // create upload service client
-
-        //UploadImage.getInstance();
         // use the FileUtils to get the actual imageFile by uri
         Uri uri = Uri.parse(fileUri);
         File imageFile = new File(Uri.decode(fileUri));
-//        try {
-//            imageFile = new File(new URI(fileUri));
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
 
         // create RequestBody instance from imageFile
 
@@ -55,7 +43,7 @@ public class UploadImage {
                 RequestBody.create(MediaType.parse("image/*"),imageFile);
 
         // MultipartBody.Part is used to send also the actual imageFile name
-        MultipartBody.Part body =
+        MultipartBody.Part image =
                 MultipartBody.Part.createFormData(name, imageFile.getName(), requestFile);
 
         // add another part within the multipart request
@@ -69,17 +57,27 @@ public class UploadImage {
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, storyBody);
 
+        RequestBody category =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, storyCategory);
+
+        String token = Prefs.getString("token", "");
+
+
         // finally, execute the request
-        Client.getInstance().create(ApiInterface.class).addStory(title,story,body).enqueue(new Callback<ResponseBody>() {
+        Client.getInstance().create(ApiInterface.class).addStory(token,title,story,category,image).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
 
-                    Log.d(TAG, "onResponse: " + response.body().toString());
+                    Log.d(TAG, "onResponse: " + response.message());
+                    showMessage(context, "Volla!!!!! story created");
+                    Intent intent = new Intent(context, Home.class);
+                    context.startActivity(intent);
 
                 }else {
                     Log.d(TAG, "onResponse: " + response.message());
-                    showNetworkError(context);
+                    showMessage(context, "Error Occur Please check your internet");
                 }
             }
 
@@ -90,9 +88,9 @@ public class UploadImage {
         });
     }
 
-    public static void showNetworkError(final Context context){
+    public static void showMessage(final Context context, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setMessage("Unable to connect");
+                .setMessage(message);
                  builder.create().show();
 
     }

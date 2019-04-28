@@ -2,7 +2,6 @@ package com.dragonlegend.kidstories;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -34,6 +33,7 @@ import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,7 +184,7 @@ public class Home extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.nav_bookmarks) {
 
-            ShowSnackbar();
+            ShowSnackbar("coming soon");
 
         } else if (id == R.id.nav_categories) {
 
@@ -212,21 +212,35 @@ public class Home extends AppCompatActivity
 //            startActivity(i);
 //
 //        }
-            ShowSnackbar();
+            ShowSnackbar("comming soon");
 
         }
-//        else if (id == R.id.nav_login) {
-//            //start Login activity .
-//            Intent i = new Intent(getBaseContext(), Login.class);
-//            startActivity(i);
-//
-//        }
+        else if (id == R.id.nav_login) {
+            //start Login activity .
+            Intent i = new Intent(getBaseContext(), Login.class);
+            startActivity(i);
+
+        }else if (id == R.id.nav_signout){
+            if (!Prefs.getBoolean("isLoggedIn", false)){
+                ShowSnackbar("You have never logged In");
+            }
+            else {
+
+                validate("Logging you out!!!!");
+            }
+
+        }
         else if (id == R.id.nav_addstory) {
 
 //            start addstory activity .
-            Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
-            startActivity(i);
-//            ShowSnackbar();
+            if (Prefs.getBoolean("isLoggedIn", false)){
+
+                Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
+                startActivity(i);
+            }else{
+                validate("Please Log in to add story !!!");
+            }
+
 
         }
 
@@ -236,8 +250,8 @@ public class Home extends AppCompatActivity
         return true;
     }
 
-    public void ShowSnackbar() {
-        Snackbar snackbar = make(findViewById(android.R.id.content), "Coming Soon!", LENGTH_LONG);
+    public void ShowSnackbar(String message) {
+        Snackbar snackbar = make(findViewById(android.R.id.content), message, LENGTH_LONG);
 // get snackbar view
         View mView = snackbar.getView();
 // get textview inside snackbar view
@@ -328,6 +342,27 @@ public class Home extends AppCompatActivity
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
 
+    }
+
+    public void validate(String message) {
+        Snackbar snackbar = make(findViewById(android.R.id.content), message, LENGTH_LONG);
+// get snackbar view
+        View mView = snackbar.getView();
+        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        else
+            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        snackbar.setAction("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Prefs.putBoolean("isLoggedIn", false);
+                Intent i = new Intent(getBaseContext(), Login.class);
+                startActivity(i);
+            }
+        });
+// show the snackbar
+        snackbar.show();
     }
 
 

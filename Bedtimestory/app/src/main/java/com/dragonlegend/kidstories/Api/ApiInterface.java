@@ -17,6 +17,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -53,8 +54,10 @@ public interface ApiInterface {
     @Multipart
     @POST("story/create")
     Call<ResponseBody> addStory(
+            @Header("Authorization") String token,
             @Part("title") RequestBody title,
             @Part("story") RequestBody story,
+            @Part("category") RequestBody category,
             @Part MultipartBody.Part image
     );
 }
