@@ -110,7 +110,7 @@ public class StoryDetail extends AppCompatActivity {
         mBookmark.setOnClickListener(view -> {
             date = Calendar.getInstance().getTimeInMillis();
             String time = date.toString();
-            Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
             if (storyExist(title)){
                 Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
                 return;
