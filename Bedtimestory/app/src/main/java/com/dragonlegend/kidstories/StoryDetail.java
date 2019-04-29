@@ -1,9 +1,16 @@
 package com.dragonlegend.kidstories;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -11,12 +18,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
+import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
+import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Model.Story;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,8 +41,12 @@ public class StoryDetail extends AppCompatActivity {
     TextView mTitle, mDetail;
     ImageButton mBookmark;
     Button mAddComment;
+    String title, content, image;
     ProgressBar mProgressBar;
     LinearLayout mLinearLayout;
+    BedTimeDbHelper helper;
+    Long date;
+    Cursor c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,28 +61,43 @@ public class StoryDetail extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_primary);
         getSupportActionBar().setElevation(0);
 
+        //add db helper
+        helper = new BedTimeDbHelper(this);
+
         initViews();
-        Client.getInstance().create(ApiInterface.class).getStory(getIntent().getStringExtra(STORY_ID))
-                .enqueue(new Callback<StoryResponse>() {
-                    @Override
-                    public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
-                        if(response.isSuccessful()){
-                            Story story = response.body().getData().getStory();
-                            Glide.with(StoryDetail.this)
-                                    .load(story.getImage())
-                                    .into(mStoryImage);
-                            mTitle.setText(story.getTitle());
-                            mDetail.setText(story.getStory());
+        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
+            mTitle.setText(getIntent().getExtras().getString("title"));
+            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
+            mDetail.setText(getIntent().getExtras().getString("content"));
+            mBookmark.setVisibility(View.INVISIBLE);
+
+        }else {
+            Client.getInstance().create(ApiInterface.class).getStory(getIntent().getStringExtra(STORY_ID))
+                    .enqueue(new Callback<StoryResponse>() {
+                        @Override
+                        public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
+                            if(response.isSuccessful()){
+                                Story story = response.body().getData().getStory();
+                                title = story.getTitle();
+                                content = story.getStory();
+                                image = story.getImage();
+                                Glide.with(StoryDetail.this)
+                                        .load(image)
+                                        .into(mStoryImage);
+                                mTitle.setText(title);
+                                mDetail.setText(content);
+                            }
+                            mProgressBar.setVisibility(View.GONE);
+                            mLinearLayout.setVisibility(View.VISIBLE);
                         }
-                        mProgressBar.setVisibility(View.GONE);
-                        mLinearLayout.setVisibility(View.VISIBLE);
-                    }
 
-                    @Override
-                    public void onFailure(Call<StoryResponse> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<StoryResponse> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+
+        }
 
         mAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +107,30 @@ public class StoryDetail extends AppCompatActivity {
             }
         });
 
+        mBookmark.setOnClickListener(view -> {
+            date = Calendar.getInstance().getTimeInMillis();
+            String time = date.toString();
+            Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+            if (storyExist(title)){
+                Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            addFavorite(title, content, image, time);
+        });
+
+    }
+
+    private void addFavorite(String title, String story, String image, String time) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues value = new ContentValues();
+        value.put(FavoriteContract.FavoriteColumn.COLUMN_TITLE, title);
+        value.put(FavoriteContract.FavoriteColumn.COLUMN_CONTENT, story);
+        value.put(FavoriteContract.FavoriteColumn.COLUMN_TIME, time);
+        value.put(FavoriteContract.FavoriteColumn.COLUMN_IMAGE, image);
+
+        long idRow = db.insert(FavoriteContract.FavoriteColumn.TABLE_NAME, null, value);
+        Log.v("IdRow", "Id Count" + idRow);
+        Toast.makeText(this, "Successfully Added to Cart", Toast.LENGTH_SHORT).show();
     }
 
     public void initViews(){
@@ -85,5 +141,17 @@ public class StoryDetail extends AppCompatActivity {
         mAddComment = findViewById(R.id.add_comment);
         mProgressBar = findViewById(R.id.progress);
         mLinearLayout = findViewById(R.id.story_ll);
+    }
+    private boolean storyExist(String title){
+        SQLiteDatabase db =  helper.getReadableDatabase();
+        String query = "select * from " + FavoriteContract.FavoriteColumn.TABLE_NAME + " where title=?";
+
+
+        c  = db.rawQuery(query, new String[]{title});
+        if (c.moveToFirst()){
+            return true;
+        }else {
+            return false;
+        }
     }
 }
