@@ -14,3 +14,5 @@ public final class FavoriteContract {
         public static final String COLUMN_TIME = "time";
     }
 }
+
+
