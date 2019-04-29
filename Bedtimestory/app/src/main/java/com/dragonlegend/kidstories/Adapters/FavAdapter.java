@@ -69,7 +69,7 @@ public class FavAdapter extends CursorAdapter {
         String hr = "hours";
         String days = "days";
 
-        if (whole_mins < 1){
+        if (minutes_ago/60000 < 1){
             mTime.setText("Just now");
         }
 
