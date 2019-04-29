@@ -25,6 +25,15 @@
             android:id="@+id/nav_categories"
             android:title="Categories" />
 
+        <item
+            android:fontFamily="@font/worksans_regular"
+            android:id="@+id/nav_login"
+            android:title="Login" />
+        <item
+        android:fontFamily="@font/worksans_regular"
+        android:id="@+id/nav_signout"
+        android:title="Sign Out" />
+
         <!--<item-->
             <!--android:id="@+id/nav_singlestory"-->
             <!--android:title="Test Single story" />-->
@@ -38,13 +47,10 @@
     <item
         android:title="">
         <menu>
-            <!--<item-->
-                <!--android:fontFamily="@font/worksans_regular"-->
-                <!--android:id="@+id/nav_signout"-->
-                <!--android:title="Sign Out" />-->
+
             <item
                 android:fontFamily="@font/worksans_regular"
-                android:id="@+id/nav_login"
+                android:id="@+id/nav_login_two"
                 android:title="" />
         </menu>
     </item>
