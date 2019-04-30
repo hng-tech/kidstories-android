@@ -34,25 +34,13 @@
         android:id="@+id/nav_signout"
         android:title="Sign Out" />
 
-        <!--<item-->
-            <!--android:id="@+id/nav_singlestory"-->
-            <!--android:title="Test Single story" />-->
-        <!--<item-->
-            <!--android:id="@+id/nav_testactivity"-->
-            <!--android:title="Testing UI" />-->
-
+        <item
+            android:id="@+id/nav_donate"
+            android:fontFamily="@font/worksans_regular"
+            android:title="Donate" />
 
     </group>
 
-    <item
-        android:title="">
-        <menu>
-
-            <item
-                android:fontFamily="@font/worksans_regular"
-                android:id="@+id/nav_login_two"
-                android:title="" />
-        </menu>
-    </item>
-
 </menu>
+
+
