@@ -183,8 +183,8 @@ public class Home extends AppCompatActivity
             Intent i = new Intent(getBaseContext(), Home.class);
             startActivity(i);
         } else if (id == R.id.nav_bookmarks) {
-
-            ShowSnackbar();
+                startActivity(new Intent(getBaseContext(), Bookmark.class));
+//              ShowSnackbar();
 
         } else if (id == R.id.nav_categories) {
 
