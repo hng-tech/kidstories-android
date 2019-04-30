@@ -32,6 +32,8 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
     private String content;
     private String category;
     private Spinner chooseCategory;
+    private String duration;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,17 +79,28 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                 // Get Selected Class name from the list
                 String selectedCategory = adapterView.getItemAtPosition(i).toString();
                     switch (selectedCategory) {
-                        case "Poem" :
-                            category = Prefs.getString("poem", "");
-                            Log.d("TAG", "onItemSelected:-> " + category);
-                            break;
                         case "Fantasy" :
-                            category = Prefs.getString("fantasy", "");
+                            //category = Prefs.getString("fantasy", "");
+                            category = "1";
                             Log.d("TAG", "onItemSelected:-> " + category);
                             break;
-                        case "Moral" :
-                            category = Prefs.getString("moral","");
+                        case "Bedtime stories" :
+                            //category = Prefs.getString("bedtime", "");
+                            category ="2";
                             Log.d("TAG", "onItemSelected:-> " + category);
+                            break;
+                        case "Morning Stories" :
+                           // category = Prefs.getString("morning","");
+                            category ="3";
+                            Log.d("TAG", "onItemSelected:-> " + category);
+                            break;
+                        case "Jokes" :
+                           // category = Prefs.getString("jokes", "");
+                            category = "4";
+                            break;
+                        case "Christmas Stories" :
+                            //category = Prefs.getString("christmas", "");
+                            category = "5";
                             break;
                         case "Category":
                             category = "";
@@ -118,9 +131,19 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
         }
     }
 
+    public void getDuration(String text) {
+        String [] arr = text.split(" ", 0);
+        int length = arr.length;
+        duration = Integer.toString(length);
+    }
+
     private void AddStory() {
         if (Prefs.getBoolean("isLoggedIn", false) == true){
             content = mContentField.getText().toString().trim();
+            getDuration(content);
+            String age = "10";
+            String author = Prefs.getString("username", "");
+            Log.d("TAG", "AddStory: " + duration);
             if (content.isEmpty()) {
                 ShowSnackbar("Content cannot be empty");
             }
@@ -133,7 +156,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                     ShowSnackbar("Category cannot be empty");
                 }else{
 
-                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category);
+                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category,age,duration,author);
                 }
             }
         } else {

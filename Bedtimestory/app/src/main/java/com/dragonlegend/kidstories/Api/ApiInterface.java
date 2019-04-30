@@ -24,13 +24,13 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
-    @GET("category/all")
+    @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
     @GET("story/category/{id}")
     Call<StoryCategoryResponse> getCategory(@Path("id") String id);
 
-    @GET("story")
+    @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
     @GET("story/{id}")
@@ -52,12 +52,15 @@ public interface ApiInterface {
 
 
     @Multipart
-    @POST("story/create")
+    @POST("stories")
     Call<ResponseBody> addStory(
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
-            @Part("story") RequestBody story,
-            @Part("category") RequestBody category,
-            @Part MultipartBody.Part image
+            @Part("body") RequestBody body,
+            @Part("category_id") RequestBody category_id,
+            @Part("age") RequestBody age,
+            @Part("author") RequestBody author,
+            @Part("story_duration") RequestBody story_duration,
+            @Part MultipartBody.Part photo
     );
 }

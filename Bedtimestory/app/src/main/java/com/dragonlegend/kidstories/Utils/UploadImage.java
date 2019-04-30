@@ -15,6 +15,7 @@ import java.io.File;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -29,7 +30,9 @@ public class UploadImage {
 
     public static final String BASE_URL = "https://dragon-legend-5.herokuapp.com/api/v1/";
 
-    public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody, final Context context, String storyCategory) {
+    public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody,
+                                  final Context context, String storyCategory,
+                                  String  user_age, String duration, String story_author) {
 
         // use the FileUtils to get the actual imageFile by uri
         Uri uri = Uri.parse(fileUri);
@@ -43,7 +46,7 @@ public class UploadImage {
                 RequestBody.create(MediaType.parse("image/*"),imageFile);
 
         // MultipartBody.Part is used to send also the actual imageFile name
-        MultipartBody.Part image =
+        MultipartBody.Part photo =
                 MultipartBody.Part.createFormData(name, imageFile.getName(), requestFile);
 
         // add another part within the multipart request
@@ -57,15 +60,31 @@ public class UploadImage {
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, storyBody);
 
-        RequestBody category =
+        RequestBody category_id =
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, storyCategory);
+
+        RequestBody age =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, user_age );
+
+        RequestBody author =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, story_author);
+
+
+        RequestBody stroy_duration =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, duration);
+
+
 
         String token = Prefs.getString("token", "");
 
 
         // finally, execute the request
-        Client.getInstance().create(ApiInterface.class).addStory(token,title,story,category,image).enqueue(new Callback<ResponseBody>() {
+        Client.getInstance().create(ApiInterface.class).addStory("Bearer" + " " +token,title,story,category_id,age,author,stroy_duration,photo).
+                enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){

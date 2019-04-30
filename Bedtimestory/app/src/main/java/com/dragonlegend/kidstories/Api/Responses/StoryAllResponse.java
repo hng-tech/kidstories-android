@@ -9,7 +9,7 @@ import java.util.List;
 public class StoryAllResponse {
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private String status;
     @SerializedName("method")
     @Expose
     private String method;
@@ -20,7 +20,7 @@ public class StoryAllResponse {
     @Expose
     private Data data;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 

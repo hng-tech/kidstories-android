@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Model.User;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +93,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
 
                     if(response.code() == 200){
-
+                        Prefs.putString("username", mFirstName + " " + mLastname);
                         Intent intent = new Intent(ProfileRegisterActivity.this,Login.class);
                         startActivity(intent);
                     }
@@ -106,7 +108,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                Log.d("TAG", "onFailure: " + t.getMessage());
             }
         });
     }
