@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dragonlegend.kidstories.Adapters.CategoriesAdapter;
 import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
@@ -90,8 +91,16 @@ public class Home extends AppCompatActivity
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(Home.this, AddStoryActivity.class);
-                startActivity(intent1);
+                if (Prefs.getBoolean("isLoggedIn", false)){
+                    Intent i = new Intent(Home.this, AddStoryActivity.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(Home.this, "Please log in", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(Home.this, Login.class);
+                    startActivity(intent1);
+                }
+
             }
         });
         mStories = new ArrayList<>();
