@@ -12,11 +12,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,18 +39,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StoryDetail extends AppCompatActivity {
+public class StoryDetail extends AppCompatActivity implements View.OnClickListener {
     public static final String STORY_ID = "story_id";
     ImageView mStoryImage;
     TextView mTitle, mDetail;
-    ImageButton mBookmark;
+    ImageButton mBookmark,mCommentSend;
+    EditText mCommentfield;
     Button mAddComment;
     String title, content, image;
     ProgressBar mProgressBar;
-    LinearLayout mLinearLayout;
     BedTimeDbHelper helper;
     Long date;
     Cursor c;
+    LinearLayout mLinearLayout,mCommentLayout;
+    InputMethodManager imm;
+    ScrollView mScrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +70,9 @@ public class StoryDetail extends AppCompatActivity {
 
         //add db helper
         helper = new BedTimeDbHelper(this);
+
+
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         initViews();
         if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
@@ -99,25 +109,6 @@ public class StoryDetail extends AppCompatActivity {
 
         }
 
-        mAddComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(StoryDetail.this,CommentsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mBookmark.setOnClickListener(view -> {
-            date = Calendar.getInstance().getTimeInMillis();
-            String time = date.toString();
-            //Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
-            if (storyExist(title)){
-                Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            addFavorite(title, content, image, time);
-        });
-
     }
 
     private void addFavorite(String title, String story, String image, String time) {
@@ -131,6 +122,7 @@ public class StoryDetail extends AppCompatActivity {
         long idRow = db.insert(FavoriteContract.FavoriteColumn.TABLE_NAME, null, value);
         Log.v("IdRow", "Id Count" + idRow);
         Toast.makeText(this, "Successfully Added to Cart", Toast.LENGTH_SHORT).show();
+
     }
 
     public void initViews(){
@@ -141,6 +133,49 @@ public class StoryDetail extends AppCompatActivity {
         mAddComment = findViewById(R.id.add_comment);
         mProgressBar = findViewById(R.id.progress);
         mLinearLayout = findViewById(R.id.story_ll);
+        mCommentfield = findViewById(R.id.comment_box);
+        mCommentSend = findViewById(R.id.comment_send);
+        mCommentLayout = findViewById(R.id.comment_layout);
+        mScrollView = findViewById(R.id.detail_scroll);
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                imm.hideSoftInputFromWindow(mCommentfield.getWindowToken(), 0);
+                if(mScrollView.getScrollY() == 0){
+                    mCommentLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+        //Set onClickListeners on Views with actions
+        mAddComment.setOnClickListener(this);
+        mBookmark.setOnClickListener(this);
+        mCommentSend.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.add_comment:
+                mCommentLayout.setVisibility(View.VISIBLE);
+                mCommentfield.requestFocus();
+                imm.showSoftInput(mCommentfield, InputMethodManager.SHOW_IMPLICIT);
+                break;
+            case R.id.comment_send:
+                Toast.makeText(this,mCommentfield.getText().toString().trim(),Toast.LENGTH_LONG).show();
+                break;
+            case R.id.bookmark_button:
+                date = Calendar.getInstance().getTimeInMillis();
+                String time = date.toString();
+                //Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+                if (storyExist(title)){
+                    Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                addFavorite(title, content, image, time);
+            default:
+               break;
+        }
     }
     private boolean storyExist(String title){
         SQLiteDatabase db =  helper.getReadableDatabase();
