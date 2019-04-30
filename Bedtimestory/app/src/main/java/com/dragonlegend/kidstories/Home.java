@@ -2,6 +2,7 @@ package com.dragonlegend.kidstories;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -205,7 +206,18 @@ public class Home extends AppCompatActivity
 
         } else if (id == R.id.nav_bookmarks) {
 
-         }else if (id == R.id.nav_profile) {
+         }
+        else if (id == R.id.nav_donate) {
+          //redirects user to Donate Form
+            String url = "https://paystack.com/pay/kidstoriesapp";
+
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+
+
+        }
+         else if (id == R.id.nav_profile) {
 //
 //            //start Profile activity .
             if(mUser !=null ){

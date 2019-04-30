@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.dragonlegend.kidstories">
-
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -18,6 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Bookmark"
+            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".Onboarding" />
         <activity android:name=".Login" />
         <activity
@@ -55,7 +56,7 @@
             android:name=".StoryDetail"
             android:parentActivityName=".Home" />
         <activity android:name=".StoryListingActivity" />
-        <activity android:name=".CommentsActivity"></activity>
+        <activity android:name=".CommentsActivity" />
     </application>
 
 </manifest>
