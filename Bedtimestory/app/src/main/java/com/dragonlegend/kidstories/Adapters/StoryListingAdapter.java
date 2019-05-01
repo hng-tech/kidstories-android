@@ -51,6 +51,8 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
         storyHolder.mTitle.setText(story.getTitle());
         storyHolder.mImgTitle.setText(story.getTitle());
         storyHolder.mTime.setText(story.getStoryDuration());
+        storyHolder.dislikes.setText(String.valueOf(story.getDislikesCount()));
+        storyHolder.likes.setText(String.valueOf(story.getLikesCount()));
         Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
         storyHolder.mLike.setOnClickListener(v -> {
