@@ -6,24 +6,28 @@
     <!-- Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <dist:module dist:instant="true" />
 
     <application
-
+        android:name=".Utils.MainAplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.dragonlegend.kidstories.Onboarding" />
-        <activity android:name="com.dragonlegend.kidstories.Login" />
+        <activity android:name=".Bookmark"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".Onboarding" />
+        <activity android:name=".Login" />
         <activity
-            android:name="com.dragonlegend.kidstories.Home"
+            android:name=".Home"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.dragonlegend.kidstories.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Splashscreen">
             <intent-filter>
@@ -33,26 +37,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.dragonlegend.kidstories.RegisterActivity"
+            android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoAction" />
         <activity
-            android:name="com.dragonlegend.kidstories.ProfileRegisterActivity"
-            android:parentActivityName="com.dragonlegend.kidstories.RegisterActivity"
+            android:name=".ProfileRegisterActivity"
+            android:parentActivityName=".RegisterActivity"
             android:theme="@style/AppTheme.NoAction" />
         <activity
-            android:name="com.dragonlegend.kidstories.CategoriesActivity"
-            android:parentActivityName="com.dragonlegend.kidstories.MainActivity" />
+            android:name=".CategoriesActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="com.dragonlegend.kidstories.ProfileActivity"
-            android:parentActivityName="com.dragonlegend.kidstories.MainActivity" />
+            android:name=".ProfileActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="com.dragonlegend.kidstories.AddStoryActivity"
-            android:parentActivityName="com.dragonlegend.kidstories.MainActivity" />
-        <activity android:name="com.dragonlegend.kidstories.AddStoriesContentActivity" />
+            android:name=".AddStoryActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".AddStoriesContentActivity" />
         <activity
-            android:name="com.dragonlegend.kidstories.StoryDetail"
-            android:parentActivityName="com.dragonlegend.kidstories.Home" />
-        <activity android:name="com.dragonlegend.kidstories.StoryListingActivity"></activity>
+            android:name=".StoryDetail"
+            android:parentActivityName=".Home" />
+        <activity android:name=".StoryListingActivity" />
     </application>
 
 </manifest>

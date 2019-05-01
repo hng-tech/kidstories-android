@@ -12,7 +12,7 @@ public class Story {
     private List<Category> mCategories = null;
     @SerializedName("_id")
     @Expose
-    private String id;
+    private int id;
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
@@ -37,7 +37,7 @@ public class Story {
     @SerializedName("imageId")
     @Expose
     private String imageId;
-    @SerializedName("image")
+    @SerializedName("image_url")
     @Expose
     private String image;
     @SerializedName("__v")
@@ -52,11 +52,11 @@ public class Story {
         this.mCategories = categories;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

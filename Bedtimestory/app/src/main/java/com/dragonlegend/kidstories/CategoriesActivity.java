@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -62,6 +63,18 @@ public class CategoriesActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     CategoryAllResponse  categoryList = response.body();
                     List<Category> cl= categoryList.getData();
+//                    Log.d("TAG", "categoryResponse: -> " + categoryList.getData());
+//                    for (Category category : cl ) {
+//                        if (category.getName().equals("Poem") ){
+//                            Log.d("TAG", "poemResponse:-> " +category.getName());
+//                        }else if (category.getName() . equals("Fantasy")){
+//                            Log.d("TAG", "poemResponse:-> " +category.getName());
+//                        }else if (category.getName().equals("Moral")){
+//                            Log.d("TAG", "poemResponse:-> " +category.getName());
+//                        }else {
+//
+//                        }
+//                    }
                     if(cl !=null){
                         mAdapter.addCategories(cl);
                     }

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
 import com.dragonlegend.kidstories.Database.Contracts.UsersContract;
 import com.dragonlegend.kidstories.Model.User;
 
@@ -27,6 +28,14 @@ public class BedTimeDbHelper extends SQLiteOpenHelper {
                     UsersContract.UserEntry.LIKED +" INTEGER, " +
                     UsersContract.UserEntry.TOKEN +" TEXT )";
 
+    private static final String SQL_CREATE_FAVORITE =
+            "CREATE TABLE " + FavoriteContract.FavoriteColumn.TABLE_NAME + " (" +
+                    FavoriteContract.FavoriteColumn._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    FavoriteContract.FavoriteColumn.COLUMN_TITLE +" TEXT," +
+                    FavoriteContract.FavoriteColumn.COLUMN_CONTENT +" TEXT," +
+                    FavoriteContract.FavoriteColumn.COLUMN_TIME +" TEXT," +
+                    FavoriteContract.FavoriteColumn.COLUMN_IMAGE +" TEXT )";
+
     private static final String SQL_DELETE_USER_ENTRY =
             "DROP TABLE IF EXISTS " + UsersContract.UserEntry.TABLE_NAME;
 
@@ -38,11 +47,13 @@ public class BedTimeDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
     db.execSQL(SQL_CREATE_USER_ENTRY);
+    db.execSQL(SQL_CREATE_FAVORITE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_USER_ENTRY);
+        db.execSQL(SQL_CREATE_FAVORITE);
         onCreate(db);
 
     }

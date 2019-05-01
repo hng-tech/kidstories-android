@@ -9,7 +9,7 @@ import java.util.List;
 public class CategoryAllResponse {
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private String status;
     @SerializedName("method")
     @Expose
     private String method;
@@ -20,11 +20,11 @@ public class CategoryAllResponse {
     @Expose
     private List<Category> data = null;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
