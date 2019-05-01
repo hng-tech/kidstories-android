@@ -255,9 +255,16 @@ public class Home extends AppCompatActivity
             startActivity(i);
 
         }else if (id == R.id.nav_signout){
-            Prefs.putBoolean("isLoggedIn", false);
-            recreate();
+            if (!Prefs.getBoolean("isLoggedIn", false)){
+                ShowSnackbar("You have never logged In");
+            }
+            else {
+
+                validate("Logging you out!!!!");
+            }
+
         }
+
         else if (id == R.id.nav_addstory) {
 
 //            start addstory activity .
@@ -385,8 +392,9 @@ public class Home extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Prefs.putBoolean("isLoggedIn", false);
-                Intent i = new Intent(getBaseContext(), Login.class);
-                startActivity(i);
+//                Intent i = new Intent(getBaseContext(), Login.class);
+//                startActivity(i)
+                recreate();
             }
         });
 // show the snackbar
