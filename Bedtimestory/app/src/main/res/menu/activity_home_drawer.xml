@@ -30,9 +30,9 @@
             android:id="@+id/nav_login"
             android:title="Login" />
         <item
-        android:fontFamily="@font/worksans_regular"
-        android:id="@+id/nav_signout"
-        android:title="Sign Out" />
+            android:fontFamily="@font/worksans_regular"
+            android:id="@+id/nav_signout"
+            android:title="Sign Out" />
 
         <item
             android:id="@+id/nav_donate"
@@ -42,5 +42,3 @@
     </group>
 
 </menu>
-
-
