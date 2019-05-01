@@ -37,7 +37,7 @@ public class FavAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, Cursor cursor) {
         ImageButton mLike,mDislike;
         TextView mTitle,mTime ,mImgTitle;
         ImageView mImage,mAuthor_image;
@@ -60,9 +60,9 @@ public class FavAdapter extends CursorAdapter {
         mLike = view.findViewById(R.id.like_button);
         mDislike = view.findViewById(R.id.dislike_button);
 
-        String title = cursor.getString(cursor.getColumnIndexOrThrow(FavoriteContract.FavoriteColumn.COLUMN_TITLE));
-        String image = cursor.getString(cursor.getColumnIndexOrThrow(FavoriteContract.FavoriteColumn.COLUMN_IMAGE));
-        String content = cursor.getString(cursor.getColumnIndexOrThrow(FavoriteContract.FavoriteColumn.COLUMN_CONTENT));
+        final String title = cursor.getString(cursor.getColumnIndexOrThrow(FavoriteContract.FavoriteColumn.COLUMN_TITLE));
+        final String image = cursor.getString(cursor.getColumnIndexOrThrow(FavoriteContract.FavoriteColumn.COLUMN_IMAGE));
+        final String content = cursor.getString(cursor.getColumnIndexOrThrow(FavoriteContract.FavoriteColumn.COLUMN_CONTENT));
 
         helper  = new BedTimeDbHelper(context);
         String minn = "minutes";

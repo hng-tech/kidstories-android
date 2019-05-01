@@ -317,7 +317,7 @@ public class Home extends AppCompatActivity
             public void onResponse(Call<StoryAllResponse> call, Response<StoryAllResponse> response) {
                 if (response.isSuccessful()) {
                     StoryAllResponse storyAllResponse = response.body();
-                    List<Story> story = storyAllResponse.getData().getStories();
+                    List<Story> story = storyAllResponse.getData();
                     if (story != null) {
                         mAdapter.addStories(story);
 

@@ -24,17 +24,17 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
-    @GET("category/all")
+    @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("story/category/{id}")
+    @GET("categories/{id}/stories")
     Call<StoryCategoryResponse> getCategory(@Path("id") String id);
 
-    @GET("story")
+    @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
-    @GET("story/{id}")
-    Call<StoryResponse> getStory(@Path("id") String id);
+    @GET("stories/{id}")
+    Call<StoryResponse> getStory(@Path("id") int id);
 
 
     @POST("auth/register")
@@ -47,12 +47,12 @@ public interface ApiInterface {
     @GET("users/profile")
     Call<LoginResponse> getProfile(@Header("Authorization") String token);
 
-    @GET("story/{action}/{storyId}")
+    @POST("stories/{storyId}/reaction/{action}")
     Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
     @Multipart
-    @POST("story/create")
+    @POST("stories")
     Call<ResponseBody> addStory(
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
