@@ -3,21 +3,48 @@ package com.dragonlegend.kidstories.Utils;
 import android.app.Application;
 import android.content.ContextWrapper;
 import android.util.Log;
-import android.view.View;
 
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Model.Category;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainAplication extends Application {
+
+    public static final String BASE_URL = "https://api-kidstories.herokuapp.com/api/v1/";
+
+    private static ApiInterface apiInterface;
+    Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
+
+    static Retrofit mRetrofit;
+    OkHttpClient okHttpClient;
+
+
+    public static ApiInterface getApiInterface() {
+        if (apiInterface == null)
+            apiInterface = mRetrofit.create(ApiInterface.class);
+        return apiInterface;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,7 +56,32 @@ public class MainAplication extends Application {
                 .build();
 
 
-    loadData();
+        loadData();
+
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(
+                        chain -> {
+                            Request request = chain.request().newBuilder()
+                                    .addHeader("Accept", "Application/JSON")
+                                    .addHeader("Authorization", "Bearer " + Prefs.getString("token", ""))
+                                    .build();
+                            return chain.proceed(request);
+                        })
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+//                .addInterceptor(interceptor)
+                .build();
+
+
+        mRetrofit =new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
 
     }
 
