@@ -57,6 +57,7 @@ public class Home extends AppCompatActivity
     User mUser;
     ImageView mAddNew;
     ProgressBar mProgressBar;
+    boolean isLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,8 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        isLoggedIn = Prefs.getBoolean("isLoggedIn",false);
+        Log.e("TAG",isLoggedIn+"");
 
         //customize custom toolbar
         setSupportActionBar(toolbar);
@@ -142,6 +144,15 @@ public class Home extends AppCompatActivity
         });
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(isLoggedIn){
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
+        }else{
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
+        }
 
     }
 
@@ -235,7 +246,7 @@ public class Home extends AppCompatActivity
 //            startActivity(i);
 //
 //        }
-            ShowSnackbar("comming soon");
+            //ShowSnackbar("comming soon");
 
         }
         else if (id == R.id.nav_login) {
@@ -244,14 +255,8 @@ public class Home extends AppCompatActivity
             startActivity(i);
 
         }else if (id == R.id.nav_signout){
-            if (!Prefs.getBoolean("isLoggedIn", false)){
-                ShowSnackbar("You have never logged In");
-            }
-            else {
-
-                validate("Logging you out!!!!");
-            }
-
+            Prefs.putBoolean("isLoggedIn", false);
+            recreate();
         }
         else if (id == R.id.nav_addstory) {
 

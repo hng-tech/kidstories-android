@@ -80,9 +80,10 @@ public class ProfileRegisterActivity extends AppCompatActivity {
     private void register(){
         User user = new User();
         user.setEmail(mEmail);
-        user.setName(mFirstName +" "+ mLastname);
+        user.setFirstName(mFirstName);
+        user.setLastName(mLastname);
         user.setPassword(mPassword);
-        user.setDesignation(mDesignation);
+        //user.setDesignation(mDesignation);
 
         Client.getInstance().create(ApiInterface.class).registerUser(user).enqueue(new Callback<String>() {
             @Override

@@ -34,18 +34,18 @@ public interface ApiInterface {
     Call<StoryAllResponse> getAllStories();
 
     @GET("stories/{id}")
-    Call<StoryResponse> getStory(@Path("id") String id);
+    Call<StoryResponse> getStory(@Path("id") int id);
 
 
-    @POST("users/register")
+    @POST("auth/register")
     Call<String> registerUser(@Body User user);
 
-    @POST("users/login")
+    @POST("auth/login")
     @FormUrlEncoded
     Call<LoginResponse> loginUser(@Field("email") String email, @Field("password") String password);
 
-    @GET("users/profile/{id}")
-    Call<User> getProfile(@Path("id") String id);
+    @GET("users/profile")
+    Call<LoginResponse> getProfile(@Header("Authorization") String token);
 
     @POST("stories/{storyId}/reaction/{action}")
     Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
