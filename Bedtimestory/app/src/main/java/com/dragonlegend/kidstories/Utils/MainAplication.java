@@ -3,7 +3,6 @@ package com.dragonlegend.kidstories.Utils;
 import android.app.Application;
 import android.content.ContextWrapper;
 import android.util.Log;
-import android.view.View;
 
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
@@ -60,19 +59,20 @@ public class MainAplication extends Application {
         loadData();
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(
+                        chain -> {
+                            Request request = chain.request().newBuilder()
+                                    .addHeader("Accept", "Application/JSON")
+                                    .addHeader("Authorization", "Bearer " + Prefs.getString("token", ""))
+                                    .build();
+                            return chain.proceed(request);
+                        })
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
-                .addInterceptor(chain -> {
-                    Request request = chain.request().newBuilder()
-                            .addHeader("Accept", "application/json")
-                            .addHeader("token", "Bearer" + Prefs.getString("token", ""))
-                            .build();
-                    return chain.proceed(request);
-                })
+//                .addInterceptor(interceptor)
                 .build();
 
 

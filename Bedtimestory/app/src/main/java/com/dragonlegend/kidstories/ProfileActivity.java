@@ -74,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.isSuccessful()){
-                    mUser = response.body().getUser();
+//                    mUser = response.body().getUser();
                     Log.e("TAG",mUser.getId());
                     String name = mUser.getFirstName()+" "+mUser.getLastName();
                     mUserName.setText(name);

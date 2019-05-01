@@ -59,7 +59,7 @@ public interface ApiInterface {
     Call<LoginResponse> getProfile(@Header("Authorization") String token);
 
 
-    @PUT("stories/{storyId}/reactions/{action}")
+    @POST("stories/{storyId}/reactions/{action}")
     Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
