@@ -9,7 +9,7 @@ public class StoryResponse {
 
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private String status;
     @SerializedName("method")
     @Expose
     private String method;
@@ -18,13 +18,13 @@ public class StoryResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private Story data;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -44,30 +44,14 @@ public class StoryResponse {
         this.message = message;
     }
 
-    public Data getData() {
+    public Story getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(Story data) {
         this.data = data;
     }
 
-
-    public class Data {
-
-        @SerializedName("story")
-        @Expose
-        private Story story;
-
-        public Story getStory() {
-            return story;
-        }
-
-        public void setStory(Story story) {
-            this.story = story;
-        }
-
-    }
 
 
 }

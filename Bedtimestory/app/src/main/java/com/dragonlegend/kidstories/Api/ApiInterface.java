@@ -34,7 +34,7 @@ public interface ApiInterface {
     Call<StoryAllResponse> getAllStories();
 
     @GET("stories/{id}")
-    Call<StoryResponse> getStory(@Path("id") String id);
+    Call<StoryResponse> getStory(@Path("id") int id);
 
 
     @POST("users/register")

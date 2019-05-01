@@ -16,8 +16,8 @@ public class StoryAllResponse {
     @SerializedName("message")
     @Expose
     private String message;
-//    @SerializedName("data")
-//    @Expose
+    @SerializedName("data")
+    @Expose
     private List<Story> data;
 
     public String getStatus() {

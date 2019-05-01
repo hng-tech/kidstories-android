@@ -7,81 +7,53 @@ import com.google.gson.annotations.SerializedName;
 
 public class Story {
 
-    @SerializedName("cat_id")
+
+    @SerializedName("id")
     @Expose
-    private List<Category> mCategories = null;
-    @SerializedName("_id")
-    @Expose
-    private int id;
-    @SerializedName("release_date")
-    @Expose
-    private String releaseDate;
-    @SerializedName("likes")
-    @Expose
-    private int likes ;
-    @SerializedName("comments")
-    @Expose
-    private List<Object> comments = null;
+    private Integer id;
     @SerializedName("title")
     @Expose
     private String title;
-    @SerializedName("story")
+    @SerializedName("body")
     @Expose
-    private String story;
-    @SerializedName("designation")
+    private String body;
+    @SerializedName("category_id")
     @Expose
-    private String designation;
+    private Integer categoryId;
+    @SerializedName("user_id")
+    @Expose
+    private Integer userId;
+    @SerializedName("image_url")
+    @Expose
+    private String imageUrl;
+    @SerializedName("image_name")
+    @Expose
+    private String imageName;
     @SerializedName("author")
     @Expose
     private String author;
-    @SerializedName("imageId")
+    @SerializedName("age")
     @Expose
-    private String imageId;
-    @SerializedName("image_url")
+    private String age;
+    @SerializedName("story_duration")
     @Expose
-    private String image;
-    @SerializedName("__v")
+    private String storyDuration;
+    @SerializedName("is_premium")
     @Expose
-    private Integer v;
+    private Integer isPremium;
+    @SerializedName("likes_count")
+    @Expose
+    private Integer likesCount;
+    @SerializedName("dislikes_count")
+    @Expose
+    private Integer dislikesCount;
 
-    public List<Category> getCategories() {
-        return mCategories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.mCategories = categories;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public List<Object> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Object> comments) {
-        this.comments = comments;
     }
 
     public String getTitle() {
@@ -92,20 +64,44 @@ public class Story {
         this.title = title;
     }
 
-    public String getStory() {
-        return story;
+    public String getBody() {
+        return body;
     }
 
-    public void setStory(String story) {
-        this.story = story;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public String getDesignation() {
-        return designation;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setDesignation(String designation) {
-        this.designation = designation;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public String getAuthor() {
@@ -116,28 +112,43 @@ public class Story {
         this.author = author;
     }
 
-    public String getImageId() {
-        return imageId;
+    public String getAge() {
+        return age;
     }
 
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
+    public void setAge(String age) {
+        this.age = age;
     }
 
-    public String getImage() {
-        return image;
+    public String getStoryDuration() {
+        return storyDuration;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setStoryDuration(String storyDuration) {
+        this.storyDuration = storyDuration;
     }
 
-    public Integer getV() {
-        return v;
+    public Integer getIsPremium() {
+        return isPremium;
     }
 
-    public void setV(Integer v) {
-        this.v = v;
+    public void setIsPremium(Integer isPremium) {
+        this.isPremium = isPremium;
     }
 
+    public Integer getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(Integer likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public Integer getDislikesCount() {
+        return dislikesCount;
+    }
+
+    public void setDislikesCount(Integer dislikesCount) {
+        this.dislikesCount = dislikesCount;
+    }
 }

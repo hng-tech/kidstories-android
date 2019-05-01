@@ -37,7 +37,7 @@ import retrofit2.Response;
 public class StoryDetail extends AppCompatActivity implements View.OnClickListener {
     public static final String STORY_ID = "story_id";
     ImageView mStoryImage;
-    TextView mTitle, mDetail;
+    TextView mTitle, mDetail,mStoryAge;
     ImageButton mBookmark,mCommentSend;
     EditText mCommentField;
     Button mAddComment;
@@ -77,20 +77,23 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
             mBookmark.setVisibility(View.INVISIBLE);
 
         }else {
-            Client.getInstance().create(ApiInterface.class).getStory(getIntent().getStringExtra(STORY_ID))
+            Client.getInstance().create(ApiInterface.class).getStory(getIntent().getIntExtra(STORY_ID,1))
                     .enqueue(new Callback<StoryResponse>() {
                         @Override
                         public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
                             if(response.isSuccessful()){
-                                Story story = response.body().getData().getStory();
+                                Story story = response.body().getData();
                                 title = story.getTitle();
-                                content = story.getStory();
-                                image = story.getImage();
-                                Glide.with(StoryDetail.this)
-                                        .load(image)
-                                        .into(mStoryImage);
+                                content = story.getBody();
+                                image = story.getImageUrl();
+                                if(image != null) {
+                                    Glide.with(StoryDetail.this)
+                                            .load(image)
+                                            .into(mStoryImage);
+                                }
                                 mTitle.setText(title);
                                 mDetail.setText(content);
+                                mStoryAge.setText("For Kids " +story.getAge() +" years");
                             }
                             mProgressBar.setVisibility(View.GONE);
                             mLinearLayout.setVisibility(View.VISIBLE);
@@ -98,7 +101,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
                         @Override
                         public void onFailure(Call<StoryResponse> call, Throwable t) {
-
+t.toString();
                         }
                     });
 
@@ -123,6 +126,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     public void initViews(){
         mStoryImage = findViewById(R.id.detail_image);
         mTitle = findViewById(R.id.detail_title);
+        mStoryAge = findViewById(R.id.story_age);
         mDetail = findViewById(R.id.story);
         mBookmark = findViewById(R.id.bookmark_button);
         mAddComment = findViewById(R.id.add_comment);
