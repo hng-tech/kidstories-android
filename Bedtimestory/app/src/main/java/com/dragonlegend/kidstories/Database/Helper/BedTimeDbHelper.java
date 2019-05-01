@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
 import com.dragonlegend.kidstories.Database.Contracts.UsersContract;
 import com.dragonlegend.kidstories.Model.User;
-import com.dragonlegend.kidstories.Model.UserData;
 
 public class BedTimeDbHelper extends SQLiteOpenHelper {
 
@@ -22,10 +21,11 @@ public class BedTimeDbHelper extends SQLiteOpenHelper {
                     UsersContract.UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     UsersContract.UserEntry.EMAIL + " TEXT UNIQUE," +
                     UsersContract.UserEntry.USERID + " TEXT UNIQUE, " +
-                    UsersContract.UserEntry.LASTNAME +" TEXT," +
-                    UsersContract.UserEntry.FIRSTNAME + " TEXT ," +
+                    UsersContract.UserEntry.NAME +" TEXT," +
+                    UsersContract.UserEntry.IMAGE +" TEXT," +
+                    UsersContract.UserEntry.PREMIUM + " TEXT ," +
                     UsersContract.UserEntry.ADMIN + " TEXT ," +
-                    UsersContract.UserEntry.PHONE +" INTEGER, " +
+                    UsersContract.UserEntry.LIKED +" INTEGER, " +
                     UsersContract.UserEntry.TOKEN +" TEXT )";
 
     private static final String SQL_CREATE_FAVORITE =
@@ -72,7 +72,7 @@ public class BedTimeDbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addUser(UserData user){
+    public void addUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = getContentValues(user);
 
@@ -81,7 +81,7 @@ public class BedTimeDbHelper extends SQLiteOpenHelper {
         long cat_id = db.insertWithOnConflict(UsersContract.UserEntry.TABLE_NAME,
                 null,values,SQLiteDatabase.CONFLICT_IGNORE);
     }
-    public void updateUser(UserData user){
+    public void updateUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = getContentValues(user);
 
@@ -98,10 +98,11 @@ public class BedTimeDbHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()){
             user.setId(c.getString(c.getColumnIndex(UsersContract.UserEntry.USERID)));
             user.setEmail(c.getString(c.getColumnIndex(UsersContract.UserEntry.EMAIL)));
-            user.setImage(c.getString(c.getColumnIndex(UsersContract.UserEntry.LASTNAME)));
-            user.setLiked(c.getInt(c.getColumnIndex(UsersContract.UserEntry.PHONE)));
+            user.setImage(c.getString(c.getColumnIndex(UsersContract.UserEntry.IMAGE)));
+            user.setLiked(c.getInt(c.getColumnIndex(UsersContract.UserEntry.LIKED)));
+            user.setName(c.getString(c.getColumnIndex(UsersContract.UserEntry.NAME)));
             user.setToken(c.getString(c.getColumnIndex(UsersContract.UserEntry.TOKEN)));
-            user.setPremium(Boolean.getBoolean(c.getString(c.getColumnIndex(UsersContract.UserEntry.FIRSTNAME))));
+            user.setPremium(Boolean.getBoolean(c.getString(c.getColumnIndex(UsersContract.UserEntry.PREMIUM))));
             user.setAdmin(Boolean.getBoolean(c.getString(c.getColumnIndex(UsersContract.UserEntry.ADMIN))));
 
         }
@@ -116,16 +117,16 @@ public class BedTimeDbHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(user.getEmail())});
     }
     @NonNull
-    private ContentValues getContentValues(UserData user) {
+    private ContentValues getContentValues(User user) {
         ContentValues values = new ContentValues();
         values.put(UsersContract.UserEntry.EMAIL,user.getEmail());
         values.put(UsersContract.UserEntry.USERID,user.getId());
-        values.put(UsersContract.UserEntry.FIRSTNAME,user.getFirst_name());
-        values.put(UsersContract.UserEntry.ADMIN,user.getIs_admin());
-        values.put(UsersContract.UserEntry.LASTNAME,user.getLast_name());
+        values.put(UsersContract.UserEntry.PREMIUM,user.getPremium());
+        values.put(UsersContract.UserEntry.ADMIN,user.getAdmin());
+        values.put(UsersContract.UserEntry.IMAGE,user.getImage());
         values.put(UsersContract.UserEntry.TOKEN,user.getToken());
-        values.put(UsersContract.UserEntry.PHONE,user.getPhone());
-
+        values.put(UsersContract.UserEntry.LIKED,user.getLiked());
+        values.put(UsersContract.UserEntry.NAME,user.getName());
         return values;
     }
 }

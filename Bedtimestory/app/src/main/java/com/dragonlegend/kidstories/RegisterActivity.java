@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.pixplicity.easyprefs.library.Prefs;
-
 public class RegisterActivity extends AppCompatActivity {
     EditText mEmailField,mPasswordField;
     Button mNextButton;
@@ -39,9 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
                     mPasswordField.setError("Password cannot be empty!");
                     return;
                 }
-
-                Prefs.putString("userRegEmail",email );
-                Prefs.putString("userRegPassword", password);
                 //start next activity for more detail and pass the email and password.
                 Intent intent = new Intent(RegisterActivity.this,ProfileRegisterActivity.class);
                 intent.putExtra(ProfileRegisterActivity.REGISTER_EMAIL,email);

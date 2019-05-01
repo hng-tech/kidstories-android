@@ -44,25 +44,16 @@ public class MainAplication extends Application {
                     if(cl !=null){
 
                         for (Category category : cl ) {
-                            if (category.getName().equals("Fantasy") ){
+                            if (category.getName().equals("Poem") ){
+                                Log.d("TAG", "poemResponse:-> " +category.getName());
+                                Prefs.putString("poem", category.getName());
+                            }else if (category.getName() . equals("Fantasy")){
                                 Log.d("TAG", "poemResponse:-> " +category.getName());
                                 Prefs.putString("fantasy", category.getName());
-                            }else if (category.getName() . equals("Bedtime stories")){
+                            }else if (category.getName().equals("Moral")){
                                 Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("bedtime", category.getName());
-                            }else if (category.getName().equals("Morning Stories")){
-                                Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("morning", category.getName());
-                            }
-                            else if (category.getName().equals("Jokes")){
-                                Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("jokes", category.getName());
-                            }
-
-                            else if (category.getName().equals("Christmas Stories")){
-                                Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("christmas", category.getName());
-                            } else { }
+                                Prefs.putString("moral", category.getName());
+                            }else { }
                         }
                     }
                 }

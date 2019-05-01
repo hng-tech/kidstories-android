@@ -3,11 +3,9 @@
     <string-array name="items_class">
 
         <item>Category</item>
+        <item>Poem</item>
         <item>Fantasy</item>
-        <item>Bedtime stories</item>
-        <item>Morning Stories</item>
-        <item>Jokes</item>
-        <item>Christmas Stories</item>
+        <item>Moral</item>
 
     </string-array>
 </resources>

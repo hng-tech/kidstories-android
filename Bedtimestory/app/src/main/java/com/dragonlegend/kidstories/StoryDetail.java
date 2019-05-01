@@ -77,7 +77,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
             mBookmark.setVisibility(View.INVISIBLE);
 
         }else {
-            Client.getInstance().create(ApiInterface.class).getStory(getIntent().getStringExtra(STORY_ID))
+            Client.getInstance().create(ApiInterface.class).getStory(getIntent().getIntExtra(STORY_ID,1))
                     .enqueue(new Callback<StoryResponse>() {
                         @Override
                         public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
@@ -126,7 +126,7 @@ t.toString();
     public void initViews(){
         mStoryImage = findViewById(R.id.detail_image);
         mTitle = findViewById(R.id.detail_title);
-        mStoryAge = findViewById(R.id.story_age_range);
+        mStoryAge = findViewById(R.id.story_age);
         mDetail = findViewById(R.id.story);
         mBookmark = findViewById(R.id.bookmark_button);
         mAddComment = findViewById(R.id.add_comment);
