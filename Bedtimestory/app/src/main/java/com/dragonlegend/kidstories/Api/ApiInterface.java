@@ -47,9 +47,10 @@ public interface ApiInterface {
                                        @Field("first_name") String first_name,
                                        @Field("last_name") String last_name);
 
-    @POST("user/login")
+    @POST("auth/login")
     @FormUrlEncoded
-    Call<LoginResponse> loginUser(@Field("email") String email, @Field("password") String password);
+    Call<LoginResponse> loginUser(@Header("Authorization") String token,
+            @Field("email") String email, @Field("password") String password);
 
     @GET("user/profile/{id}")
     Call<User> getProfile(@Path("id") String id);

@@ -1,12 +1,8 @@
 package com.dragonlegend.kidstories;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -33,7 +29,6 @@ import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Model.Story;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,9 +37,9 @@ import retrofit2.Response;
 public class StoryDetail extends AppCompatActivity implements View.OnClickListener {
     public static final String STORY_ID = "story_id";
     ImageView mStoryImage;
-    TextView mTitle, mDetail;
+    TextView mTitle, mDetail,mStoryAge;
     ImageButton mBookmark,mCommentSend;
-    EditText mCommentfield;
+    EditText mCommentField;
     Button mAddComment;
     String title, content, image;
     ProgressBar mProgressBar;
@@ -87,15 +82,18 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         @Override
                         public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
                             if(response.isSuccessful()){
-                                Story story = response.body().getData().getStory();
+                                Story story = response.body().getData();
                                 title = story.getTitle();
-                                content = story.getStory();
-                                image = story.getImage();
-                                Glide.with(StoryDetail.this)
-                                        .load(image)
-                                        .into(mStoryImage);
+                                content = story.getBody();
+                                image = story.getImageUrl();
+                                if(image != null) {
+                                    Glide.with(StoryDetail.this)
+                                            .load(image)
+                                            .into(mStoryImage);
+                                }
                                 mTitle.setText(title);
                                 mDetail.setText(content);
+                                mStoryAge.setText("For Kids " +story.getAge() +" years");
                             }
                             mProgressBar.setVisibility(View.GONE);
                             mLinearLayout.setVisibility(View.VISIBLE);
@@ -103,7 +101,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
                         @Override
                         public void onFailure(Call<StoryResponse> call, Throwable t) {
-
+t.toString();
                         }
                     });
 
@@ -128,19 +126,20 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     public void initViews(){
         mStoryImage = findViewById(R.id.detail_image);
         mTitle = findViewById(R.id.detail_title);
+        mStoryAge = findViewById(R.id.story_age_range);
         mDetail = findViewById(R.id.story);
         mBookmark = findViewById(R.id.bookmark_button);
         mAddComment = findViewById(R.id.add_comment);
         mProgressBar = findViewById(R.id.progress);
         mLinearLayout = findViewById(R.id.story_ll);
-        mCommentfield = findViewById(R.id.comment_box);
+        mCommentField = findViewById(R.id.comment_box);
         mCommentSend = findViewById(R.id.comment_send);
         mCommentLayout = findViewById(R.id.comment_layout);
         mScrollView = findViewById(R.id.detail_scroll);
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                imm.hideSoftInputFromWindow(mCommentfield.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
                 if(mScrollView.getScrollY() == 0){
                     mCommentLayout.setVisibility(View.GONE);
                 }
@@ -158,11 +157,11 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         switch (id){
             case R.id.add_comment:
                 mCommentLayout.setVisibility(View.VISIBLE);
-                mCommentfield.requestFocus();
-                imm.showSoftInput(mCommentfield, InputMethodManager.SHOW_IMPLICIT);
+                mCommentField.requestFocus();
+                imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
                 break;
             case R.id.comment_send:
-                Toast.makeText(this,mCommentfield.getText().toString().trim(),Toast.LENGTH_LONG).show();
+                Toast.makeText(this, mCommentField.getText().toString().trim(),Toast.LENGTH_LONG).show();
                 break;
             case R.id.bookmark_button:
                 date = Calendar.getInstance().getTimeInMillis();

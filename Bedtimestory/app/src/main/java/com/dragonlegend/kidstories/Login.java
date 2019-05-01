@@ -48,27 +48,28 @@ public class Login extends AppCompatActivity {
     }
     public void doLogin(){
         mEmail = mEmailField.getText().toString().trim();
-        mPassword = mPasswordField.getText().toString();
+        mPassword = mPasswordField.getText().toString().trim();
+
+        String token = Prefs.getString("token", "");
         if(validate()){
-            final User user = new User();
-            user.setEmail(mEmail);
-            user.setEmail(mPassword);
-            Client.getInstance().create(ApiInterface.class).loginUser(mEmail,mPassword).enqueue(new Callback<LoginResponse>() {
+
+            Client.getInstance().create(ApiInterface.class).loginUser(token,mEmail,mPassword).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    Log.d("TAG", "onResponse: " + response.body());
                     if(response.isSuccessful()){
 
-                        User userResponse = response.body().getUser();
-                        Log.d("TAG", "userResponse: -> " + userResponse.getToken() );
-                        Prefs.putString("token", userResponse.getToken());
+                        LoginResponse userResponse = response.body();
+                        Log.d("TAG", "userResponse: -> " + userResponse.getData().getToken() );
+                        Prefs.putString("token", userResponse.getData().getToken());
                         Prefs.putBoolean("isLoggedIn", true);
                         Log.d("TAG", "tokenResponse: -> " + Prefs.getString("token", ""));
-                        BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);
-                        dbHelper.addUser(userResponse);
+//                        BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);
+//                        dbHelper.addUser(userResponse.getData());
 
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this,Home.class);
-                        intent.putExtra(Config.USER_ID,userResponse.getId());
+                        intent.putExtra(Config.USER_ID,userResponse.getData().getId());
                         startActivity(intent);
                     }else{
                         Toast.makeText(Login.this,"Invalid Login details",Toast.LENGTH_SHORT).show();
@@ -77,6 +78,7 @@ public class Login extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<LoginResponse> call, Throwable t) {
+                    Log.d("TAG", "onFailure: " + t.getMessage());
 
                 }
             });

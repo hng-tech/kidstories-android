@@ -15,7 +15,7 @@ public class UserData {
     private String last_name;
     @SerializedName("is_admin")
     @Expose
-    private Boolean is_admin;
+    private Integer is_admin;
     @SerializedName("email")
     @Expose
     private String email;
@@ -32,7 +32,7 @@ public class UserData {
     @Expose
     private String token;
 
-    public UserData(String id, String first_name, String last_name, Boolean is_admin, String email, String location, String postal_code, String phone, String token) {
+    public UserData(String id, String first_name, String last_name, Integer is_admin, String email, String location, String postal_code, String phone, String token) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -56,7 +56,7 @@ public class UserData {
         return last_name;
     }
 
-    public Boolean getIs_admin() {
+    public Integer getIs_admin() {
         return is_admin;
     }
 

@@ -18,7 +18,7 @@ public class StoryAllResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private List<Story> data;
 
     public String getStatus() {
         return status;
@@ -32,7 +32,7 @@ public class StoryAllResponse {
         return message;
     }
 
-    public Data getData() {
+    public List<Story> getData() {
         return data;
     }
 
