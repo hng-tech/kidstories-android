@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public class LoginResponse {
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private String status;
     @SerializedName("method")
     @Expose
     private String method;
@@ -18,7 +18,7 @@ public class LoginResponse {
     @Expose
     private User user;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 

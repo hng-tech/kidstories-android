@@ -246,7 +246,7 @@ public class Home extends AppCompatActivity
 //            startActivity(i);
 //
 //        }
-            ShowSnackbar("comming soon");
+            //ShowSnackbar("comming soon");
 
         }
         else if (id == R.id.nav_login) {
@@ -255,7 +255,7 @@ public class Home extends AppCompatActivity
             startActivity(i);
 
         }else if (id == R.id.nav_signout){
-            Prefs.getBoolean("isLoggedIn", false);
+            Prefs.putBoolean("isLoggedIn", false);
             recreate();
         }
         else if (id == R.id.nav_addstory) {
