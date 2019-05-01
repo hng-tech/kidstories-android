@@ -24,35 +24,35 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
-    @GET("category/all")
+    @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("story/category/{id}")
+    @GET("categories/{id}/stories")
     Call<StoryCategoryResponse> getCategory(@Path("id") String id);
 
-    @GET("story")
+    @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
-    @GET("story/{id}")
+    @GET("stories/{id}")
     Call<StoryResponse> getStory(@Path("id") String id);
 
 
-    @POST("user/register")
+    @POST("users/register")
     Call<String> registerUser(@Body User user);
 
-    @POST("user/login")
+    @POST("users/login")
     @FormUrlEncoded
     Call<LoginResponse> loginUser(@Field("email") String email, @Field("password") String password);
 
-    @GET("user/profile/{id}")
+    @GET("users/profile/{id}")
     Call<User> getProfile(@Path("id") String id);
 
-    @GET("story/{action}/{storyId}")
+    @POST("stories/{storyId}/reaction/{action}")
     Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
     @Multipart
-    @POST("story/create")
+    @POST("stories")
     Call<ResponseBody> addStory(
             @Header("Authorization") String token,
             @Part("title") RequestBody title,

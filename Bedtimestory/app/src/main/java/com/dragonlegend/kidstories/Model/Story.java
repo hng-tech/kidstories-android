@@ -37,7 +37,7 @@ public class Story {
     @SerializedName("imageId")
     @Expose
     private String imageId;
-    @SerializedName("image")
+    @SerializedName("image_url")
     @Expose
     private String image;
     @SerializedName("__v")

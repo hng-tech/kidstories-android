@@ -9,18 +9,18 @@ import java.util.List;
 public class StoryAllResponse {
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private String status;
     @SerializedName("method")
     @Expose
     private String method;
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("data")
-    @Expose
-    private Data data;
+//    @SerializedName("data")
+//    @Expose
+    private List<Story> data;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -32,7 +32,7 @@ public class StoryAllResponse {
         return message;
     }
 
-    public Data getData() {
+    public List<Story> getData() {
         return data;
     }
 
