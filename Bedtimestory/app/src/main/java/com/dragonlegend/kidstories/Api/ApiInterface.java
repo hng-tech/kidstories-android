@@ -8,6 +8,8 @@ import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Model.UserReg;
+import com.dragonlegend.kidstories.Model.UserRegResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -37,8 +39,13 @@ public interface ApiInterface {
     Call<StoryResponse> getStory(@Path("id") String id);
 
 
-    @POST("user/register")
-    Call<String> registerUser(@Body User user);
+    @FormUrlEncoded
+    @POST("auth/register")
+    Call<UserRegResponse> registerUser(@Field("phone") String phone,
+                                       @Field("email") String email,
+                                       @Field("password") String passwprd,
+                                       @Field("first_name") String first_name,
+                                       @Field("last_name") String last_name);
 
     @POST("user/login")
     @FormUrlEncoded
