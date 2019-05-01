@@ -215,20 +215,7 @@ public class Home extends AppCompatActivity
             Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
             startActivity(i);
 
-        } else if (id == R.id.nav_bookmarks) {
-
-         }
-        else if (id == R.id.nav_donate) {
-          //redirects user to Donate Form
-            String url = "https://paystack.com/pay/kidstoriesapp";
-
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-
-
-        }
-         else if (id == R.id.nav_profile) {
+        } else if (id == R.id.nav_profile) {
 //
 //            //start Profile activity .
             if(mUser !=null ){
@@ -255,8 +242,14 @@ public class Home extends AppCompatActivity
             startActivity(i);
 
         }else if (id == R.id.nav_signout){
-            Prefs.putBoolean("isLoggedIn", false);
-            recreate();
+            if (!Prefs.getBoolean("isLoggedIn", false)){
+                ShowSnackbar("You have never logged In");
+            }
+            else {
+
+                validate("Logging you out!!!!");
+            }
+
         }
         else if (id == R.id.nav_addstory) {
 
