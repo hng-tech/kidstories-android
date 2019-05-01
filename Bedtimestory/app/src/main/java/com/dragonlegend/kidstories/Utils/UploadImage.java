@@ -95,7 +95,7 @@ public class UploadImage {
                     context.startActivity(intent);
 
                 }else {
-                    Log.d(TAG, "onResponse: " + response.message());
+                    Log.d(TAG, "onResponse: " + response.code());
                     showMessage(context, "Error Occur Please check your internet");
                 }
             }
