@@ -98,10 +98,11 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 //        UserReg user = new UserReg(mFirstName, mLastname, mEmail,phoneNumber,mPassword);
 
 
-        Client.getInstance().create(ApiInterface.class).registerUser(phoneNumber, mEmail,mPassword,mFirstName,mLastname).enqueue(new Callback<UserRegResponse>() {
+        Client.getInstance().create(ApiInterface.class).registerUser(phoneNumber, mEmail,mPassword,mFirstName,mLastname).
+                enqueue(new Callback<UserRegResponse>() {
             @Override
             public void onResponse(Call<UserRegResponse> call, Response<UserRegResponse> response) {
-                Log.d("TAG", "onResponse: " +response.body());
+                Log.d("TAG", "onResponse: " +response.message());
 
                 if(response.isSuccessful()){
 
@@ -114,7 +115,8 @@ public class ProfileRegisterActivity extends AppCompatActivity {
                         String user_profile_number = user.getData().getPhone();
 //                        String user_profile_id = user.getData().getId();
 
-                        Log.d("TAG", "dataResponse:-> " + token+user_profile_email+user_profile_name+user_profile_number);
+                        Log.d("TAG", "dataResponse:-> " +
+                                token+user_profile_email+user_profile_name+user_profile_number);
                         Prefs.putString("token", token);
                         Prefs.putString("user_profile_email", user_profile_email);
                         Prefs.putString("user_profile_name", user_profile_name);

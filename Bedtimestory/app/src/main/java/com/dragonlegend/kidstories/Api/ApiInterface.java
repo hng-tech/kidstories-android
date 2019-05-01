@@ -44,7 +44,7 @@ public interface ApiInterface {
     @POST("auth/register")
     Call<UserRegResponse> registerUser(@Field("phone") String phone,
                                        @Field("email") String email,
-                                       @Field("password") String passwprd,
+                                       @Field("password") String password,
                                        @Field("first_name") String first_name,
                                        @Field("last_name") String last_name);
 

@@ -84,6 +84,10 @@ public class Home extends AppCompatActivity
                 mUser = dbHelper.getUserById(id);
             }
         }
+
+
+
+
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);
