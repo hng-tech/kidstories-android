@@ -2,6 +2,7 @@ package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
+import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
@@ -31,8 +32,8 @@ public interface ApiInterface {
     @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("story/category/{id}")
-    Call<StoryCategoryResponse> getCategory(@Path("id") String id);
+    @GET("categories/{id}/stories")
+    Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") String id);
 
     @GET("stories")
     Call<StoryAllResponse> getAllStories();
