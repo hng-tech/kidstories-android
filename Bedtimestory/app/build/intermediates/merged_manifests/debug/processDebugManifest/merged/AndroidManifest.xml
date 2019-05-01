@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.example.bedtime"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="27" />
+
+    <!-- Internet Permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <dist:module dist:instant="true" />
+
+    <application
+        android:name="com.dragonlegend.kidstories.Utils.MainAplication"
+        android:debuggable="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.dragonlegend.kidstories.Bookmark"
+            android:parentActivityName="com.dragonlegend.kidstories.MainActivity" />
+        <activity android:name="com.dragonlegend.kidstories.Onboarding" />
+        <activity android:name="com.dragonlegend.kidstories.Login" />
+        <activity
+            android:name="com.dragonlegend.kidstories.Home"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.dragonlegend.kidstories.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Splashscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dragonlegend.kidstories.RegisterActivity"
+            android:theme="@style/AppTheme.NoAction" />
+        <activity
+            android:name="com.dragonlegend.kidstories.ProfileRegisterActivity"
+            android:parentActivityName="com.dragonlegend.kidstories.RegisterActivity"
+            android:theme="@style/AppTheme.NoAction" />
+        <activity
+            android:name="com.dragonlegend.kidstories.CategoriesActivity"
+            android:parentActivityName="com.dragonlegend.kidstories.MainActivity" />
+        <activity
+            android:name="com.dragonlegend.kidstories.ProfileActivity"
+            android:parentActivityName="com.dragonlegend.kidstories.MainActivity" />
+        <activity
+            android:name="com.dragonlegend.kidstories.AddStoryActivity"
+            android:parentActivityName="com.dragonlegend.kidstories.MainActivity" />
+        <activity android:name="com.dragonlegend.kidstories.AddStoriesContentActivity" />
+        <activity
+            android:name="com.dragonlegend.kidstories.StoryDetail"
+            android:parentActivityName="com.dragonlegend.kidstories.Home" />
+        <activity android:name="com.dragonlegend.kidstories.StoryListingActivity" />
+    </application>
+
+</manifest>
