@@ -3,6 +3,7 @@ package com.dragonlegend.kidstories.Api;
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
+import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
@@ -43,11 +44,11 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("auth/register")
-    Call<UserRegResponse> registerUser(@Field("phone") String phone,
-                                       @Field("email") String email,
-                                       @Field("password") String passwprd,
-                                       @Field("first_name") String first_name,
-                                       @Field("last_name") String last_name);
+    Call<BaseResponse<RegistrationResponse>> registerUser(@Field("phone") String phone,
+                                                          @Field("email") String email,
+                                                          @Field("password") String passwprd,
+                                                          @Field("first_name") String first_name,
+                                                          @Field("last_name") String last_name);
 
 
     @POST("auth/login")

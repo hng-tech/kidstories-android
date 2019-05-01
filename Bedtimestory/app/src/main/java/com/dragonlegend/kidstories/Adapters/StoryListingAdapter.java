@@ -122,7 +122,7 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
                     assert response.body() != null;
                     StoryReactionResponse reactionResponse = response.body().getData();
 
-                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.body().getStatus(), Toast.LENGTH_SHORT).show();
                 }
 
                 else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
