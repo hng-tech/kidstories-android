@@ -49,8 +49,8 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
         Story story = mStories.get(i);
         storyHolder.mTitle.setText(story.getTitle());
         storyHolder.mImgTitle.setText(story.getTitle());
-        storyHolder.mTime.setText(story.getReleaseDate());
-        Glide.with(mContext).load(story.getImage()).into(storyHolder.mImage);
+        storyHolder.mTime.setText(story.getStoryDuration());
+        Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
         storyHolder.mLike.setOnClickListener(v -> reactToStory(true, story.getId()));
         storyHolder.mDislike.setOnClickListener(v -> reactToStory(false, story.getId()));
@@ -98,10 +98,10 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             });
         }
     }
-    private void reactToStory(boolean isLike, String storyId){
+    private void reactToStory(boolean isLike, int storyId){
 
         String action = isLike?  "like" :  "dislike";
-        Client.getInstance().create(ApiInterface.class).reactToStory(action, storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
+        Client.getInstance().create(ApiInterface.class).reactToStory(action, String.valueOf(storyId)).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
             @Override
             public void onResponse(Call<BaseResponse<StoryReactionResponse>> call, Response<BaseResponse<StoryReactionResponse>> response) {
                 if (response.isSuccessful()){
