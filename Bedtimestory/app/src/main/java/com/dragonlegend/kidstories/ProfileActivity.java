@@ -15,6 +15,7 @@ import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Model.UserData;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import retrofit2.Call;
@@ -25,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     ImageView mImage;
     TextView mUserName,mUserEmail,mUserPhoneNum;
     BedTimeDbHelper mDbHelper;
-    User mUser;
+    UserData mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,20 +75,18 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.isSuccessful()){
-                    mUser = response.body().getUser();
+                    mUser = response.body().getData();
                     Log.e("TAG",mUser.getId());
-                    String name = mUser.getFirstName()+" "+mUser.getLastName();
+                    String name = mUser.getFirst_name()+" "+mUser.getLast_name();
                     mUserName.setText(name);
                     mUserEmail.setText(mUser.getEmail());
-                    String phone = mUser.getPhoneNumber();
-                    if(mUser.getPhoneNumber()==null)
+                    String phone = mUser.getPhone();
+                    if(mUser.getPhone()==null)
                         phone = "No associated phone number";
 
                     mUserPhoneNum.setText(phone);
 
-                    String imageUrl = mUser.getImage();
-                    if(mUser.getImage()==null)
-                        imageUrl = "https://res.cloudinary.com/ephaig/image/upload/v1555015808/download.png";
+                    String imageUrl ="https://res.cloudinary.com/ephaig/image/upload/v1555015808/download.png";
 
                     Glide.with(getApplicationContext())
                             .load(imageUrl)
