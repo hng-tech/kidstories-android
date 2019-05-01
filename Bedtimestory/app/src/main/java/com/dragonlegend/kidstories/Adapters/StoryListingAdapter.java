@@ -86,7 +86,7 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
     }
     class StoryHolder extends RecyclerView.ViewHolder  {
         ImageButton mLike,mDislike;
-        TextView mTitle,mTime ,mImgTitle;
+        TextView mTitle,mTime ,mImgTitle, likes, dislikes;
         ImageView mImage,mAuthor_image;
         public StoryHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,6 +97,8 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             mTime = itemView.findViewById(R.id.story_publish_time);
             mLike = itemView.findViewById(R.id.like_button);
             mDislike = itemView.findViewById(R.id.dislike_button);
+            likes = itemView.findViewById(R.id.likes);
+            dislikes = itemView.findViewById(R.id.dislikes);
             mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
