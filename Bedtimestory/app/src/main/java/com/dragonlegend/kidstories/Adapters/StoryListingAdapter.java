@@ -20,6 +20,7 @@ import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.R;
 import com.dragonlegend.kidstories.StoryDetail;
+import com.dragonlegend.kidstories.Utils.MainAplication;
 
 import java.util.List;
 
@@ -50,10 +51,21 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
         storyHolder.mTitle.setText(story.getTitle());
         storyHolder.mImgTitle.setText(story.getTitle());
         storyHolder.mTime.setText(story.getStoryDuration());
+        storyHolder.dislikes.setText(String.valueOf(story.getDislikesCount()));
+        storyHolder.likes.setText(String.valueOf(story.getLikesCount()));
         Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
-        storyHolder.mLike.setOnClickListener(v -> reactToStory(true, story.getId()));
-        storyHolder.mDislike.setOnClickListener(v -> reactToStory(false, story.getId()));
+        storyHolder.mLike.setOnClickListener(v -> {
+            reactToStory(true, String.valueOf(story.getId()));
+            int addLike = Integer.parseInt(storyHolder.likes.getText().toString()) + 1;
+            storyHolder.likes.setText(String.valueOf(addLike));
+
+        });
+        storyHolder.mDislike.setOnClickListener(v -> {
+            reactToStory(false, String.valueOf(story.getId()));
+            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
+            storyHolder.dislikes.setText(String.valueOf(addDislike));
+        });
     }
 
     @Override
@@ -77,7 +89,7 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
     }
     class StoryHolder extends RecyclerView.ViewHolder  {
         ImageButton mLike,mDislike;
-        TextView mTitle,mTime ,mImgTitle;
+        TextView mTitle,mTime ,mImgTitle, likes, dislikes;
         ImageView mImage,mAuthor_image;
         public StoryHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +100,8 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             mTime = itemView.findViewById(R.id.story_publish_time);
             mLike = itemView.findViewById(R.id.like_button);
             mDislike = itemView.findViewById(R.id.dislike_button);
+            likes = itemView.findViewById(R.id.likes);
+            dislikes = itemView.findViewById(R.id.dislikes);
             mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,20 +112,20 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             });
         }
     }
-    private void reactToStory(boolean isLike, int storyId){
+    private void reactToStory(boolean isLike, String storyId){
 
         String action = isLike?  "like" :  "dislike";
-        Client.getInstance().create(ApiInterface.class).reactToStory(action, String.valueOf(storyId)).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
+        MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
             @Override
             public void onResponse(Call<BaseResponse<StoryReactionResponse>> call, Response<BaseResponse<StoryReactionResponse>> response) {
                 if (response.isSuccessful()){
                     assert response.body() != null;
                     StoryReactionResponse reactionResponse = response.body().getData();
 
-                    Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.body().getStatus(), Toast.LENGTH_SHORT).show();
                 }
 
-                else Toast.makeText(mContext, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

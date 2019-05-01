@@ -2,7 +2,9 @@ package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
+import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
+import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
@@ -22,6 +24,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
@@ -29,8 +32,8 @@ public interface ApiInterface {
     @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("story/category/{id}")
-    Call<StoryCategoryResponse> getCategory(@Path("id") String id);
+    @GET("categories/{id}/stories")
+    Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") String id);
 
     @GET("stories")
     Call<StoryAllResponse> getAllStories();
@@ -42,11 +45,11 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("auth/register")
-    Call<UserRegResponse> registerUser(@Field("phone") String phone,
-                                       @Field("email") String email,
-                                       @Field("password") String password,
-                                       @Field("first_name") String first_name,
-                                       @Field("last_name") String last_name);
+    Call<BaseResponse<RegistrationResponse>> registerUser(@Field("phone") String phone,
+                                                          @Field("email") String email,
+                                                          @Field("password") String passwprd,
+                                                          @Field("first_name") String first_name,
+                                                          @Field("last_name") String last_name);
 
 
     @POST("auth/login")
@@ -58,7 +61,7 @@ public interface ApiInterface {
     Call<LoginResponse> getProfile(@Header("Authorization") String token);
 
 
-    @GET("story/{action}/{storyId}")
+    @POST("stories/{storyId}/reactions/{action}")
     Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
@@ -68,8 +71,8 @@ public interface ApiInterface {
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
-            @Part("category_id") RequestBody category_id,
-            @Part("age") RequestBody age,
+            @Part("category_id") Integer category_id,
+            @Part("age") Integer age,
             @Part("author") RequestBody author,
             @Part("story_duration") RequestBody story_duration,
             @Part MultipartBody.Part photo

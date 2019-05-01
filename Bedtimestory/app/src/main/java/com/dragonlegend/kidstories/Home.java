@@ -77,13 +77,13 @@ public class Home extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
         Intent intent = getIntent();
-        if (intent.hasExtra(Config.USER_ID)) {
-            String id = intent.getStringExtra(Config.USER_ID);
-            if (!id.isEmpty()) {
-                BedTimeDbHelper dbHelper = new BedTimeDbHelper(this);
-                mUser = dbHelper.getUserById(id);
-            }
-        }
+//        if (intent.hasExtra(Config.USER_ID)) {
+//            String id = intent.getStringExtra(Config.USER_ID);
+//            if (!id.isEmpty()) {
+//                BedTimeDbHelper dbHelper = new BedTimeDbHelper(this);
+//                mUser = dbHelper.getUserById(id);
+//            }
+//        }
 
 
 
@@ -222,11 +222,11 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_profile) {
 //
 //            //start Profile activity .
-            if(mUser !=null ){
+//            if(mUser !=null ){
                 Intent i = new Intent(getBaseContext(), ProfileActivity.class);
-                i.putExtra(Config.USER_ID,mUser.getId());
+//                i.putExtra(Config.USER_ID,mUser.getId());
                 startActivity(i);
-            }
+//            }
 //
 // else if (id == R.id.nav_donate) {
 //
