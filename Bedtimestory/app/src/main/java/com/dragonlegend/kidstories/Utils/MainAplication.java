@@ -9,15 +9,40 @@ import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Model.Category;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainAplication extends Application {
+
+    public static final String BASE_URL = "https://api-kidstories.herokuapp.com/api/v1/";
+
+    private static ApiInterface apiInterface;
+    Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
+
+    static Retrofit mRetrofit;
+    OkHttpClient okHttpClient;
+
+
+    public static ApiInterface getApiInterface() {
+        if (apiInterface == null)
+            apiInterface = mRetrofit.create(ApiInterface.class);
+        return apiInterface;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,7 +54,24 @@ public class MainAplication extends Application {
                 .build();
 
 
-    loadData();
+        loadData();
+
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
+
+
+        mRetrofit =new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
 
     }
 
@@ -44,25 +86,16 @@ public class MainAplication extends Application {
                     if(cl !=null){
 
                         for (Category category : cl ) {
-                            if (category.getName().equals("Fantasy") ){
+                            if (category.getName().equals("Poem") ){
+                                Log.d("TAG", "poemResponse:-> " +category.getName());
+                                Prefs.putString("poem", category.getName());
+                            }else if (category.getName() . equals("Fantasy")){
                                 Log.d("TAG", "poemResponse:-> " +category.getName());
                                 Prefs.putString("fantasy", category.getName());
-                            }else if (category.getName() . equals("Bedtime stories")){
+                            }else if (category.getName().equals("Moral")){
                                 Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("bedtime", category.getName());
-                            }else if (category.getName().equals("Morning Stories")){
-                                Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("morning", category.getName());
-                            }
-                            else if (category.getName().equals("Jokes")){
-                                Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("jokes", category.getName());
-                            }
-
-                            else if (category.getName().equals("Christmas Stories")){
-                                Log.d("TAG", "poemResponse:-> " +category.getName());
-                                Prefs.putString("christmas", category.getName());
-                            } else { }
+                                Prefs.putString("moral", category.getName());
+                            }else { }
                         }
                     }
                 }
