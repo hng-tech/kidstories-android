@@ -1,6 +1,6 @@
 package com.dragonlegend.kidstories.Api.Responses;
 
-import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Model.UserData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,29 +8,29 @@ public class LoginResponse {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("method")
+    @SerializedName("code")
     @Expose
-    private String method;
+    private String code;
     @SerializedName("message")
     @Expose
     private String message;
     @SerializedName("data")
     @Expose
-    private User user;
+    private UserData data;
 
     public String getStatus() {
         return status;
     }
 
     public String getMethod() {
-        return method;
+        return code;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public User getUser() {
-        return user;
+    public UserData getData() {
+        return data;
     }
 }
