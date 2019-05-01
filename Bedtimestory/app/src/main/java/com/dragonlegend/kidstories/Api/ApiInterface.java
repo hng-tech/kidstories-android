@@ -8,6 +8,8 @@ import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Model.UserReg;
+import com.dragonlegend.kidstories.Model.UserRegResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -27,27 +29,36 @@ public interface ApiInterface {
     @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("categories/{id}/stories")
+    @GET("story/category/{id}")
     Call<StoryCategoryResponse> getCategory(@Path("id") String id);
 
     @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
-    @GET("stories/{id}")
-    Call<StoryResponse> getStory(@Path("id") int id);
+    @GET("story/{id}")
+    Call<StoryResponse> getStory(@Path("id") String id);
 
 
-    @POST("users/register")
-    Call<String> registerUser(@Body User user);
 
-    @POST("users/login")
     @FormUrlEncoded
-    Call<LoginResponse> loginUser(@Field("email") String email, @Field("password") String password);
+    @POST("auth/register")
+    Call<UserRegResponse> registerUser(@Field("phone") String phone,
+                                       @Field("email") String email,
+                                       @Field("password") String passwprd,
+                                       @Field("first_name") String first_name,
+                                       @Field("last_name") String last_name);
 
-    @GET("users/profile/{id}")
-    Call<User> getProfile(@Path("id") String id);
 
-    @POST("stories/{storyId}/reaction/{action}")
+    @POST("auth/login")
+    @FormUrlEncoded
+    Call<LoginResponse> loginUser(@Header("Authorization") String token,
+            @Field("email") String email, @Field("password") String password);
+
+    @GET("users/profile")
+    Call<LoginResponse> getProfile(@Header("Authorization") String token);
+
+
+    @GET("story/{action}/{storyId}")
     Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
@@ -56,8 +67,11 @@ public interface ApiInterface {
     Call<ResponseBody> addStory(
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
-            @Part("story") RequestBody story,
-            @Part("category") RequestBody category,
-            @Part MultipartBody.Part image
+            @Part("body") RequestBody body,
+            @Part("category_id") RequestBody category_id,
+            @Part("age") RequestBody age,
+            @Part("author") RequestBody author,
+            @Part("story_duration") RequestBody story_duration,
+            @Part MultipartBody.Part photo
     );
 }
