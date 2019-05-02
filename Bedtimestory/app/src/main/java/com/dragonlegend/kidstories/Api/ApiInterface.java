@@ -36,7 +36,7 @@ public interface ApiInterface {
     @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("stories/category/{id}")
+    @GET("categories/{id}/stories")
     Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") String id);
 
     @GET("stories")
