@@ -76,7 +76,7 @@ public interface ApiInterface {
             @Part("age") RequestBody age,
             @Part("author") RequestBody author,
             @Part("story_duration") RequestBody story_duration,
-            @Part MultipartBody.Part photo
+            @Part MultipartBody.Part story_image
     );
 
 //    @POST("comments")
