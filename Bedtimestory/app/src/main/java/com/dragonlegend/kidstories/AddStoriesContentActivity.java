@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Range;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -134,14 +135,17 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
     public void getDuration(String text) {
         String [] arr = text.split(" ", 0);
         int length = arr.length;
-        duration = Integer.toString(length);
+        int story_length = (int) (length * 0.1);
+        duration = Integer.toString(story_length)+":"+"00"+":"+"00";
+        Log.d("TAG", "getDuration: -> " + duration);
     }
 
     private void AddStory() {
         if (Prefs.getBoolean("isLoggedIn", false) == true){
             content = mContentField.getText().toString().trim();
             getDuration(content);
-            Integer age = 10;
+            String age = "1-5";
+            Log.d("TAG", "age: -> " +age);
             String author = Prefs.getString("user_profile_name", "");
             Log.d("TAG", "AddStory: " + duration);
             if (content.isEmpty()) {

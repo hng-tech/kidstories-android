@@ -72,9 +72,9 @@ public interface ApiInterface {
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
             @Part("category_id") Integer category_id,
-            @Part("age") Integer age,
+            @Part("age") String age,
             @Part("author") RequestBody author,
             @Part("story_duration") RequestBody story_duration,
-            @Part MultipartBody.Part photo
+            @Part MultipartBody.Part story_image
     );
 }
