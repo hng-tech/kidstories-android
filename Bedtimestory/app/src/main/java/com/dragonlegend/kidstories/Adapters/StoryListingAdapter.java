@@ -58,15 +58,23 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
         Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
         storyHolder.mLike.setOnClickListener(v -> {
-            reactToStory(true, String.valueOf(story.getId()));
-            int addLike = Integer.parseInt(storyHolder.likes.getText().toString()) + 1;
-            storyHolder.likes.setText(String.valueOf(addLike));
+            if (Prefs.getBoolean("isLoggedIn", false)){
+                reactToStory(true, String.valueOf(story.getId()));
+                int addLike = Integer.parseInt(storyHolder.likes.getText().toString()) + 1;
+                storyHolder.likes.setText(String.valueOf(addLike));
+            }
+            else
+                Toast.makeText(mContext, "You must be logged in to do that...", Toast.LENGTH_SHORT).show();
 
         });
         storyHolder.mDislike.setOnClickListener(v -> {
-            reactToStory(false, String.valueOf(story.getId()));
-            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
-            storyHolder.dislikes.setText(String.valueOf(addDislike));
+            if (Prefs.getBoolean("isLoggedIn", false)){
+                reactToStory(false, String.valueOf(story.getId()));
+                int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
+                storyHolder.dislikes.setText(String.valueOf(addDislike));
+            }
+            else
+                Toast.makeText(mContext, "You must be logged in to do that...", Toast.LENGTH_SHORT).show();
         });
     }
 
