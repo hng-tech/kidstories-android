@@ -65,7 +65,7 @@ public class MainAplication extends Application {
                 .addInterceptor(
                         chain -> {
                             Request request = chain.request().newBuilder()
-                                    .addHeader("Accept", "Application/JSON")
+                                    .addHeader("Accept", "application/json")
                                     .addHeader("Authorization", "Bearer " + Prefs.getString("token", ""))
                                     .build();
                             return chain.proceed(request);
