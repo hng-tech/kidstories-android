@@ -97,6 +97,16 @@
         </LinearLayout>
 
     </ScrollView>
+    <TextView
+        android:id="@+id/premium_message"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/colorAshString"
+        android:text="This is a premium Story, \nLogin or Subscribe to red"/>
     <LinearLayout
         android:id="@+id/comment_layout"
         android:layout_width="match_parent"

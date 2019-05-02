@@ -68,6 +68,9 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
             storyHolder.dislikes.setText(String.valueOf(addDislike));
         });
+        if(story.getIsPremium()==1){
+            storyHolder.mPremium.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -91,7 +94,7 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
     }
     class StoryHolder extends RecyclerView.ViewHolder  {
         ImageButton mLike,mDislike;
-        TextView mTitle,mTime ,mImgTitle, likes, dislikes;
+        TextView mTitle,mTime ,mImgTitle, likes, dislikes,mPremium;
         ImageView mImage,mAuthor_image;
         public StoryHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,6 +107,8 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             mDislike = itemView.findViewById(R.id.dislike_button);
             likes = itemView.findViewById(R.id.likes);
             dislikes = itemView.findViewById(R.id.dislikes);
+            mPremium = itemView.findViewById(R.id.premium_text);
+
             mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
