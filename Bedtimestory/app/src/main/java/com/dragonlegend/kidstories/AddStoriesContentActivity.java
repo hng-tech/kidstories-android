@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Range;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,8 +31,10 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
     private String title;
     private String filePath;
     private String content;
-    private String category;
+    private int category = 0;
     private Spinner chooseCategory;
+    private String duration;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,20 +80,31 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                 // Get Selected Class name from the list
                 String selectedCategory = adapterView.getItemAtPosition(i).toString();
                     switch (selectedCategory) {
-                        case "Poem" :
-                            category = Prefs.getString("poem", "");
-                            Log.d("TAG", "onItemSelected:-> " + category);
-                            break;
                         case "Fantasy" :
-                            category = Prefs.getString("fantasy", "");
+                            //category = Prefs.getString("fantasy", "");
+                            category =1;
                             Log.d("TAG", "onItemSelected:-> " + category);
                             break;
-                        case "Moral" :
-                            category = Prefs.getString("moral","");
+                        case "Bedtime stories" :
+                            //category = Prefs.getString("bedtime", "");
+                            category =2;
                             Log.d("TAG", "onItemSelected:-> " + category);
+                            break;
+                        case "Morning Stories" :
+                           // category = Prefs.getString("morning","");
+                            category =3;
+                            Log.d("TAG", "onItemSelected:-> " + category);
+                            break;
+                        case "Jokes" :
+                           // category = Prefs.getString("jokes", "");
+                            category = 4;
+                            break;
+                        case "Christmas Stories" :
+                            //category = Prefs.getString("christmas", "");
+                            category = 5;
                             break;
                         case "Category":
-                            category = "";
+                            category = 0;
                             break;
                     }
             }
@@ -118,22 +132,35 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
         }
     }
 
+    public void getDuration(String text) {
+        String [] arr = text.split(" ", 0);
+        int length = arr.length;
+        int story_length = (int) (length * 0.1);
+        duration = Integer.toString(story_length)+":"+"00"+":"+"00";
+        Log.d("TAG", "getDuration: -> " + duration);
+    }
+
     private void AddStory() {
         if (Prefs.getBoolean("isLoggedIn", false) == true){
             content = mContentField.getText().toString().trim();
+            getDuration(content);
+            String age = "1-5";
+            Log.d("TAG", "age: -> " +age);
+            String author = Prefs.getString("user_profile_name", "");
+            Log.d("TAG", "AddStory: " + duration);
             if (content.isEmpty()) {
                 ShowSnackbar("Content cannot be empty");
             }
             else {
-
+                String is_premium = "1";
                 title = Prefs.getString("title", "");
                 String imageFileUri = Prefs.getString("filePath","");
                 Log.d("TAG", "AddStory: " + imageFileUri);
-                if (category == ""){
+                if (category == 0){
                     ShowSnackbar("Category cannot be empty");
                 }else{
 
-                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category);
+                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category,age,duration,author,is_premium);
                 }
             }
         } else {

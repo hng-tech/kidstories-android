@@ -6,14 +6,20 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
+import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
+import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Model.Story;
+import com.dragonlegend.kidstories.Utils.MainAplication;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +49,8 @@ public class StoryListingActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(1);
         TextView toolbar_title = toolbar.findViewById(R.id.toolbar_title);
         Intent intent = getIntent();
+        mCatId = Prefs.getString("Cat_ID", "3");
         if(intent.hasExtra(CATEGORY_ID) ){
-            mCatId = intent.getStringExtra(CATEGORY_ID);
             mCatName = intent.getStringExtra(CATEGORY_NAME);
             toolbar_title.setText(mCatName);
 
@@ -60,14 +66,18 @@ public class StoryListingActivity extends AppCompatActivity {
         if(mCatId !=null){
             loadStories();
         }
+        else Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
     }
 
     private void loadStories(){
-        Client.getInstance().create(ApiInterface.class).getCategory(mCatId).enqueue(new Callback<StoryCategoryResponse>() {
+        MainAplication.getApiInterface().getCategory(mCatId).enqueue(new Callback<BaseResponse<CategoryResponse>>() {
             @Override
-            public void onResponse(Call<StoryCategoryResponse> call, Response<StoryCategoryResponse> response) {
+            public void onResponse(Call<BaseResponse<CategoryResponse>> call, Response<BaseResponse<CategoryResponse>> response) {
                 if(response.isSuccessful()){
+                    assert response.body() != null;
                     List<Story> stories= response.body().getData().getStories();
+
+                    Log.d("TAG", "onStory: -> " + stories.get(1));
                     mAdapter.addStories(stories);
                     if(stories.size()==0){
                         mNoStories.setVisibility(View.VISIBLE);
@@ -77,7 +87,7 @@ public class StoryListingActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<StoryCategoryResponse> call, Throwable t) {
+            public void onFailure(Call<BaseResponse<CategoryResponse>> call, Throwable t) {
                 t.toString();
             }
         });

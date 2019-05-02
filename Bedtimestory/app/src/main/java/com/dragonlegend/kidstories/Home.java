@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dragonlegend.kidstories.Adapters.CategoriesAdapter;
 import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
@@ -56,6 +57,7 @@ public class Home extends AppCompatActivity
     User mUser;
     ImageView mAddNew;
     ProgressBar mProgressBar;
+    boolean isLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,8 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        isLoggedIn = Prefs.getBoolean("isLoggedIn",false);
+        Log.e("TAG",isLoggedIn+"");
 
         //customize custom toolbar
         setSupportActionBar(toolbar);
@@ -74,13 +77,17 @@ public class Home extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
         Intent intent = getIntent();
-        if (intent.hasExtra(Config.USER_ID)) {
-            String id = intent.getStringExtra(Config.USER_ID);
-            if (!id.isEmpty()) {
-                BedTimeDbHelper dbHelper = new BedTimeDbHelper(this);
-                mUser = dbHelper.getUserById(id);
-            }
-        }
+//        if (intent.hasExtra(Config.USER_ID)) {
+//            String id = intent.getStringExtra(Config.USER_ID);
+//            if (!id.isEmpty()) {
+//                BedTimeDbHelper dbHelper = new BedTimeDbHelper(this);
+//                mUser = dbHelper.getUserById(id);
+//            }
+//        }
+
+
+
+
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);
@@ -88,8 +95,16 @@ public class Home extends AppCompatActivity
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(Home.this, AddStoryActivity.class);
-                startActivity(intent1);
+                if (Prefs.getBoolean("isLoggedIn", false)){
+                    Intent i = new Intent(Home.this, AddStoryActivity.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(Home.this, "Please log in", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(Home.this, Login.class);
+                    startActivity(intent1);
+                }
+
             }
         });
         mStories = new ArrayList<>();
@@ -133,6 +148,15 @@ public class Home extends AppCompatActivity
         });
         navigationView.setNavigationItemSelectedListener(this);
 
+        if(isLoggedIn){
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
+        }else{
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
+        }
 
     }
 
@@ -195,27 +219,14 @@ public class Home extends AppCompatActivity
             Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
             startActivity(i);
 
-        } else if (id == R.id.nav_bookmarks) {
-
-         }
-        else if (id == R.id.nav_donate) {
-          //redirects user to Donate Form
-            String url = "https://paystack.com/pay/kidstoriesapp";
-
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-
-
-        }
-         else if (id == R.id.nav_profile) {
+        } else if (id == R.id.nav_profile) {
 //
 //            //start Profile activity .
-            if(mUser !=null ){
+//            if(mUser !=null ){
                 Intent i = new Intent(getBaseContext(), ProfileActivity.class);
-                i.putExtra(Config.USER_ID,mUser.getId());
+//                i.putExtra(Config.USER_ID,mUser.getId());
                 startActivity(i);
-            }
+//            }
 //
 // else if (id == R.id.nav_donate) {
 //
@@ -226,7 +237,7 @@ public class Home extends AppCompatActivity
 //            startActivity(i);
 //
 //        }
-            ShowSnackbar("comming soon");
+            //ShowSnackbar("comming soon");
 
         }
         else if (id == R.id.nav_login) {
@@ -244,6 +255,7 @@ public class Home extends AppCompatActivity
             }
 
         }
+
         else if (id == R.id.nav_addstory) {
 
 //            start addstory activity .
@@ -287,6 +299,10 @@ public class Home extends AppCompatActivity
                 if (response.isSuccessful()) {
                     CategoryAllResponse categoryList = response.body();
                     List<Category> cl = categoryList.getData();
+
+                    for (int i = 0; i< cl.size(); i++){
+                        Log.d("TAG", "onResponse: -> " + cl.get(i).getName());
+                    }
                     if (cl != null) {
                         mCategoriesAdapter.addCategories(cl);
                     }
@@ -295,6 +311,7 @@ public class Home extends AppCompatActivity
 
             @Override
             public void onFailure(Call<CategoryAllResponse> call, Throwable t) {
+                Log.d("TAG", "onFailure: " + t.getMessage());
                 showNetworkError();
             }
         });
@@ -303,7 +320,11 @@ public class Home extends AppCompatActivity
             public void onResponse(Call<StoryAllResponse> call, Response<StoryAllResponse> response) {
                 if (response.isSuccessful()) {
                     StoryAllResponse storyAllResponse = response.body();
-                    List<Story> story = storyAllResponse.getData().getStories();
+                    List<Story> story = storyAllResponse.getData();
+
+                    for (int i = 0; i< story.size(); i++){
+                        Log.d("TAG", "onResponse: -> " + story.get(i).getBody());
+                    }
                     if (story != null) {
                         mAdapter.addStories(story);
 
@@ -371,8 +392,9 @@ public class Home extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Prefs.putBoolean("isLoggedIn", false);
-                Intent i = new Intent(getBaseContext(), Login.class);
-                startActivity(i);
+//                Intent i = new Intent(getBaseContext(), Login.class);
+//                startActivity(i)
+                recreate();
             }
         });
 // show the snackbar

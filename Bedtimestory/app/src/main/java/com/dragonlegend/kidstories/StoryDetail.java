@@ -74,6 +74,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         helper = new BedTimeDbHelper(this);
 
 
+
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         initViews();
@@ -128,7 +129,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         }
 
+
    }
+
 
     private void addFavorite(String title, String story, String image, String time) {
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -140,7 +143,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         long idRow = db.insert(FavoriteContract.FavoriteColumn.TABLE_NAME, null, value);
         Log.v("IdRow", "Id Count" + idRow);
+
         Toast.makeText(this, "Successfully Added", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -171,6 +176,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mAddComment.setOnClickListener(this);
         mBookmark.setOnClickListener(this);
         mCommentSend.setOnClickListener(this);
+
     }
 
     @Override

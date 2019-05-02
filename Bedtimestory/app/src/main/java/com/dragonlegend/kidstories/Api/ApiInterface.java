@@ -2,12 +2,18 @@ package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
+import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
+import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Model.UserReg;
+import com.dragonlegend.kidstories.Model.UserRegResponse;
+
+import org.w3c.dom.Comment;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -20,45 +26,62 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
-    @GET("category/all")
+    @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("story/category/{id}")
-    Call<StoryCategoryResponse> getCategory(@Path("id") String id);
+    @GET("categories/{id}/stories")
+    Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") String id);
 
-    @GET("story")
+    @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
-    @GET("story/{id}")
-    Call<StoryResponse> getStory(@Path("id") String id);
+    @GET("stories/{id}")
+    Call<StoryResponse> getStory(@Path("id") Integer id);
 
 
-    @POST("user/register")
-    Call<String> registerUser(@Body User user);
 
-    @POST("user/login")
+
+
+
     @FormUrlEncoded
-    Call<LoginResponse> loginUser(@Field("email") String email, @Field("password") String password);
+    @POST("auth/register")
+    Call<BaseResponse<RegistrationResponse>> registerUser(@Field("phone") String phone,
+                                @Field("email") String email,
+                                @Field("password") String passwprd,
+                                @Field("first_name") String first_name,
+                                @Field("last_name") String last_name);
 
-    @GET("user/profile/{id}")
-    Call<User> getProfile(@Path("id") String id);
 
-    @GET("story/{action}/{storyId}")
+    @POST("auth/login")
+    @FormUrlEncoded
+    Call<LoginResponse> loginUser(@Header("Authorization") String token,
+            @Field("email") String email, @Field("password") String password);
+
+    @GET("users/profile")
+    Call<LoginResponse> getProfile(@Header("Authorization") String token);
+
+
+    @POST("stories/{storyId}/reactions/{action}")
     Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
     @Multipart
-    @POST("story/create")
+    @POST("stories")
     Call<ResponseBody> addStory(
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
-            @Part("story") RequestBody story,
-            @Part("category") RequestBody category,
-            @Part MultipartBody.Part image
+            @Part("body") RequestBody body,
+            @Part("category_id") int category_id,
+            @Part MultipartBody.Part photo,
+            @Part("age") RequestBody age,
+            @Part("author") RequestBody author,
+            @Part("is_premium") RequestBody is_premium
+
     );
     
     @POST("bookmarks/stories/{storyId}")
