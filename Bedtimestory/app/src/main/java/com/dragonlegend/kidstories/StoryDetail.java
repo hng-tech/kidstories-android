@@ -101,7 +101,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
                         @Override
                         public void onFailure(Call<StoryResponse> call, Throwable t) {
-t.toString();
+                                t.toString();
                         }
                     });
 
