@@ -44,7 +44,7 @@ import static android.support.design.widget.Snackbar.make;
 public class StoryDetail extends AppCompatActivity implements View.OnClickListener {
     public static final String STORY_ID = "story_id";
     ImageView mStoryImage;
-    TextView mTitle, mDetail,mStoryAge;
+    TextView mTitle, mDetail,mStoryAge,mPremiumMessage;
     ImageButton mBookmark,mCommentSend;
     EditText mCommentField;
     Button mAddComment;
@@ -90,6 +90,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
                             Log.d("TAG", "detailsResponse: -> " +response.message());
                             if(response.isSuccessful()){
+
                                 Story story = response.body().getData();
                                 title = story.getTitle();
                                 content = story.getBody();
@@ -102,6 +103,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 mTitle.setText(title);
                                 mDetail.setText(content);
                                 mStoryAge.setText("For Kids " +story.getAge() +" years");
+                            }else if(response.code() !=200){
+                                mScrollView.setVisibility(View.GONE);
+                                mPremiumMessage.setVisibility(View.VISIBLE);
                             }
                             else {
                                 validate("We are having trouble fetching the story, please try again");
@@ -146,6 +150,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mStoryAge = findViewById(R.id.story_age_range);
         mDetail = findViewById(R.id.story);
         mBookmark = findViewById(R.id.bookmark_button);
+        mPremiumMessage = findViewById(R.id.premium_message);
         mAddComment = findViewById(R.id.add_comment);
         mProgressBar = findViewById(R.id.progress);
         mLinearLayout = findViewById(R.id.story_ll);

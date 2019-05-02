@@ -42,4 +42,5 @@
     <color name="main_color_grey_700">@color/material_grey_700</color>
     <color name="main_color_grey_800">@color/material_grey_800</color>
     <color name="main_color_grey_900">@color/material_grey_900</color>
+    <color name="colorAshString">#999999</color>
 </resources>
