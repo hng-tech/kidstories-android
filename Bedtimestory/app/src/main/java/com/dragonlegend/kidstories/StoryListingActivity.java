@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,6 +76,8 @@ public class StoryListingActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     assert response.body() != null;
                     List<Story> stories= response.body().getData().getStories();
+
+                    Log.d("TAG", "onStory: -> " + stories.get(1));
                     mAdapter.addStories(stories);
                     if(stories.size()==0){
                         mNoStories.setVisibility(View.VISIBLE);

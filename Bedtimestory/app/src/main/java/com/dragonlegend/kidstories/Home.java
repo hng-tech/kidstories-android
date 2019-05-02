@@ -307,6 +307,7 @@ public class Home extends AppCompatActivity
 
             @Override
             public void onFailure(Call<CategoryAllResponse> call, Throwable t) {
+                Log.d("TAG", "onFailure: " + t.getMessage());
                 showNetworkError();
             }
         });
