@@ -101,7 +101,8 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 //        UserReg user = new UserReg(mFirstName, mLastname, mEmail,phoneNumber,mPassword);
 
 
-        MainAplication.getApiInterface().registerUser(phoneNumber, mEmail,mPassword,mFirstName,mLastname).enqueue(new Callback<BaseResponse<RegistrationResponse>>() {
+        MainAplication.getApiInterface().registerUser(phoneNumber, mEmail,mPassword,mFirstName,mLastname)
+                .enqueue(new Callback<BaseResponse<RegistrationResponse>>() {
             @Override
             public void onResponse(Call<BaseResponse<RegistrationResponse>> call, Response<BaseResponse<RegistrationResponse>> response) {
                 Log.d("TAG", "onResponse: " +response.body());

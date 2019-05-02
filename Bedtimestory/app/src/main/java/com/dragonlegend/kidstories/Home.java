@@ -77,13 +77,17 @@ public class Home extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
         Intent intent = getIntent();
-        if (intent.hasExtra(Config.USER_ID)) {
-            String id = intent.getStringExtra(Config.USER_ID);
-            if (!id.isEmpty()) {
-                BedTimeDbHelper dbHelper = new BedTimeDbHelper(this);
-                mUser = dbHelper.getUserById(id);
-            }
-        }
+//        if (intent.hasExtra(Config.USER_ID)) {
+//            String id = intent.getStringExtra(Config.USER_ID);
+//            if (!id.isEmpty()) {
+//                BedTimeDbHelper dbHelper = new BedTimeDbHelper(this);
+//                mUser = dbHelper.getUserById(id);
+//            }
+//        }
+
+
+
+
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);
@@ -215,27 +219,14 @@ public class Home extends AppCompatActivity
             Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
             startActivity(i);
 
-        } else if (id == R.id.nav_bookmarks) {
-
-         }
-        else if (id == R.id.nav_donate) {
-          //redirects user to Donate Form
-            String url = "https://paystack.com/pay/kidstoriesapp";
-
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-
-
-        }
-         else if (id == R.id.nav_profile) {
+        } else if (id == R.id.nav_profile) {
 //
 //            //start Profile activity .
-            if(mUser !=null ){
+//            if(mUser !=null ){
                 Intent i = new Intent(getBaseContext(), ProfileActivity.class);
-                i.putExtra(Config.USER_ID,mUser.getId());
+//                i.putExtra(Config.USER_ID,mUser.getId());
                 startActivity(i);
-            }
+//            }
 //
 // else if (id == R.id.nav_donate) {
 //
@@ -255,9 +246,16 @@ public class Home extends AppCompatActivity
             startActivity(i);
 
         }else if (id == R.id.nav_signout){
-            Prefs.putBoolean("isLoggedIn", false);
-            recreate();
+            if (!Prefs.getBoolean("isLoggedIn", false)){
+                ShowSnackbar("You have never logged In");
+            }
+            else {
+
+                validate("Logging you out!!!!");
+            }
+
         }
+
         else if (id == R.id.nav_addstory) {
 
 //            start addstory activity .
@@ -385,8 +383,9 @@ public class Home extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Prefs.putBoolean("isLoggedIn", false);
-                Intent i = new Intent(getBaseContext(), Login.class);
-                startActivity(i);
+//                Intent i = new Intent(getBaseContext(), Login.class);
+//                startActivity(i)
+                recreate();
             }
         });
 // show the snackbar

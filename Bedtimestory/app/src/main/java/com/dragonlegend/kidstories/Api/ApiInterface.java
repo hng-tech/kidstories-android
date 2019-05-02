@@ -71,8 +71,8 @@ public interface ApiInterface {
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
-            @Part("category_id") RequestBody category_id,
-            @Part("age") RequestBody age,
+            @Part("category_id") Integer category_id,
+            @Part("age") Integer age,
             @Part("author") RequestBody author,
             @Part("story_duration") RequestBody story_duration,
             @Part MultipartBody.Part photo
