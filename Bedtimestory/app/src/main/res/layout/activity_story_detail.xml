@@ -40,6 +40,7 @@
         android:layout_weight="1">
         <LinearLayout
             android:id="@+id/story_ll"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -81,19 +82,61 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-                <Button
-                    android:id="@+id/add_comment"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add Comment"
-                    android:textAllCaps="false"
-                    android:background="@null"
-                    android:textColor="@color/colorPrimary"/>
-            </LinearLayout>
+                    android:id="@+id/user_image"
+                    android:src="@drawable/avatar_new"
+                   android:layout_marginTop="20dp"
+                    android:layout_marginStart="0dp"/>
+                <LinearLayout
+                    android:id="@+id/commentLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginTop="25dp">
+
+                    <EditText
+                        android:id="@+id/add_comment"
+                        android:layout_width="200dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="Add Comment..."
+                        android:textAllCaps="false"
+                        android:layout_marginStart="10dp"
+                        android:layout_gravity="center"
+                        android:textAlignment="gravity"
+                        android:background="@null" />
+
+                    <TextView
+                        android:id="@+id/post"
+                        android:layout_width="50dp"
+                        android:visibility="visible"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@null"
+                        android:text="post"
+                        android:textColor="@color/colorPrimary" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp">
+
+            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
     </ScrollView>
@@ -128,6 +171,7 @@
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progress"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
