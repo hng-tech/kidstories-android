@@ -16,6 +16,7 @@ import com.dragonlegend.kidstories.AddStoryActivity;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.R;
 import com.dragonlegend.kidstories.StoryListingActivity;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.List;
 
@@ -64,6 +65,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         Category category = mCategories.get(position);
+
+//        holder.itemView.setOnClickListener(v -> {Prefs.putString("Cat_ID", mCategories.get(position).getId());});
 
         if(mType.equals("home")){
             CategoryHolderRound hold = (CategoryHolderRound) holder;
@@ -140,6 +143,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
     private void startListing(int pos) {
          Intent intent = new Intent(mContext,StoryListingActivity.class);
+        Prefs.putString("Cat_ID", mCategories.get(pos).getId());
         intent.putExtra(StoryListingActivity.CATEGORY_ID,mCategories.get(pos).getId());
         intent.putExtra(StoryListingActivity.CATEGORY_NAME,mCategories.get(pos).getName());
 

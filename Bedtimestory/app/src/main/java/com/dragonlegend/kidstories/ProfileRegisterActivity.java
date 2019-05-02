@@ -13,9 +13,12 @@ import android.widget.Toast;
 
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
+import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
+import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
 import com.dragonlegend.kidstories.Model.User;
 import com.dragonlegend.kidstories.Model.UserReg;
 import com.dragonlegend.kidstories.Model.UserRegResponse;
+import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import retrofit2.Call;
@@ -98,32 +101,31 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 //        UserReg user = new UserReg(mFirstName, mLastname, mEmail,phoneNumber,mPassword);
 
 
-        Client.getInstance().create(ApiInterface.class).registerUser(phoneNumber, mEmail,mPassword,mFirstName,mLastname).enqueue(new Callback<UserRegResponse>() {
+        MainAplication.getApiInterface().registerUser(phoneNumber, mEmail,mPassword,mFirstName,mLastname)
+                .enqueue(new Callback<BaseResponse<RegistrationResponse>>() {
             @Override
-            public void onResponse(Call<UserRegResponse> call, Response<UserRegResponse> response) {
+            public void onResponse(Call<BaseResponse<RegistrationResponse>> call, Response<BaseResponse<RegistrationResponse>> response) {
                 Log.d("TAG", "onResponse: " +response.body());
 
                 if(response.isSuccessful()){
 
-                    if(response.code() == 201){
-                        UserRegResponse user = response.body();
-                        String token = "Bearer" + " " +user.getData().getToken();
-                        String user_profile_email = user.getData().getEmail();
-                        String user_profile_name = user.getData().getFirst_name() +
-                                " " + user.getData().getLast_name();
-                        String user_profile_number = user.getData().getPhone();
+                    assert response.body() != null;
+                    RegistrationResponse user = response.body().getData();
+                    String token = user.getToken();
+                    String user_profile_email = user.getEmail();
+                    String user_profile_name = user.getFirstName() +
+                            " " + user.getLastName();
+                    String user_profile_number = user.getPhone();
 //                        String user_profile_id = user.getData().getId();
 
-                        Log.d("TAG", "dataResponse:-> " + token+user_profile_email+user_profile_name+user_profile_number);
-                        Prefs.putString("token", token);
-                        Prefs.putString("user_profile_email", user_profile_email);
-                        Prefs.putString("user_profile_name", user_profile_name);
-                        Prefs.putString("user_profile_number", user_profile_number);
-                        Intent intent = new Intent(ProfileRegisterActivity.this,Login.class);
-                        startActivity(intent);
-                    }else {
-                        Log.d("TAG", "onResponse: " + response.code());
-                    }
+                    Log.d("TAG", "dataResponse:-> " + token+user_profile_email+user_profile_name+user_profile_number);
+                    Prefs.putString("token", token);
+                    Prefs.putString("user_profile_email", user_profile_email);
+                    Prefs.putString("user_profile_name", user_profile_name);
+                    Prefs.putString("user_profile_number", user_profile_number);
+                    Intent intent = new Intent(ProfileRegisterActivity.this,Home.class);
+                    startActivity(intent);
+                    finish();
                 }
                 if(response.code() == 409){
                     Toast.makeText(ProfileRegisterActivity.this,"User Already Exists!",Toast.LENGTH_SHORT)
@@ -136,8 +138,9 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 
 
             @Override
-            public void onFailure(Call<UserRegResponse> call, Throwable t) {
+            public void onFailure(Call<BaseResponse<RegistrationResponse>> call, Throwable t) {
                 Log.d("TAG", "onFailure: " + t.getMessage());
+                Toast.makeText(ProfileRegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -3,11 +3,13 @@ package com.dragonlegend.kidstories.Api.Responses;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.stream.IntStream;
+
 public class BaseResponse<T> {
 
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private String status;
     @SerializedName("method")
     @Expose
     private String method;
@@ -18,11 +20,11 @@ public class BaseResponse<T> {
     @Expose
     private T data;
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

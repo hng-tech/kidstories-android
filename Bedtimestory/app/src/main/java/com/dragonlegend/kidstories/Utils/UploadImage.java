@@ -31,8 +31,8 @@ public class UploadImage {
     public static final String BASE_URL = "https://dragon-legend-5.herokuapp.com/api/v1/";
 
     public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody,
-                                  final Context context, String storyCategory,
-                                  String  user_age, String duration, String story_author) {
+                                  final Context context, Integer category_id,
+                                  Integer  age, String duration, String story_author) {
 
         // use the FileUtils to get the actual imageFile by uri
         Uri uri = Uri.parse(fileUri);
@@ -60,13 +60,13 @@ public class UploadImage {
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, storyBody);
 
-        RequestBody category_id =
-                RequestBody.create(
-                        okhttp3.MultipartBody.FORM, storyCategory);
-
-        RequestBody age =
-                RequestBody.create(
-                        okhttp3.MultipartBody.FORM, user_age );
+//        RequestBody category_id =
+//                RequestBody.create(
+//                        okhttp3.MultipartBody.FORM, storyCategory);
+//
+//        RequestBody age =
+//                RequestBody.create(
+//                        okhttp3.MultipartBody.FORM, user_age );
 
         RequestBody author =
                 RequestBody.create(
@@ -83,7 +83,8 @@ public class UploadImage {
 
 
         // finally, execute the request
-        Client.getInstance().create(ApiInterface.class).addStory("Bearer" + " " +token,title,story,category_id,age,author,stroy_duration,photo).
+        Client.getInstance().create(ApiInterface.class).addStory("Bearer" + " " +
+                token,title,story,category_id,age,author,stroy_duration,photo).
                 enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
