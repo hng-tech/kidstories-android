@@ -31,7 +31,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
     private String title;
     private String filePath;
     private String content;
-    private Integer category;
+    private int category = 0;
     private Spinner chooseCategory;
     private String duration;
 
@@ -152,7 +152,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                 ShowSnackbar("Content cannot be empty");
             }
             else {
-
+                String is_premium = "1";
                 title = Prefs.getString("title", "");
                 String imageFileUri = Prefs.getString("filePath","");
                 Log.d("TAG", "AddStory: " + imageFileUri);
@@ -160,7 +160,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                     ShowSnackbar("Category cannot be empty");
                 }else{
 
-                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category,age,duration,author);
+                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category,age,duration,author,is_premium);
                 }
             }
         } else {
