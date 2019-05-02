@@ -83,4 +83,7 @@ public interface ApiInterface {
             @Part("is_premium") RequestBody is_premium
 
     );
+    
+    @POST("bookmarks/stories/{storyId}")
+    Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
 }

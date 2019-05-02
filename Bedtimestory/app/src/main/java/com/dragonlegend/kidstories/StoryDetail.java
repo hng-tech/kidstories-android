@@ -74,16 +74,17 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         helper = new BedTimeDbHelper(this);
 
 
+
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         initViews();
-//        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
-//            mTitle.setText(getIntent().getExtras().getString("title"));
-//            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
-//            mDetail.setText(getIntent().getExtras().getString("content"));
-//            mBookmark.setVisibility(View.INVISIBLE);
-//
-//        }else {
+       if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
+           mTitle.setText(getIntent().getExtras().getString("title"));
+           Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
+           mDetail.setText(getIntent().getExtras().getString("content"));
+           mBookmark.setVisibility(View.INVISIBLE);
+
+       }else {
             Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
                     .enqueue(new Callback<StoryResponse>() {
                         @Override
@@ -128,7 +129,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         }
 
-//    }
+
+   }
+
 
     private void addFavorite(String title, String story, String image, String time) {
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -140,7 +143,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         long idRow = db.insert(FavoriteContract.FavoriteColumn.TABLE_NAME, null, value);
         Log.v("IdRow", "Id Count" + idRow);
-        Toast.makeText(this, "Successfully Added to Cart", Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "Successfully Added", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -171,6 +176,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mAddComment.setOnClickListener(this);
         mBookmark.setOnClickListener(this);
         mCommentSend.setOnClickListener(this);
+
     }
 
     @Override
@@ -189,15 +195,55 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 date = Calendar.getInstance().getTimeInMillis();
                 String time = date.toString();
                 //Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+                    //check if bookmark already exists
                 if (storyExist(title)){
                     Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                addFavorite(title, content, image, time);
+                addFavoriteOnline(Prefs.getString("token", " "), getIntent().getIntExtra(StoryDetail.STORY_ID, 1), title, content, image, time);
+                //addFavorite(title, content, image, time);
+                Log.d("check", "onClick: id is:"+ getIntent().getIntExtra(StoryDetail.STORY_ID, 1));
             default:
                break;
         }
     }
+    
+    //Add the story online first
+     private void addFavoriteOnline(String token, int id, String title, String story, String image, String time) {
+
+        Log.d("token", "token: "+ Prefs.getString("token", ""));
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Adding to bookmarks");
+        dialog.show();
+
+        MainAplication.getApiInterface().addBookmark(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)).enqueue(new Callback<BookmarkResponse>() {
+            @Override
+            public void onResponse(Call<BookmarkResponse> call, Response<BookmarkResponse> response) {
+                if (response.isSuccessful()){
+                    if (response.code()== 200){
+                        //if successfull add story offline
+                        addFavorite(title, story, image, time);
+                    }else{
+                        dialog.dismiss();
+                        Toast.makeText(StoryDetail.this, "Oops! Story not found", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    dialog.dismiss();
+                    Toast.makeText(StoryDetail.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookmarkResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(StoryDetail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("failed", "onFailure: "+ t.getMessage());
+            }
+        });
+
+    }
+
+    
     private boolean storyExist(String title){
         SQLiteDatabase db =  helper.getReadableDatabase();
         String query = "select * from " + FavoriteContract.FavoriteColumn.TABLE_NAME + " where title=?";
