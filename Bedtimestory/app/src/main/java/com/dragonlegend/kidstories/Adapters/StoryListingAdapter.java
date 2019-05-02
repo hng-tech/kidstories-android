@@ -115,6 +115,7 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Prefs.putInt("storyId", mStories.get(getAdapterPosition()).getId());
                     Intent intent = new Intent(mContext.getApplicationContext(),StoryDetail.class);
                     intent.putExtra(StoryDetail.STORY_ID,mStories.get(getAdapterPosition()).getId());
                     Prefs.putInt("story_id", mStories.get(getAdapterPosition()).getId());
