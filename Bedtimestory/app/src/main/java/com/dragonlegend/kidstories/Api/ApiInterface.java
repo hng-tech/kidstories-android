@@ -60,4 +60,7 @@ public interface ApiInterface {
             @Part("category") RequestBody category,
             @Part MultipartBody.Part image
     );
+    
+    @POST("bookmarks/stories/{storyId}")
+    Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
 }
