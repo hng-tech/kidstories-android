@@ -13,6 +13,8 @@ import com.dragonlegend.kidstories.Model.User;
 import com.dragonlegend.kidstories.Model.UserReg;
 import com.dragonlegend.kidstories.Model.UserRegResponse;
 
+import org.w3c.dom.Comment;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -38,18 +40,21 @@ public interface ApiInterface {
     @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
-    @GET("story/{id}")
-    Call<StoryResponse> getStory(@Path("id") String id);
+    @GET("stories/{id}")
+    Call<StoryResponse> getStory(@Path("id") Integer id);
+
+
+
 
 
 
     @FormUrlEncoded
     @POST("auth/register")
     Call<BaseResponse<RegistrationResponse>> registerUser(@Field("phone") String phone,
-                                                          @Field("email") String email,
-                                                          @Field("password") String passwprd,
-                                                          @Field("first_name") String first_name,
-                                                          @Field("last_name") String last_name);
+                                @Field("email") String email,
+                                @Field("password") String passwprd,
+                                @Field("first_name") String first_name,
+                                @Field("last_name") String last_name);
 
 
     @POST("auth/login")
@@ -72,9 +77,9 @@ public interface ApiInterface {
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
             @Part("category_id") Integer category_id,
-            @Part("age") Integer age,
+            @Part("age") String age,
             @Part("author") RequestBody author,
             @Part("story_duration") RequestBody story_duration,
-            @Part MultipartBody.Part photo
+            @Part MultipartBody.Part story_image
     );
 }

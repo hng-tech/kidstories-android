@@ -32,7 +32,7 @@ public class UploadImage {
 
     public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody,
                                   final Context context, Integer category_id,
-                                  Integer  age, String duration, String story_author) {
+                                  String  age, String duration, String story_author) {
 
         // use the FileUtils to get the actual imageFile by uri
         Uri uri = Uri.parse(fileUri);
@@ -46,7 +46,7 @@ public class UploadImage {
                 RequestBody.create(MediaType.parse("image/*"),imageFile);
 
         // MultipartBody.Part is used to send also the actual imageFile name
-        MultipartBody.Part photo =
+        MultipartBody.Part story_image =
                 MultipartBody.Part.createFormData(name, imageFile.getName(), requestFile);
 
         // add another part within the multipart request
@@ -83,8 +83,8 @@ public class UploadImage {
 
 
         // finally, execute the request
-        Client.getInstance().create(ApiInterface.class).addStory("Bearer" + " " +
-                token,title,story,category_id,age,author,stroy_duration,photo).
+        Client.getInstance().create(ApiInterface.class).addStory(
+                token,title,story,category_id,age,author,stroy_duration,story_image).
                 enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

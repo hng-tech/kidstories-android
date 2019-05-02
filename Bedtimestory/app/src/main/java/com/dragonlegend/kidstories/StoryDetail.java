@@ -3,10 +3,13 @@ package com.dragonlegend.kidstories;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
@@ -27,12 +30,16 @@ import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Model.Story;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
+import static android.support.design.widget.Snackbar.make;
 
 public class StoryDetail extends AppCompatActivity implements View.OnClickListener {
     public static final String STORY_ID = "story_id";
@@ -70,17 +77,18 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         initViews();
-        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
-            mTitle.setText(getIntent().getExtras().getString("title"));
-            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
-            mDetail.setText(getIntent().getExtras().getString("content"));
-            mBookmark.setVisibility(View.INVISIBLE);
-
-        }else {
-            Client.getInstance().create(ApiInterface.class).getStory(getIntent().getStringExtra(STORY_ID))
+//        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
+//            mTitle.setText(getIntent().getExtras().getString("title"));
+//            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
+//            mDetail.setText(getIntent().getExtras().getString("content"));
+//            mBookmark.setVisibility(View.INVISIBLE);
+//
+//        }else {
+            Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
                     .enqueue(new Callback<StoryResponse>() {
                         @Override
                         public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
+                            Log.d("TAG", "detailsResponse: -> " +response.message());
                             if(response.isSuccessful()){
                                 Story story = response.body().getData();
                                 title = story.getTitle();
@@ -95,19 +103,28 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 mDetail.setText(content);
                                 mStoryAge.setText("For Kids " +story.getAge() +" years");
                             }
+                            else {
+                                validate("We are having trouble fetching the story, please try again");
+                            }
+
                             mProgressBar.setVisibility(View.GONE);
                             mLinearLayout.setVisibility(View.VISIBLE);
+
                         }
 
                         @Override
                         public void onFailure(Call<StoryResponse> call, Throwable t) {
-t.toString();
+                                t.toString();
+                            Log.d("TAG", "onFailure: -> "+t.getMessage());
+                            if (t.getMessage() == "timeout") {
+                                validate("We are having trouble fetching the story, please try again");
+                            }
                         }
                     });
 
         }
 
-    }
+//    }
 
     private void addFavorite(String title, String story, String image, String time) {
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -188,4 +205,25 @@ t.toString();
             return false;
         }
     }
+
+
+    public void validate(String message) {
+        Snackbar snackbar = make(findViewById(android.R.id.content), message, LENGTH_LONG);
+// get snackbar view
+        View mView = snackbar.getView();
+        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        else
+            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        snackbar.setAction("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recreate();
+            }
+        });
+// show the snackbar
+        snackbar.show();
+    }
+
 }

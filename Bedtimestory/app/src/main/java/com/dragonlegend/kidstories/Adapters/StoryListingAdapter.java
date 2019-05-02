@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.R;
 import com.dragonlegend.kidstories.StoryDetail;
 import com.dragonlegend.kidstories.Utils.MainAplication;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.List;
 
@@ -107,6 +109,9 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext.getApplicationContext(),StoryDetail.class);
                     intent.putExtra(StoryDetail.STORY_ID,mStories.get(getAdapterPosition()).getId());
+                    Prefs.putInt("story_id", mStories.get(getAdapterPosition()).getId());
+
+                    Log.d("TAG", "onClick: -> " + Prefs.getInt("story_id", 0));
                     mContext.startActivity(intent);
                 }
             });
