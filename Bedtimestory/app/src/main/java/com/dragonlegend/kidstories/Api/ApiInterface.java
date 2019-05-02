@@ -2,6 +2,7 @@ package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
+import com.dragonlegend.kidstories.Api.Responses.CommentResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
@@ -26,18 +27,19 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
     @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
-    @GET("story/category/{id}")
+    @GET("stories/category/{id}")
     Call<StoryCategoryResponse> getCategory(@Path("id") String id);
 
     @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
-    @GET("story/{id}")
+    @GET("stories/{id}")
     Call<StoryResponse> getStory(@Path("id") String id);
 
 
@@ -76,4 +78,11 @@ public interface ApiInterface {
             @Part("story_duration") RequestBody story_duration,
             @Part MultipartBody.Part photo
     );
+
+//    @POST("comments")
+//    Call<CommentResponse> addComment(@Path("id") String id,
+//                                     @Field("body") String comment);
+    @POST("comments")
+            Call<CommentResponse>addComment(@Path("body") String body,
+            @Path("story_id") String storyid);
 }
