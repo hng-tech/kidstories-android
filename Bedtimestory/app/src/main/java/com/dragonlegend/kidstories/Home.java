@@ -299,6 +299,10 @@ public class Home extends AppCompatActivity
                 if (response.isSuccessful()) {
                     CategoryAllResponse categoryList = response.body();
                     List<Category> cl = categoryList.getData();
+
+                    for (int i = 0; i< cl.size(); i++){
+                        Log.d("TAG", "onResponse: -> " + cl.get(i).getName());
+                    }
                     if (cl != null) {
                         mCategoriesAdapter.addCategories(cl);
                     }
@@ -317,6 +321,10 @@ public class Home extends AppCompatActivity
                 if (response.isSuccessful()) {
                     StoryAllResponse storyAllResponse = response.body();
                     List<Story> story = storyAllResponse.getData();
+
+                    for (int i = 0; i< story.size(); i++){
+                        Log.d("TAG", "onResponse: -> " + story.get(i).getBody());
+                    }
                     if (story != null) {
                         mAdapter.addStories(story);
 
