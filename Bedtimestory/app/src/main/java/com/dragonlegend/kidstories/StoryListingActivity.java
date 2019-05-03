@@ -3,13 +3,11 @@ package com.dragonlegend.kidstories;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,9 +34,8 @@ public class StoryListingActivity extends AppCompatActivity {
     RecyclerView mStoriesRv;
     StoryListingAdapter mAdapter;
     List<Story> mStories;
-    int mCatId;
+    String mCatId;
     String mCatName;
-    ProgressBar mProgressBar;
 
     TextView mNoStories;
     @Override
@@ -52,9 +49,8 @@ public class StoryListingActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(1);
         TextView toolbar_title = toolbar.findViewById(R.id.toolbar_title);
         Intent intent = getIntent();
-//        mCatId = Prefs.getString("Cat_ID", "3");
+        mCatId = Prefs.getString("Cat_ID", "3");
         if(intent.hasExtra(CATEGORY_ID) ){
-            mCatId = intent.getIntExtra(CATEGORY_ID,1);
             mCatName = intent.getStringExtra(CATEGORY_NAME);
             
             toolbar_title.setText(mCatName);
@@ -65,16 +61,16 @@ public class StoryListingActivity extends AppCompatActivity {
         mStories = new ArrayList<>(); //create empty lis of stories
         mAdapter = new StoryListingAdapter(this,mStories);
         mStoriesRv = findViewById(R.id.stories_rv);
-        mProgressBar = findViewById(R.id.progress_b);
-        mStoriesRv.setLayoutManager(new GridLayoutManager(this,3));
+        mStoriesRv.setLayoutManager(new LinearLayoutManager(this));
         mStoriesRv.setAdapter(mAdapter);
 
+        if(mCatId !=null){
             loadStories();
-
+        }
+        else Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
     }
 
     private void loadStories(){
-        mProgressBar.setVisibility(View.VISIBLE);
         MainAplication.getApiInterface().getCategory(mCatId).enqueue(new Callback<BaseResponse<CategoryResponse>>() {
             @Override
             public void onResponse(Call<BaseResponse<CategoryResponse>> call, Response<BaseResponse<CategoryResponse>> response) {
@@ -82,13 +78,10 @@ public class StoryListingActivity extends AppCompatActivity {
                     assert response.body() != null;
                     List<Story> stories= response.body().getData().getStories();
 
-//                    Log.d("TAG", "onStory: -> " + stories.get(1));
+                    Log.d("TAG", "onStory: -> " + stories.get(1));
                     mAdapter.addStories(stories);
-                    mProgressBar.setVisibility(View.GONE);
                     if(stories.size()==0){
-                        mProgressBar.setVisibility(View.GONE);
                         mNoStories.setVisibility(View.VISIBLE);
-
                     }
 
                 }
