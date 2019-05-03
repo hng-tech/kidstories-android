@@ -1,9 +1,9 @@
 package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
+import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
-import com.dragonlegend.kidstories.Api.Responses.CommentResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
@@ -30,20 +30,23 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiInterface {
     @GET("categories")
     Call<CategoryAllResponse> getAllCategories();
 
     @GET("categories/{id}/stories")
-    Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") String id);
+    Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") int id);
 
     @GET("stories")
     Call<StoryAllResponse> getAllStories();
 
     @GET("stories/{id}")
-    Call<StoryResponse> getStory(@Path("id") String id);
+    Call<StoryResponse> getStory(@Path("id") Integer id);
+
+
+
+
 
 
     @FormUrlEncoded
@@ -74,31 +77,14 @@ public interface ApiInterface {
             @Header("Authorization") String token,
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
-            @Part("category_id") Integer category_id,
-            @Part("age") String age,
+            @Part("category_id") int category_id,
+            @Part MultipartBody.Part photo,
+            @Part("age") RequestBody age,
             @Part("author") RequestBody author,
-            @Part("story_duration") RequestBody story_duration,
-            @Part MultipartBody.Part story_image
-    );
+            @Part("is_premium") RequestBody is_premium
 
-    @Multipart
-    @POST("stories")
-    Call<ResponseBody> addStory(
-            @Part("title") RequestBody title,
-            @Part("body") RequestBody body,
-            @Part("category_id") Integer category_id,
-            @Part("age") int age,
-            @Part("author") RequestBody author,
-            @Part("is_premium") RequestBody isPremium,
-            @Part("story_duration") RequestBody story_duration,
-            @Part MultipartBody.Part story_image
     );
-
-    //    @POST("comments")
-//    Call<CommentResponse> addComment(@Path("id") String id,
-//                                     @Field("body") String comment);
-    @POST("comments")
-    @FormUrlEncoded
-    Call<BaseResponse> addComment(@Field("body") String body,
-                                     @Field("story_id") String storyid);
+    
+    @POST("bookmarks/stories/{storyId}")
+    Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
 }

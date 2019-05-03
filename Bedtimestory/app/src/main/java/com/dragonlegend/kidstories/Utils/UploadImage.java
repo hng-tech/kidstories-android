@@ -31,8 +31,8 @@ public class UploadImage {
     public static final String BASE_URL = "https://dragon-legend-5.herokuapp.com/api/v1/";
 
     public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody,
-                                  final Context context, Integer category_id,
-                                  String  age, String duration, String story_author) {
+                                  final Context context, int category_id,
+                                  String  user_age, String duration, String story_author, String premium) {
 
         // use the FileUtils to get the actual imageFile by uri
         Uri uri = Uri.parse(fileUri);
@@ -46,7 +46,7 @@ public class UploadImage {
                 RequestBody.create(MediaType.parse("image/*"),imageFile);
 
         // MultipartBody.Part is used to send also the actual imageFile name
-        MultipartBody.Part story_image =
+        MultipartBody.Part photo =
                 MultipartBody.Part.createFormData(name, imageFile.getName(), requestFile);
 
         // add another part within the multipart request
@@ -54,43 +54,55 @@ public class UploadImage {
 //        String storyBody = story;
         RequestBody title =
                 RequestBody.create(
-                        okhttp3.MultipartBody.FORM, storyTitle);
+                        MultipartBody.FORM, storyTitle);
 
         RequestBody story =
                 RequestBody.create(
-                        okhttp3.MultipartBody.FORM, storyBody);
+                        MultipartBody.FORM, storyBody);
 
 //        RequestBody category_id =
 //                RequestBody.create(
 //                        okhttp3.MultipartBody.FORM, storyCategory);
 //
-//        RequestBody age =
-//                RequestBody.create(
-//                        okhttp3.MultipartBody.FORM, user_age );
+        RequestBody age =
+                RequestBody.create(
+                        MultipartBody.FORM, user_age );
 
         RequestBody author =
                 RequestBody.create(
-                        okhttp3.MultipartBody.FORM, story_author);
+                        MultipartBody.FORM, story_author);
 
 
         RequestBody stroy_duration =
                 RequestBody.create(
-                        okhttp3.MultipartBody.FORM, duration);
+                        MultipartBody.FORM, duration);
+
+//        RequestBody category_id =
+//                RequestBody.create(
+//                        okhttp3.MultipartBody.FORM, category);
+
+
+        RequestBody is_premium =
+                RequestBody.create(
+                        MultipartBody.FORM, premium);
 
 
 
         String token = Prefs.getString("token", "");
 
 
+
+
         // finally, execute the request
         Client.getInstance().create(ApiInterface.class).addStory(
-                token,title,story,category_id,age,author,stroy_duration,story_image).
+                token,title,story,category_id,photo,age,author,is_premium).
                 enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d(TAG, "onResponse: ->" + "Bearer " +token);
                 if (response.isSuccessful()){
 
-                    Log.d(TAG, "onResponse: " + response.message());
+                    Log.d(TAG, "onResponse: " + response.code());
                     showMessage(context, "Volla!!!!! story created");
                     Intent intent = new Intent(context, Home.class);
                     context.startActivity(intent);
