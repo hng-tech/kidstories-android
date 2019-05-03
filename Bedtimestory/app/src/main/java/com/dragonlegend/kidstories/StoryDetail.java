@@ -1,5 +1,6 @@
 package com.dragonlegend.kidstories;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,10 +27,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
+import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
+import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Model.Story;
+import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.Calendar;
@@ -74,16 +78,17 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         helper = new BedTimeDbHelper(this);
 
 
+
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         initViews();
-//        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
-//            mTitle.setText(getIntent().getExtras().getString("title"));
-//            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
-//            mDetail.setText(getIntent().getExtras().getString("content"));
-//            mBookmark.setVisibility(View.INVISIBLE);
-//
-//        }else {
+        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
+            mTitle.setText(getIntent().getExtras().getString("title"));
+            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
+            mDetail.setText(getIntent().getExtras().getString("content"));
+            mBookmark.setVisibility(View.INVISIBLE);
+
+        }else {
             Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
                     .enqueue(new Callback<StoryResponse>() {
                         @Override
@@ -103,6 +108,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 mTitle.setText(title);
                                 mDetail.setText(content);
                                 mStoryAge.setText("For Kids " +story.getAge() +" years");
+                                mScrollView.setVisibility(View.VISIBLE);
                             }else if(response.code() !=200){
                                 mScrollView.setVisibility(View.GONE);
                                 mPremiumMessage.setVisibility(View.VISIBLE);
@@ -112,13 +118,12 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                             }
 
                             mProgressBar.setVisibility(View.GONE);
-                            mLinearLayout.setVisibility(View.VISIBLE);
 
                         }
 
                         @Override
                         public void onFailure(Call<StoryResponse> call, Throwable t) {
-                                t.toString();
+                            t.toString();
                             Log.d("TAG", "onFailure: -> "+t.getMessage());
                             if (t.getMessage() == "timeout") {
                                 validate("We are having trouble fetching the story, please try again");
@@ -128,7 +133,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         }
 
-//    }
+
+    }
+
 
     private void addFavorite(String title, String story, String image, String time) {
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -140,7 +147,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         long idRow = db.insert(FavoriteContract.FavoriteColumn.TABLE_NAME, null, value);
         Log.v("IdRow", "Id Count" + idRow);
-        Toast.makeText(this, "Successfully Added to Cart", Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "Successfully Added", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -171,6 +180,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mAddComment.setOnClickListener(this);
         mBookmark.setOnClickListener(this);
         mCommentSend.setOnClickListener(this);
+
     }
 
     @Override
@@ -183,7 +193,6 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
                 break;
             case R.id.comment_send:
-                //add comment
                 addComment(mCommentField.getText().toString().trim());
                 Toast.makeText(this, mCommentField.getText().toString().trim(),Toast.LENGTH_LONG).show();
                 break;
@@ -191,15 +200,55 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 date = Calendar.getInstance().getTimeInMillis();
                 String time = date.toString();
                 //Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
+                //check if bookmark already exists
                 if (storyExist(title)){
                     Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                addFavorite(title, content, image, time);
+                addFavoriteOnline(Prefs.getString("token", " "), getIntent().getIntExtra(StoryDetail.STORY_ID, 1), title, content, image, time);
+                //addFavorite(title, content, image, time);
+                Log.d("check", "onClick: id is:"+ getIntent().getIntExtra(StoryDetail.STORY_ID, 1));
             default:
-               break;
+                break;
         }
     }
+
+    //Add the story online first
+    private void addFavoriteOnline(String token, int id, String title, String story, String image, String time) {
+
+        Log.d("token", "token: "+ Prefs.getString("token", ""));
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Adding to bookmarks");
+        dialog.show();
+
+        MainAplication.getApiInterface().addBookmark(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)).enqueue(new Callback<BookmarkResponse>() {
+            @Override
+            public void onResponse(Call<BookmarkResponse> call, Response<BookmarkResponse> response) {
+                if (response.isSuccessful()){
+                    if (response.code()== 200){
+                        //if successfull add story offline
+                        addFavorite(title, story, image, time);
+                    }else{
+                        dialog.dismiss();
+                        Toast.makeText(StoryDetail.this, "Oops! Story not found", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    dialog.dismiss();
+                    Toast.makeText(StoryDetail.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookmarkResponse> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(StoryDetail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("failed", "onFailure: "+ t.getMessage());
+            }
+        });
+
+    }
+
+
     private boolean storyExist(String title){
         SQLiteDatabase db =  helper.getReadableDatabase();
         String query = "select * from " + FavoriteContract.FavoriteColumn.TABLE_NAME + " where title=?";
@@ -232,7 +281,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 // show the snackbar
         snackbar.show();
     }
-    
+
     private void addComment(String comment){
         MainAplication.getApiInterface().addComment(comment, String.valueOf(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)))
                 .enqueue(new Callback<BaseResponse>() {

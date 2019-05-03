@@ -1,6 +1,7 @@
 package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
+import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
