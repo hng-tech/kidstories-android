@@ -46,21 +46,22 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        if (getActivityName().equals("Home")) {
+//        if (getActivityName().equals("Home")) {
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.post_single, viewGroup, false);
             return new StoryHolder(view);
-        } else {
-            View view = LayoutInflater.from(mContext)
-                    .inflate(R.layout.story_single, viewGroup, false);
-            return new StoryGridHolder(view);
-        }
+//        }
+//        else {
+//            View view = LayoutInflater.from(mContext)
+//                    .inflate(R.layout.story_single, viewGroup, false);
+//            return new StoryGridHolder(view);
+//        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         Story story = mStories.get(i);
-        if (getActivityName().equals("Home")) {
+//        if (getActivityName().equals("Home")) {
             StoryHolder storyHolder = (StoryHolder) holder;
             storyHolder.mTitle.setText(story.getTitle());
             storyHolder.mImgTitle.setText(story.getTitle());
@@ -96,17 +97,18 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (story.getIsPremium() == 1) {
                 storyHolder.mPremium.setVisibility(View.VISIBLE);
             }
-        } else {
-            StoryGridHolder storyGridHolder = (StoryGridHolder) holder;
-            storyGridHolder.mTitle.setText(story.getTitle());
-            if (story.getIsPremium() == 1) {
-                storyGridHolder.mPremium.setVisibility(View.VISIBLE);
-            }
-            if (story.getImageUrl() != null) {
-                Glide.with(mContext).load(story.getImageUrl()).into(storyGridHolder.mImage);
-
-            }
-        }
+//        }
+//        else {
+//            StoryGridHolder storyGridHolder = (StoryGridHolder) holder;
+//            storyGridHolder.mTitle.setText(story.getTitle());
+//            if (story.getIsPremium() == 1) {
+//                storyGridHolder.mPremium.setVisibility(View.VISIBLE);
+//            }
+//            if (story.getImageUrl() != null) {
+//                Glide.with(mContext).load(story.getImageUrl()).into(storyGridHolder.mImage);
+//
+//            }
+//        }
     }
 
     @Override
@@ -198,10 +200,10 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<StoryReactionResponse>() {
             @Override
             public void onResponse(Call<StoryReactionResponse> call, Response<StoryReactionResponse> response) {
+                holdProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     StoryReactionResponse reactionResponse = response.body();
-                    holdProgress.setVisibility(View.GONE);
                     mStories.get(pos).setLikesCount(reactionResponse.getLikesCount());
                     mStories.get(pos).setDislikesCount(reactionResponse.getDislikesCount());
                     notifyDataSetChanged();
@@ -211,6 +213,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             @Override
             public void onFailure(Call<StoryReactionResponse> call, Throwable t) {
+                holdProgress.setVisibility(View.GONE);
                 Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

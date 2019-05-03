@@ -11,6 +11,7 @@ import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
+import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
 import com.dragonlegend.kidstories.Model.UserReg;
 import com.dragonlegend.kidstories.Model.UserRegResponse;
@@ -98,6 +99,6 @@ public interface ApiInterface {
     Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
 
     @GET("bookmarks/stories")
-    Call<BaseResponse<List<SingleStory>>> getBookmarks();
+    Call<BaseResponse<List<Story>>> getBookmarks();
 
 }
