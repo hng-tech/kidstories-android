@@ -67,7 +67,7 @@ public interface ApiInterface {
 
 
     @POST("stories/{storyId}/reactions/{action}")
-    Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
+    Call<StoryReactionResponse> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
     @Multipart
