@@ -72,10 +72,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:scaleType="fitCenter"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toTopOf="@+id/reactionProgress"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/profile" />
@@ -91,7 +91,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="Tales of Snowwhite"
                 android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/reactionProgress"
                 app:layout_constraintEnd_toStartOf="@+id/like_button"
                 app:layout_constraintStart_toEndOf="@+id/author_image"
                 app:layout_constraintTop_toTopOf="parent"
@@ -116,11 +116,11 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
                 android:background="@color/colorWhite"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/reactionProgress"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="12dp"
                 app:layout_constraintStart_toEndOf="@id/like_button"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/thumbs_down_hand_symbol" />
@@ -132,7 +132,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@color/colorWhite"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/reactionProgress"
                 app:layout_constraintEnd_toStartOf="@+id/dislike_button"
                 app:layout_constraintStart_toEndOf="@+id/story_title"
                 app:layout_constraintTop_toTopOf="parent"
@@ -165,6 +165,15 @@
                 app:layout_constraintEnd_toEndOf="@id/dislike_button"
                 app:layout_constraintTop_toTopOf="@+id/dislike_button"
                 app:layout_constraintVertical_bias="0.585" />
+
+            <ProgressBar
+                android:id="@+id/reactionProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
 
         </android.support.constraint.ConstraintLayout>
 
