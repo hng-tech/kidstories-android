@@ -6,6 +6,7 @@ import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
+import com.dragonlegend.kidstories.Api.Responses.SingleStory;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
@@ -15,6 +16,8 @@ import com.dragonlegend.kidstories.Model.UserReg;
 import com.dragonlegend.kidstories.Model.UserRegResponse;
 
 import org.w3c.dom.Comment;
+
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -93,5 +96,8 @@ public interface ApiInterface {
     
     @POST("bookmarks/stories/{storyId}")
     Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
+
+    @GET("bookmarks/stories")
+    Call<BaseResponse<List<SingleStory>>> getBookmarks();
 
 }
