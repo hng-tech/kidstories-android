@@ -73,10 +73,10 @@ public interface ApiInterface {
     @Multipart
     @POST("stories")
     Call<ResponseBody> addStory(
-            @Header("Authorization") String token,
+            @Header("Authorization") String Authorization,
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
-            @Part("category_id") int category_id,
+            @Part("category_id") RequestBody category_id,
             @Part MultipartBody.Part photo,
             @Part("age") RequestBody age,
             @Part("author") RequestBody author,
