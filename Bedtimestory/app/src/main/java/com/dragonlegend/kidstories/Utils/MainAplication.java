@@ -67,7 +67,7 @@ public class MainAplication extends Application {
                             Request request = chain.request().newBuilder()
 
                                     .addHeader("Accept", "application/json")
-                                    .addHeader("Authorization", "Bearer " + Prefs.getString("token", ""))
+                                    .addHeader("Authorization", Prefs.getString("token", ""))
                                     .addHeader("Content-Type", "application/json")
                                     .build();
                             return chain.proceed(request);

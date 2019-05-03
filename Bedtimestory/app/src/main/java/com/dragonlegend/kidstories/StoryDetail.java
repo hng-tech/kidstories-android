@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
+import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
 import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
@@ -81,13 +82,13 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         initViews();
-       if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
-           mTitle.setText(getIntent().getExtras().getString("title"));
-           Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
-           mDetail.setText(getIntent().getExtras().getString("content"));
-           mBookmark.setVisibility(View.INVISIBLE);
+        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
+            mTitle.setText(getIntent().getExtras().getString("title"));
+            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
+            mDetail.setText(getIntent().getExtras().getString("content"));
+            mBookmark.setVisibility(View.INVISIBLE);
 
-       }else {
+        }else {
             Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
                     .enqueue(new Callback<StoryResponse>() {
                         @Override
@@ -122,7 +123,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
                         @Override
                         public void onFailure(Call<StoryResponse> call, Throwable t) {
-                                t.toString();
+                            t.toString();
                             Log.d("TAG", "onFailure: -> "+t.getMessage());
                             if (t.getMessage() == "timeout") {
                                 validate("We are having trouble fetching the story, please try again");
@@ -133,7 +134,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         }
 
 
-   }
+    }
 
 
     private void addFavorite(String title, String story, String image, String time) {
@@ -192,13 +193,14 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
                 break;
             case R.id.comment_send:
+                addComment(mCommentField.getText().toString().trim());
                 Toast.makeText(this, mCommentField.getText().toString().trim(),Toast.LENGTH_LONG).show();
                 break;
             case R.id.bookmark_button:
                 date = Calendar.getInstance().getTimeInMillis();
                 String time = date.toString();
                 //Toast.makeText(this, time, Toast.LENGTH_SHORT).show();
-                    //check if bookmark already exists
+                //check if bookmark already exists
                 if (storyExist(title)){
                     Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
                     return;
@@ -207,15 +209,15 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 //addFavorite(title, content, image, time);
                 Log.d("check", "onClick: id is:"+ getIntent().getIntExtra(StoryDetail.STORY_ID, 1));
             default:
-               break;
+                break;
         }
     }
-    
+
     //Add the story online first
-     private void addFavoriteOnline(String token, int id, String title, String story, String image, String time) {
+    private void addFavoriteOnline(String token, int id, String title, String story, String image, String time) {
 
         Log.d("token", "token: "+ Prefs.getString("token", ""));
-         ProgressDialog dialog = new ProgressDialog(this);
+        ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Adding to bookmarks");
         dialog.show();
 
@@ -246,7 +248,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
     }
 
-    
+
     private boolean storyExist(String title){
         SQLiteDatabase db =  helper.getReadableDatabase();
         String query = "select * from " + FavoriteContract.FavoriteColumn.TABLE_NAME + " where title=?";
@@ -278,6 +280,25 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         });
 // show the snackbar
         snackbar.show();
+    }
+
+    private void addComment(String comment){
+        MainAplication.getApiInterface().addComment(comment, String.valueOf(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)))
+                .enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                        if (response.isSuccessful()){
+                            Toast.makeText(StoryDetail.this, "Successful upload", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(StoryDetail.this, "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                        Toast.makeText(StoryDetail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }
