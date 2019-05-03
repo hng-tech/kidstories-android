@@ -192,6 +192,8 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
                 break;
             case R.id.comment_send:
+                //add comment
+                addComment(mCommentField.getText().toString().trim());
                 Toast.makeText(this, mCommentField.getText().toString().trim(),Toast.LENGTH_LONG).show();
                 break;
             case R.id.bookmark_button:
@@ -278,6 +280,25 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         });
 // show the snackbar
         snackbar.show();
+    }
+    
+    private void addComment(String comment){
+        MainAplication.getApiInterface().addComment(comment, String.valueOf(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)))
+                .enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                        if (response.isSuccessful()){
+                            Toast.makeText(StoryDetail.this, "Successful upload", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(StoryDetail.this, "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                        Toast.makeText(StoryDetail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }
