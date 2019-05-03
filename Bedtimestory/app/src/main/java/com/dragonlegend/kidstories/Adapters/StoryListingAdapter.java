@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +33,6 @@ import retrofit2.Response;
 public class StoryListingAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context mContext;
     List<Story> mStories;
-
-    ProgressBar holdProgress;
 
     public StoryListingAdapter(Context context, List<Story> stories) {
         mContext = context;
@@ -70,21 +67,15 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<RecyclerView.View
         Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
         storyHolder.mLike.setOnClickListener(v -> {
-            reactToStory(true, String.valueOf(story.getId()), i);
-            if (holdProgress != null) holdProgress.setVisibility(View.GONE);
-            holdProgress = ((StoryHolder) holder).reactionProgress;
-            holdProgress.setVisibility(View.VISIBLE);
-//            int addLike = Integer.parseInt(storyHolder.likes.getText().toString()) + 1;
-//            storyHolder.likes.setText(String.valueOf(addLike));
+            reactToStory(true, String.valueOf(story.getId()));
+            int addLike = Integer.parseInt(storyHolder.likes.getText().toString()) + 1;
+            storyHolder.likes.setText(String.valueOf(addLike));
 
         });
         storyHolder.mDislike.setOnClickListener(v -> {
-            reactToStory(false, String.valueOf(story.getId()), i);
-            if (holdProgress != null) holdProgress.setVisibility(View.GONE);
-            holdProgress = ((StoryHolder) holder).reactionProgress;
-            holdProgress.setVisibility(View.VISIBLE);
-//            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
-//            storyHolder.dislikes.setText(String.valueOf(addDislike));
+            reactToStory(false, String.valueOf(story.getId()));
+            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
+            storyHolder.dislikes.setText(String.valueOf(addDislike));
         });
         if(story.getIsPremium()==1){
             storyHolder.mPremium.setVisibility(View.VISIBLE);
@@ -150,7 +141,6 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<RecyclerView.View
         ImageButton mLike,mDislike;
         TextView mTitle,mTime ,mImgTitle, likes, dislikes,mPremium;
         ImageView mImage,mAuthor_image;
-        ProgressBar reactionProgress;
         public StoryHolder(@NonNull View itemView) {
             super(itemView);
             mImage = itemView.findViewById(R.id.story_banner);
@@ -162,7 +152,6 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<RecyclerView.View
             mDislike = itemView.findViewById(R.id.dislike_button);
             likes = itemView.findViewById(R.id.likes);
             dislikes = itemView.findViewById(R.id.dislikes);
-            reactionProgress = itemView.findViewById(R.id.reactionProgress);
             mPremium = itemView.findViewById(R.id.premium_text);
 
             mImage.setOnClickListener(new View.OnClickListener() {
@@ -178,27 +167,24 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<RecyclerView.View
             });
         }
     }
-    private void reactToStory(boolean isLike, String storyId, int pos){
+    private void reactToStory(boolean isLike, String storyId){
 
         String action = isLike?  "like" :  "dislike";
-        MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<StoryReactionResponse>() {
+        MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<BaseResponse<StoryReactionResponse>>() {
             @Override
-            public void onResponse(Call<StoryReactionResponse> call, Response<StoryReactionResponse> response) {
+            public void onResponse(Call<BaseResponse<StoryReactionResponse>> call, Response<BaseResponse<StoryReactionResponse>> response) {
                 if (response.isSuccessful()){
                     assert response.body() != null;
-                    StoryReactionResponse reactionResponse = response.body();
-                    holdProgress.setVisibility(View.GONE);
-                    mStories.get(pos).setLikesCount(reactionResponse.getLikesCount());
-                    mStories.get(pos).setDislikesCount(reactionResponse.getDislikesCount());
-                    notifyDataSetChanged();
-                    Toast.makeText(mContext, reactionResponse.getAction(), Toast.LENGTH_SHORT).show();
+                    StoryReactionResponse reactionResponse = response.body().getData();
+
+                    Toast.makeText(mContext, response.body().getStatus(), Toast.LENGTH_SHORT).show();
                 }
 
                 else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<StoryReactionResponse> call, Throwable t) {
+            public void onFailure(Call<BaseResponse<StoryReactionResponse>> call, Throwable t) {
                 Toast.makeText(mContext, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
