@@ -16,7 +16,6 @@ import com.dragonlegend.kidstories.AddStoryActivity;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.R;
 import com.dragonlegend.kidstories.StoryListingActivity;
-import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.List;
 
@@ -71,16 +70,16 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if(mType.equals("home")){
             CategoryHolderRound hold = (CategoryHolderRound) holder;
             hold.mName.setText(category.getName());
-            if(category.getImage() != null){
-                Glide.with(mContext).load(category.getImage())
+            if(category.getImageUrl() != null){
+                Glide.with(mContext).load(category.getImageUrl())
                         .apply(RequestOptions.circleCropTransform())
                         .into(((CategoryHolderRound) holder).mImage);
             }
         }else {
             CategoryHolder hold = (CategoryHolder) holder;
             hold.mName.setText(category.getName());
-            if(category.getImage() != null){
-                Glide.with(mContext).load(category.getImage())
+            if(category.getImageUrl() != null){
+                Glide.with(mContext).load(category.getImageUrl())
                         .into(hold.mImage);
             }
         }
@@ -143,7 +142,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
     private void startListing(int pos) {
          Intent intent = new Intent(mContext,StoryListingActivity.class);
-        Prefs.putString("Cat_ID", mCategories.get(pos).getId());
+//        Prefs.putString("Cat_ID", mCategories.get(pos).getId());
         intent.putExtra(StoryListingActivity.CATEGORY_ID,mCategories.get(pos).getId());
         intent.putExtra(StoryListingActivity.CATEGORY_NAME,mCategories.get(pos).getName());
 

@@ -30,26 +30,35 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapter.StoryHolder> {
+public class StoryListingAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context mContext;
     List<Story> mStories;
 
     public StoryListingAdapter(Context context, List<Story> stories) {
         mContext = context;
         mStories = stories;
+
     }
 
     @NonNull
     @Override
-    public StoryHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.post_single,viewGroup,false);
-        return new StoryHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        if(getActivityName().equals("Home")) {
+            View view = LayoutInflater.from(mContext)
+                    .inflate(R.layout.post_single, viewGroup, false);
+            return new StoryHolder(view);
+        }else {
+            View view = LayoutInflater.from(mContext)
+                    .inflate(R.layout.story_single, viewGroup, false);
+            return new StoryGridHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StoryHolder storyHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         Story story = mStories.get(i);
+        if (getActivityName().equals("Home")){
+            StoryHolder storyHolder = (StoryHolder) holder;
         storyHolder.mTitle.setText(story.getTitle());
         storyHolder.mImgTitle.setText(story.getTitle());
         storyHolder.mTime.setText(story.getStoryDuration());
@@ -70,6 +79,17 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
         });
         if(story.getIsPremium()==1){
             storyHolder.mPremium.setVisibility(View.VISIBLE);
+        }
+        }else {
+            StoryGridHolder storyGridHolder = (StoryGridHolder) holder;
+            storyGridHolder.mTitle.setText(story.getTitle());
+            if(story.getIsPremium() ==1){
+                storyGridHolder.mPremium.setVisibility(View.VISIBLE);
+            }
+            if(story.getImageUrl() != null ){
+                Glide.with(mContext).load(story.getImageUrl()).into(storyGridHolder.mImage);
+
+            }
         }
     }
 
@@ -92,6 +112,31 @@ public class StoryListingAdapter  extends RecyclerView.Adapter<StoryListingAdapt
             addStory(story);
         }
     }
+    public String getActivityName(){
+        return   mContext.getClass().getSimpleName();
+    }
+    class StoryGridHolder extends RecyclerView.ViewHolder {
+        ImageView mImage;
+        TextView mTitle,mPremium;
+        public StoryGridHolder(View itemView) {
+            super(itemView);
+            mImage = itemView.findViewById(R.id.story_image);
+            mTitle = itemView.findViewById(R.id.story_title);
+            mPremium = itemView.findViewById(R.id.premium);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext.getApplicationContext(),StoryDetail.class);
+                    intent.putExtra(StoryDetail.STORY_ID,mStories.get(getAdapterPosition()).getId());
+                    Prefs.putInt("story_id", mStories.get(getAdapterPosition()).getId());
+
+                    Log.d("TAG", "onClick: -> " + Prefs.getInt("story_id", 0));
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
     class StoryHolder extends RecyclerView.ViewHolder  {
         ImageButton mLike,mDislike;
         TextView mTitle,mTime ,mImgTitle, likes, dislikes,mPremium;
