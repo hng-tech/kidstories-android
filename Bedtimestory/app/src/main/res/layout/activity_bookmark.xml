@@ -20,14 +20,22 @@
             android:background="@color/colorWhite" />
 
     </android.support.design.widget.AppBarLayout>
+    <ProgressBar
+        android:id="@+id/bookmarkProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/favRec"
         android:background="#fff"
         android:divider="#fff"
-        android:scrollbars="none"
-        android:layout_margin="5dp"></ListView>
+        tools:listitem="@layout/post_single"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:layout_margin="5dp"/>
 
 </LinearLayout>
