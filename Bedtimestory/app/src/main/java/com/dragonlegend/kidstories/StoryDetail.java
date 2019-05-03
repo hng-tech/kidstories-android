@@ -103,6 +103,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 mTitle.setText(title);
                                 mDetail.setText(content);
                                 mStoryAge.setText("For Kids " +story.getAge() +" years");
+                                mScrollView.setVisibility(View.VISIBLE);
                             }else if(response.code() !=200){
                                 mScrollView.setVisibility(View.GONE);
                                 mPremiumMessage.setVisibility(View.VISIBLE);
@@ -112,7 +113,6 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                             }
 
                             mProgressBar.setVisibility(View.GONE);
-                            mLinearLayout.setVisibility(View.VISIBLE);
 
                         }
 
