@@ -83,4 +83,14 @@ public interface ApiInterface {
             @Part("is_premium") RequestBody is_premium
 
     );
+
+    
+    @POST("comments")
+    @FormUrlEncoded
+    Call<BaseResponse> addComment(@Field("body") String body,
+                                     @Field("story_id") String storyid);
+    
+    @POST("bookmarks/stories/{storyId}")
+    Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
+
 }
