@@ -31,7 +31,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
     private String title;
     private String filePath;
     private String content;
-    private int category = 0;
+    private String category;
     private Spinner chooseCategory;
     private String duration;
 
@@ -82,29 +82,29 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                     switch (selectedCategory) {
                         case "Fantasy" :
                             //category = Prefs.getString("fantasy", "");
-                            category =1;
+                            category ="1";
                             Log.d("TAG", "onItemSelected:-> " + category);
                             break;
                         case "Bedtime stories" :
                             //category = Prefs.getString("bedtime", "");
-                            category =2;
+                            category ="2";
                             Log.d("TAG", "onItemSelected:-> " + category);
                             break;
                         case "Morning Stories" :
                            // category = Prefs.getString("morning","");
-                            category =3;
+                            category ="3";
                             Log.d("TAG", "onItemSelected:-> " + category);
                             break;
                         case "Jokes" :
                            // category = Prefs.getString("jokes", "");
-                            category = 4;
+                            category = "4";
                             break;
                         case "Christmas Stories" :
                             //category = Prefs.getString("christmas", "");
-                            category = 5;
+                            category = "5";
                             break;
                         case "Category":
-                            category = 0;
+                            category = "0";
                             break;
                     }
             }
@@ -156,7 +156,7 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                 title = Prefs.getString("title", "");
                 String imageFileUri = Prefs.getString("filePath","");
                 Log.d("TAG", "AddStory: " + imageFileUri);
-                if (category == 0){
+                if (category == null){
                     ShowSnackbar("Category cannot be empty");
                 }else{
 
