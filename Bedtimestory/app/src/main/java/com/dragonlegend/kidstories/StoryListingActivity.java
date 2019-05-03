@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +37,6 @@ public class StoryListingActivity extends AppCompatActivity {
     List<Story> mStories;
     int mCatId;
     String mCatName;
-    ProgressBar mProgressBar;
 
     TextView mNoStories;
     @Override
@@ -64,7 +62,6 @@ public class StoryListingActivity extends AppCompatActivity {
         mStories = new ArrayList<>(); //create empty lis of stories
         mAdapter = new StoryListingAdapter(this,mStories);
         mStoriesRv = findViewById(R.id.stories_rv);
-        mProgressBar = findViewById(R.id.progress_b);
         mStoriesRv.setLayoutManager(new GridLayoutManager(this,3));
         mStoriesRv.setAdapter(mAdapter);
 
@@ -73,7 +70,6 @@ public class StoryListingActivity extends AppCompatActivity {
     }
 
     private void loadStories(){
-        mProgressBar.setVisibility(View.VISIBLE);
         MainAplication.getApiInterface().getCategory(mCatId).enqueue(new Callback<BaseResponse<CategoryResponse>>() {
             @Override
             public void onResponse(Call<BaseResponse<CategoryResponse>> call, Response<BaseResponse<CategoryResponse>> response) {
@@ -83,11 +79,8 @@ public class StoryListingActivity extends AppCompatActivity {
 
 //                    Log.d("TAG", "onStory: -> " + stories.get(1));
                     mAdapter.addStories(stories);
-                    mProgressBar.setVisibility(View.GONE);
                     if(stories.size()==0){
-                        mProgressBar.setVisibility(View.GONE);
                         mNoStories.setVisibility(View.VISIBLE);
-
                     }
 
                 }

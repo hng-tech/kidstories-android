@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity {
         mEmail = mEmailField.getText().toString().trim();
         mPassword = mPasswordField.getText().toString().trim();
 
-        String token = Prefs.getString("token", "");
+        String token = Prefs.getString("reg_token", "");
         if(validate()){
 
             Client.getInstance().create(ApiInterface.class).loginUser(token,mEmail,mPassword).enqueue(new Callback<LoginResponse>() {
@@ -61,7 +61,7 @@ public class Login extends AppCompatActivity {
 
                         LoginResponse userResponse = response.body();
                         Log.d("TAG", "userResponse: -> " + userResponse.getData().getToken() );
-                        Prefs.putString("token", userResponse.getData().getToken());
+                        Prefs.putString("token", "Bearer " +userResponse.getData().getToken());
                         Prefs.putBoolean("isLoggedIn", true);
                         Log.d("TAG", "tokenResponse: -> " + Prefs.getString("token", ""));
                         BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);

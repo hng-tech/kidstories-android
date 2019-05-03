@@ -1,7 +1,6 @@
 package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
-import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
@@ -36,7 +35,7 @@ public interface ApiInterface {
     Call<CategoryAllResponse> getAllCategories();
 
     @GET("categories/{id}/stories")
-    Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") int id);
+    Call<BaseResponse<CategoryResponse>> getCategory(@Path("id") String id);
 
     @GET("stories")
     Call<StoryAllResponse> getAllStories();
@@ -52,16 +51,16 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("auth/register")
     Call<BaseResponse<RegistrationResponse>> registerUser(@Field("phone") String phone,
-                                                          @Field("email") String email,
-                                                          @Field("password") String passwprd,
-                                                          @Field("first_name") String first_name,
-                                                          @Field("last_name") String last_name);
+                                @Field("email") String email,
+                                @Field("password") String passwprd,
+                                @Field("first_name") String first_name,
+                                @Field("last_name") String last_name);
 
 
     @POST("auth/login")
     @FormUrlEncoded
     Call<LoginResponse> loginUser(@Header("Authorization") String token,
-                                  @Field("email") String email, @Field("password") String password);
+            @Field("email") String email, @Field("password") String password);
 
     @GET("users/profile")
     Call<LoginResponse> getProfile(@Header("Authorization") String token);
@@ -74,16 +73,17 @@ public interface ApiInterface {
     @Multipart
     @POST("stories")
     Call<ResponseBody> addStory(
-            @Header("Authorization") String token,
+            @Header("Authorization") String Authorization,
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
-            @Part("category_id") int category_id,
+            @Part("category_id") RequestBody category_id,
             @Part MultipartBody.Part photo,
             @Part("age") RequestBody age,
             @Part("author") RequestBody author,
             @Part("is_premium") RequestBody is_premium
 
     );
+
     
     @POST("comments")
     @FormUrlEncoded
@@ -92,4 +92,5 @@ public interface ApiInterface {
     
     @POST("bookmarks/stories/{storyId}")
     Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
+
 }
