@@ -47,7 +47,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        if (getActivityName().equals("Home")) {
+        if (getActivityName().equals("Home") || getActivityName().equals("Bookmark")) {
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.post_single, viewGroup, false);
             return new StoryHolder(view);
@@ -62,7 +62,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         Story story = mStories.get(i);
-        if (getActivityName().equals("Home")) {
+        if (getActivityName().equals("Home") || getActivityName().equals("Bookmark")) {
             StoryHolder storyHolder = (StoryHolder) holder;
             storyHolder.mTitle.setText(story.getTitle());
             storyHolder.mImgTitle.setText(story.getTitle());

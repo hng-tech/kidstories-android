@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -32,6 +35,7 @@ import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
+import com.dragonlegend.kidstories.Fragments.BottomMenuFragment;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
@@ -47,13 +51,13 @@ import retrofit2.Response;
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
 
-public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity {
     RecyclerView mStoriesRecycler, mCategoriesRecycler;
     StoryListingAdapter mAdapter;
     List<Story> mStories;
     List<Category> mCategories;
     CategoriesAdapter mCategoriesAdapter;
+    BottomNavigationView bottomNavigationView;
     User mUser;
     ImageView mAddNew;
     ProgressBar mProgressBar;
@@ -62,13 +66,12 @@ public class Home extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        isLoggedIn = Prefs.getBoolean("isLoggedIn",false);
-        Log.e("TAG",isLoggedIn+"");
+        isLoggedIn = Prefs.getBoolean("isLoggedIn", false);
+        Log.e("TAG", isLoggedIn + "");
 
         //customize custom toolbar
         setSupportActionBar(toolbar);
@@ -85,9 +88,7 @@ public class Home extends AppCompatActivity
 //            }
 //        }
 
-
-
-
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);
@@ -95,11 +96,10 @@ public class Home extends AppCompatActivity
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Prefs.getBoolean("isLoggedIn", false)){
+                if (Prefs.getBoolean("isLoggedIn", false)) {
                     Intent i = new Intent(Home.this, AddStoryActivity.class);
                     startActivity(i);
-                }
-                else {
+                } else {
                     Toast.makeText(Home.this, "Please log in", Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent(Home.this, Login.class);
                     startActivity(intent1);
@@ -117,48 +117,84 @@ public class Home extends AppCompatActivity
 
         loadData();
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onOptionsItemSelected(MenuItem item) {
-//                drawer.openDrawer(Gravity.START);
-                return super.onOptionsItemSelected(item);
-            }
-        };
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                 Handle navigation view item clicks here.
+                int id = item.getItemId();
+                if (id == R.id.home) {
+            //start Home activity .
+            Intent i = new Intent(getBaseContext(), Home.class);
+            startActivity(i);
+        }else if(id == R.id.action_favorites) {
+                    startActivity(new Intent(getBaseContext(), Bookmark.class));
+////              ShowSnackbar();
+                    return true;
+                }
 
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        ImageButton close = navigationView.getHeaderView(0).findViewById(R.id.nav_close_button);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.closeDrawers();
+                else if(id == R.id.more) {
+
+
+                    showBottomMenu();
+
+                    return true;
+                }
+
+
+                else {
+                }
+
+                return true;
             }
         });
-        navigationView.setNavigationItemSelectedListener(this);
 
-        if(isLoggedIn){
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
-        }else{
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
-        }
+
+
+
+/**
+ * showing bottom sheet dialog fragment
+ * same layout is used in both dialog and dialog fragment
+ */
+
+
 
     }
+    public void showBottomMenu(){
+
+        /**
+         * showing bottom sheet dialog
+         */
+
+        BottomMenuFragment bottomSheetFragment = new BottomMenuFragment();
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+
+        View view = getLayoutInflater().inflate(R.layout.bottom_menu_dialog, null);
+
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+
+//        ImageButton close = navigationView.getHeaderView(0).findViewById(R.id.nav_close_button);
+//        close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                drawer.closeDrawers();
+//            }
+//        });
+//        navigationView.setNavigationItemSelectedListener(this);
+//
+//        if(isLoggedIn){
+//            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+//            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(true);
+//            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
+//        }else{
+//            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
+//            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(false);
+//            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
+//        }
+
 
 //    @Override
 //    public void onBackPressed() {
@@ -170,12 +206,7 @@ public class Home extends AppCompatActivity
 //        }
 //    }
 //
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.home, menu);
-//        return true;
-//    }
+
 //
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
@@ -192,89 +223,91 @@ public class Home extends AppCompatActivity
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            //start Home activity .
-            Intent i = new Intent(getBaseContext(), Home.class);
-            startActivity(i);
-        } else if (id == R.id.nav_bookmarks) {
-
-                startActivity(new Intent(getBaseContext(), Bookmark.class));
-//              ShowSnackbar();
+        @Override
+        protected void onSaveInstanceState (Bundle outState){
+            super.onSaveInstanceState(outState);
+        }
 
 
-        } else if (id == R.id.nav_categories) {
 
-            //start category activity .
-            Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_profile) {
+//    @SuppressWarnings("StatementWithEmptyBody")
+//    @Override
+//    public boolean onNavigationItemSelected(MenuItem item) {
+//        // Handle navigation view item clicks here.
+//        int id = item.getItemId();
 //
-//            //start Profile activity .
-//            if(mUser !=null ){
-                Intent i = new Intent(getBaseContext(), ProfileActivity.class);
-//                i.putExtra(Config.USER_ID,mUser.getId());
-                startActivity(i);
-//            }
+//        if (id == R.id.nav_home) {
+//            //start Home activity .
+//            Intent i = new Intent(getBaseContext(), Home.class);
+//            startActivity(i);
+//        } else if (id == R.id.nav_bookmarks) {
 //
-// else if (id == R.id.nav_donate) {
+//                startActivity(new Intent(getBaseContext(), Bookmark.class));
+////              ShowSnackbar();
 //
-//            String url = "https://paystack.com/pay/kidstoriesapp";
 //
-//            Intent i = new Intent(Intent.ACTION_VIEW);
-//            i.setData(Uri.parse(url));
+//        } else if (id == R.id.nav_categories) {
+//
+//            //start category activity .
+//            Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
 //            startActivity(i);
 //
+//        } else if (id == R.id.nav_profile) {
+////
+////            //start Profile activity .
+////            if(mUser !=null ){
+//                Intent i = new Intent(getBaseContext(), ProfileActivity.class);
+////                i.putExtra(Config.USER_ID,mUser.getId());
+//                startActivity(i);
+////            }
+////
+//// else if (id == R.id.nav_donate) {
+////
+////            String url = "https://paystack.com/pay/kidstoriesapp";
+////
+////            Intent i = new Intent(Intent.ACTION_VIEW);
+////            i.setData(Uri.parse(url));
+////            startActivity(i);
+////
+////        }
+//            //ShowSnackbar("comming soon");
+//
 //        }
-            //ShowSnackbar("comming soon");
-
-        }
-        else if (id == R.id.nav_login) {
-            //start Login activity .
-            Intent i = new Intent(getBaseContext(), Login.class);
-            startActivity(i);
-
-        }else if (id == R.id.nav_signout){
-            if (!Prefs.getBoolean("isLoggedIn", false)){
-                ShowSnackbar("You have never logged In");
-            }
-            else {
-
-                validate("Logging you out!!!!");
-            }
-
-        }
-
-        else if (id == R.id.nav_addstory) {
-
-//            start addstory activity .
-            if (Prefs.getBoolean("isLoggedIn", false)){
-
-                Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
-                startActivity(i);
-            }else{
-                validate("Please Log in to add story !!!");
-            }
-
-
-        }
-
-//        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
+//        else if (id == R.id.nav_login) {
+//            //start Login activity .
+//            Intent i = new Intent(getBaseContext(), Login.class);
+//            startActivity(i);
+//
+//        }else if (id == R.id.nav_signout){
+//            if (!Prefs.getBoolean("isLoggedIn", false)){
+//                ShowSnackbar("You have never logged In");
+//            }
+//            else {
+//
+//                validate("Logging you out!!!!");
+//            }
+//
+//        }
+//
+//        else if (id == R.id.nav_addstory) {
+//
+////            start addstory activity .
+//            if (Prefs.getBoolean("isLoggedIn", false)){
+//
+//                Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
+//                startActivity(i);
+//            }else{
+//                validate("Please Log in to add story !!!");
+//            }
+//
+//
+//        }
+//
+////        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+////        drawer.closeDrawer(GravityCompat.START);
+//
+//        return true;
+//    }
 
     public void ShowSnackbar(String message) {
         Snackbar snackbar = make(findViewById(android.R.id.content), message, LENGTH_LONG);
