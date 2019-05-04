@@ -47,7 +47,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 doLogin();
                 mHolder_ProgressBar.setVisibility(View.VISIBLE);
-                Toast.makeText(Login.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Login.this, "Login Clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -84,6 +84,7 @@ public class Login extends AppCompatActivity {
                         startActivity(intent);
                     }else{
                         Toast.makeText(Login.this,"Invalid Login details",Toast.LENGTH_SHORT).show();
+                        mHolder_ProgressBar.setVisibility(View.GONE);
                     }
                 }
 
