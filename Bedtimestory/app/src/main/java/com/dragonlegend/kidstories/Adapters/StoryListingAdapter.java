@@ -25,6 +25,7 @@ import com.dragonlegend.kidstories.StoryDetail;
 import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,22 +47,22 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        if (getActivityName().equals("Home")) {
+        if (getActivityName().equals("Home")) {
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.post_single, viewGroup, false);
             return new StoryHolder(view);
-//        }
-//        else {
-//            View view = LayoutInflater.from(mContext)
-//                    .inflate(R.layout.story_single, viewGroup, false);
-//            return new StoryGridHolder(view);
-//        }
+        }
+        else {
+            View view = LayoutInflater.from(mContext)
+                    .inflate(R.layout.story_single, viewGroup, false);
+            return new StoryGridHolder(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         Story story = mStories.get(i);
-//        if (getActivityName().equals("Home")) {
+        if (getActivityName().equals("Home")) {
             StoryHolder storyHolder = (StoryHolder) holder;
             storyHolder.mTitle.setText(story.getTitle());
             storyHolder.mImgTitle.setText(story.getTitle());
@@ -94,21 +95,21 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else
                     Toast.makeText(mContext, "You must be logged in to perform this operation", Toast.LENGTH_SHORT).show();
             });
+            storyHolder.setPremiumStatus(story.getIsPremium());
+        }
+        else {
+            StoryGridHolder storyGridHolder = (StoryGridHolder) holder;
+            storyGridHolder.mTitle.setText(story.getTitle());
             if (story.getIsPremium() == 1) {
-                storyHolder.mPremium.setVisibility(View.VISIBLE);
+                storyGridHolder.mPremium.setVisibility(View.VISIBLE);
             }
-//        }
-//        else {
-//            StoryGridHolder storyGridHolder = (StoryGridHolder) holder;
-//            storyGridHolder.mTitle.setText(story.getTitle());
-//            if (story.getIsPremium() == 1) {
-//                storyGridHolder.mPremium.setVisibility(View.VISIBLE);
-//            }
-//            if (story.getImageUrl() != null) {
-//                Glide.with(mContext).load(story.getImageUrl()).into(storyGridHolder.mImage);
-//
-//            }
-//        }
+            if (story.getImageUrl() != null) {
+                Glide.with(mContext).load(story.getImageUrl()).into(storyGridHolder.mImage);
+
+            }
+            storyGridHolder.setPremiumStatus(story.getIsPremium());
+
+        }
     }
 
     @Override
@@ -132,7 +133,10 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             addStory(story);
         }
     }
-
+    public void removeAllStories(){
+        mStories = new ArrayList<>();
+        notifyDataSetChanged();
+    }
     public String getActivityName() {
         return mContext.getClass().getSimpleName();
     }
@@ -158,6 +162,14 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
         }
+        void setPremiumStatus(int v){
+            if(v > 0){
+                mPremium.setVisibility(View.VISIBLE);
+            }else {
+                mPremium.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     class StoryHolder extends RecyclerView.ViewHolder {
@@ -179,7 +191,6 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             dislikes = itemView.findViewById(R.id.dislikes);
             reactionProgress = itemView.findViewById(R.id.reactionProgress);
             mPremium = itemView.findViewById(R.id.premium_text);
-
             mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -191,6 +202,13 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     mContext.startActivity(intent);
                 }
             });
+        }
+         void setPremiumStatus(int v){
+            if(v > 0){
+                mPremium.setVisibility(View.VISIBLE);
+            }else {
+                mPremium.setVisibility(View.GONE);
+            }
         }
     }
 

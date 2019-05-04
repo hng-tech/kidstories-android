@@ -8,7 +8,7 @@
     android:layout_marginTop="2dp"
     android:layout_marginLeft="2dp"
     android:layout_marginBottom="2dp"
-    android:layout_width="110dp"
+    android:layout_width="115dp"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
     app:cardElevation="2dp">
@@ -21,16 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="fitXY"
-        android:background="@color/colorAsh"
-        android:src="@drawable/ic_launcher_background"/>
+        android:background="@color/colorAsh"/>
     <TextView
         android:id="@+id/story_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Story Title"
-        android:textColor="#333333"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
+        android:textColor="#555555"
+        android:padding="2dp"
         android:layout_below="@id/story_image"
         style="@style/TextAppearance.AppCompat.Title"
         android:textSize="12sp"/>
