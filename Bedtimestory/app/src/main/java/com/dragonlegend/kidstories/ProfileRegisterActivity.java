@@ -76,8 +76,32 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 
         initViews();
 
+        //Requesting storage permission
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+            requestStoragePermission();
+
+        }
+
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STOTAGE_REQUEST_CODE)  {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    //this methods makes the storage permission request
+    private void requestStoragePermission() {
+
+        PermissionManager.requestPermision(this, STOTAGE_REQUEST_CODE, this);
+    }
 
     public void initViews(){
         Log.d("TAG", "initViews: " + mEmail + mPassword);

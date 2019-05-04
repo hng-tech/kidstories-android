@@ -73,7 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadUserProfile(){
-        Client.getInstance().create(ApiInterface.class).getProfile("Bearer "+Prefs.getString("token",null)).enqueue(new Callback<LoginResponse>() {
+        Client.getInstance().create(ApiInterface.class).getProfile(Prefs.getString("token",null)).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if(response.isSuccessful()){

@@ -130,6 +130,7 @@ public class UploadImage {
     }
 
     public static void uploadProfilePic(String profilePath){
+        Log.e("TAG",profilePath);
         File profPic = new File(profilePath);
 
         RequestBody requestFile =
@@ -137,7 +138,7 @@ public class UploadImage {
         MultipartBody.Part photo =
                 MultipartBody.Part.createFormData("photo", profPic.getName(), requestFile);
 
-        String userToken = "Bearer "+Prefs.getString("token", "");
+        String userToken = Prefs.getString("token", "");
 
         Client.getInstance().create(ApiInterface.class).uploadProfilPic(userToken,photo).enqueue(new Callback<ResponseBody>() {
             @Override
