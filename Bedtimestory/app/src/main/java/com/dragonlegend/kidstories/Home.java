@@ -326,6 +326,7 @@ public class Home extends AppCompatActivity
                         Log.d("TAG", "onResponse: -> " + story.get(i).getBody());
                     }
                     if (story != null) {
+                        mAdapter.removeAllStories();
                         mAdapter.addStories(story);
 
 
