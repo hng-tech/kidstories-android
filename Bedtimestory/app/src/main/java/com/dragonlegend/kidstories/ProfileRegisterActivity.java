@@ -156,7 +156,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 //                        String user_profile_id = user.getData().getId();
 
                     Log.d("TAG", "dataResponse:-> " + token+user_profile_email+user_profile_name+user_profile_number);
-                    Prefs.putString("token", token);
+                    Prefs.putString("reg_token", "Bearer "+token);
                     Prefs.putString("user_profile_email", user_profile_email);
                     Prefs.putString("user_profile_name", user_profile_name);
                     Prefs.putString("user_profile_number", user_profile_number);

@@ -31,7 +31,7 @@ public class UploadImage {
     public static final String BASE_URL = "https://dragon-legend-5.herokuapp.com/api/v1/";
 
     public static void uploadFile(String fileUri, String name, String storyTitle, String storyBody,
-                                  final Context context, int category_id,
+                                  final Context context, String category,
                                   String  user_age, String duration, String story_author, String premium) {
 
         // use the FileUtils to get the actual imageFile by uri
@@ -56,13 +56,13 @@ public class UploadImage {
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, storyTitle);
 
-        RequestBody story =
+        RequestBody body =
                 RequestBody.create(
                         okhttp3.MultipartBody.FORM, storyBody);
 
-//        RequestBody category_id =
-//                RequestBody.create(
-//                        okhttp3.MultipartBody.FORM, storyCategory);
+        RequestBody category_id =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, category);
 //
         RequestBody age =
                 RequestBody.create(
@@ -73,9 +73,9 @@ public class UploadImage {
                         okhttp3.MultipartBody.FORM, story_author);
 
 
-        RequestBody stroy_duration =
-                RequestBody.create(
-                        okhttp3.MultipartBody.FORM, duration);
+//        RequestBody stroy_duration =
+//                RequestBody.create(
+//                        okhttp3.MultipartBody.FORM, duration);
 
 //        RequestBody category_id =
 //                RequestBody.create(
@@ -88,14 +88,16 @@ public class UploadImage {
 
 
 
-        String token = Prefs.getString("token", "");
+        String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMyYWVlM2FhOGEzYThhOTYwZWM2MThkZDZiODU0M2M1ZTg2ZjczNTc2MGZlMDU0NTdkNzhiZDdiMWViZjAyODIwZjI5ZmUwZjE4ZGY5ZmVhIn0.eyJhdWQiOiIxIiwianRpIjoiMzJhZWUzYWE4YTNhOGE5NjBlYzYxOGRkNmI4NTQzYzVlODZmNzM1NzYwZmUwNTQ1N2Q3OGJkN2IxZWJmMDI4MjBmMjlmZTBmMThkZjlmZWEiLCJpYXQiOjE1NTY0ODU5NjMsIm5iZiI6MTU1NjQ4NTk2MywiZXhwIjoxNTg4MTA4MzYyLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.FOH-NJ_k4CHsdyWk4dxRw3iB0sRuBGFQnrBzqfuDcvPdBGZCojU8y0XyyLzSj8MFh7TWzPZBbiDjL2x6pLe27VuYtotdfGvn4HPLA9jLDFk3ozMh20Uea_Ttj6ich6-_h9o9KjU3zzb58uoQ6Ev9XqIHGRZ7z4eRX22HyVownacueT1zFTnzoUUIAlLryS_CUzjq4qdoSBhHYsjl3MorLNkQRVQuKaWG2gQ5mEOVS92a5wfLiqagWhTQGdw1X-7B4JJaDx0edV6r8OdEcEXBnfzcaGeYIPDeAQ6YESHpNy8SABWSXkFzCQIqIK7lRw1jIGGS6bmpBYaW0SI5VDknG35j0cJ-svVrk6-AAikQVk1AgrkILND3gg30-2jWrhqRHh3aXAHvXDP2smHSknfj0w_xcl1UcWZwCfn3csN77J2cv1p9rc3nAnrAxIazDMFIMd0Hal2P0LYUrxC0BmQ6xYQTYhKPe7FIm7DnVhnkoa1iMjJ3TsZxb_efbQJO6I4270So_k_r3-Q61l1ZPFb9AgOqtA_odC9uguEVoGdwgPzeNGTyRpXt7Ajj0IhsG8HCelxNMMz7oeKIpz6K8lMHTqIAgNI6MaG-Rs0v1wPn63mIaYpPdZEbFTwPfJMjbFLCxn6YsEB8gRS6hbAA4HK4trI7gAWCjE1iKAsPHNXHmAU";
+
+                //Prefs.getString("token", "");
 
 
 
 
         // finally, execute the request
         Client.getInstance().create(ApiInterface.class).addStory(
-                token,title,story,category_id,photo,age,author,is_premium).
+                token,title,body,category_id,photo,age,author,is_premium).
                 enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

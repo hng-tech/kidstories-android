@@ -1,19 +1,24 @@
 package com.dragonlegend.kidstories.Api;
 
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
+import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.CategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Api.Responses.RegistrationResponse;
+import com.dragonlegend.kidstories.Api.Responses.SingleStory;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryCategoryResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
+import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
 import com.dragonlegend.kidstories.Model.UserReg;
 import com.dragonlegend.kidstories.Model.UserRegResponse;
 
 import org.w3c.dom.Comment;
+
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -71,20 +76,33 @@ public interface ApiInterface {
 
 
     @POST("stories/{storyId}/reactions/{action}")
-    Call<BaseResponse<StoryReactionResponse>> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
+    Call<StoryReactionResponse> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
 
 
     @Multipart
     @POST("stories")
     Call<ResponseBody> addStory(
-            @Header("Authorization") String token,
+            @Header("Authorization") String Authorization,
             @Part("title") RequestBody title,
             @Part("body") RequestBody body,
-            @Part("category_id") int category_id,
+            @Part("category_id") RequestBody category_id,
             @Part MultipartBody.Part photo,
             @Part("age") RequestBody age,
             @Part("author") RequestBody author,
             @Part("is_premium") RequestBody is_premium
 
     );
+
+    
+    @POST("comments")
+    @FormUrlEncoded
+    Call<BaseResponse> addComment(@Field("body") String body,
+                                     @Field("story_id") String storyid);
+    
+    @POST("bookmarks/stories/{storyId}")
+    Call<BookmarkResponse>addBookmark(@Path("storyId") int storyId);
+
+    @GET("bookmarks/stories")
+    Call<BaseResponse<List<Story>>> getBookmarks();
+
 }

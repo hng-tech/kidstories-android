@@ -52,6 +52,7 @@ public class StoryListingActivity extends AppCompatActivity {
         mCatId = Prefs.getString("Cat_ID", "3");
         if(intent.hasExtra(CATEGORY_ID) ){
             mCatName = intent.getStringExtra(CATEGORY_NAME);
+            
             toolbar_title.setText(mCatName);
 
         }

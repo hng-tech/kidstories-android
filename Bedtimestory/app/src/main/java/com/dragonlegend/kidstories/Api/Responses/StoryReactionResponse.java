@@ -6,150 +6,72 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class StoryReactionResponse {
-    @SerializedName("cat_id")
+    @SerializedName("status")
     @Expose
-    private List<String> catId = null;
-    @SerializedName("_id")
+    private String status;
+    @SerializedName("code")
     @Expose
-    private String id;
-    @SerializedName("release_date")
+    private Integer code;
+    @SerializedName("message")
     @Expose
-    private String releaseDate;
-    @SerializedName("comments")
+    private String message;
+    @SerializedName("likes_count")
     @Expose
-    private List<Object> comments = null;
-    @SerializedName("title")
+    private Integer likesCount;
+    @SerializedName("dislikes_count")
     @Expose
-    private String title;
-    @SerializedName("story")
+    private Integer dislikesCount;
+    @SerializedName("action")
     @Expose
-    private String story;
-    @SerializedName("designation")
-    @Expose
-    private String designation;
-    @SerializedName("author")
-    @Expose
-    private String author;
-    @SerializedName("likes")
-    @Expose
-    private Integer likes;
-    @SerializedName("dislikes")
-    @Expose
-    private Integer dislikes;
-    @SerializedName("imageId")
-    @Expose
-    private String imageId;
-    @SerializedName("image")
-    @Expose
-    private String image;
-    @SerializedName("__v")
-    @Expose
-    private Integer v;
+    private String action;
 
-    public List<String> getCatId() {
-        return catId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCatId(List<String> catId) {
-        this.catId = catId;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getId() {
-        return id;
+    public Integer getCode() {
+        return code;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
-    public String getReleaseDate() {
-        return releaseDate;
+    public String getMessage() {
+        return message;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public List<Object> getComments() {
-        return comments;
+    public Integer getLikesCount() {
+        return likesCount;
     }
 
-    public void setComments(List<Object> comments) {
-        this.comments = comments;
+    public void setLikesCount(Integer likesCount) {
+        this.likesCount = likesCount;
     }
 
-    public String getTitle() {
-        return title;
+    public Integer getDislikesCount() {
+        return dislikesCount;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDislikesCount(Integer dislikesCount) {
+        this.dislikesCount = dislikesCount;
     }
 
-    public String getStory() {
-        return story;
+    public String getAction() {
+        return action;
     }
 
-    public void setStory(String story) {
-        this.story = story;
+    public void setAction(String action) {
+        this.action = action;
     }
-
-    public String getDesignation() {
-        return designation;
-    }
-
-    public void setDesignation(String designation) {
-        this.designation = designation;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public Integer getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Integer likes) {
-        this.likes = likes;
-    }
-
-    public Integer getDislikes() {
-        return dislikes;
-    }
-
-    public void setDislikes(Integer dislikes) {
-        this.dislikes = dislikes;
-    }
-
-    public String getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Integer getV() {
-        return v;
-    }
-
-    public void setV(Integer v) {
-        this.v = v;
-    }
-
 }
 
 
