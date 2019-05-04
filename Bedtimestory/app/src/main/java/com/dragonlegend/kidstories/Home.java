@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -34,6 +35,7 @@ import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
+import com.dragonlegend.kidstories.Fragments.BottomMenuFragment;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
@@ -129,12 +131,48 @@ public class Home extends AppCompatActivity {
 ////              ShowSnackbar();
                     return true;
                 }
+
+                else if(id == R.id.more) {
+
+
+                    showBottomMenu();
+
+                    return true;
+                }
+
+
                 else {
                 }
 
                 return true;
             }
         });
+
+
+
+
+/**
+ * showing bottom sheet dialog fragment
+ * same layout is used in both dialog and dialog fragment
+ */
+
+
+
+    }
+    public void showBottomMenu(){
+
+        /**
+         * showing bottom sheet dialog
+         */
+
+        BottomMenuFragment bottomSheetFragment = new BottomMenuFragment();
+        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+
+        View view = getLayoutInflater().inflate(R.layout.bottom_menu_dialog, null);
+
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        dialog.show();
     }
 
 
