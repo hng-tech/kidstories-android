@@ -129,4 +129,29 @@ public class UploadImage {
 
     }
 
+    public static void uploadProfilePic(String profilePath){
+        Log.e("TAG",profilePath);
+        File profPic = new File(profilePath);
+
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("image/*"),profPic);
+        MultipartBody.Part photo =
+                MultipartBody.Part.createFormData("photo", profPic.getName(), requestFile);
+
+        String userToken = Prefs.getString("token", "");
+
+        Client.getInstance().create(ApiInterface.class).uploadProfilPic(userToken,photo).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful())
+                    Log.e("TAG","Image upload successful");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("TAG",t.getMessage());
+            }
+        });
+    }
+
 }

@@ -75,7 +75,7 @@ public class Login extends AppCompatActivity {
                         Prefs.putBoolean("isLoggedIn", true);
                         Log.d("TAG", "tokenResponse: -> " + Prefs.getString("token", ""));
                         BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);
-                        dbHelper.addUser(userResponse.getData());
+                        //dbHelper.addUser(userResponse.getData());
 
 
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
