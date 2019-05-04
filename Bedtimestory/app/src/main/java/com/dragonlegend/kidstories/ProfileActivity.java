@@ -16,6 +16,7 @@ import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Model.User;
 import com.dragonlegend.kidstories.Model.UserData;
+import com.dragonlegend.kidstories.Utils.UploadImage;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import retrofit2.Call;
@@ -45,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         mUserName = findViewById(R.id.user_name);
         mUserEmail = findViewById(R.id.user_email);
         mUserPhoneNum = findViewById(R.id.userPhoneNum);
+
 
         mUserName.setText("Loading...");
         mUserEmail.setText("Loading...");
@@ -81,12 +83,14 @@ public class ProfileActivity extends AppCompatActivity {
                     mUserName.setText(name);
                     mUserEmail.setText(mUser.getEmail());
                     String phone = mUser.getPhone();
-                    if(mUser.getPhone()==null)
+                    if(phone==null)
                         phone = "No associated phone number";
 
                     mUserPhoneNum.setText(phone);
 
-                    String imageUrl = "https://res.cloudinary.com/ephaig/image/upload/v1555015808/download.png";
+                    String imageUrl = mUser.getImage();
+                    if(imageUrl==null)
+                        imageUrl = "https://res.cloudinary.com/ephaig/image/upload/v1555015808/download.png";
 
                     Glide.with(getApplicationContext())
                             .load(imageUrl)

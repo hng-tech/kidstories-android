@@ -50,4 +50,6 @@ dependencies {
 
 
     implementation 'com.pixplicity.easyprefs:library:1.9.0'
+
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
 }

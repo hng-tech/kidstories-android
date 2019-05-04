@@ -56,6 +56,10 @@ public interface ApiInterface {
                                 @Field("first_name") String first_name,
                                 @Field("last_name") String last_name);
 
+    @POST("users/profile/update-image")
+    @Multipart
+    Call<ResponseBody> uploadProfilPic(@Header("Authorization") String token,@Part MultipartBody.Part photo);
+
 
     @POST("auth/login")
     @FormUrlEncoded

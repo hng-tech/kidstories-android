@@ -16,7 +16,7 @@ public class PermissionManager {
 
             new AlertDialog.Builder(context)
                     .setTitle("Permission needed")
-                    .setMessage("This permission is needed to be able to set profile Image")
+                    .setMessage("This permission is needed to be able to upload Image")
                     .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
