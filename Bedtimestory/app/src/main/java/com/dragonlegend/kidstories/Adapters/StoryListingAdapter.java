@@ -150,12 +150,6 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             mImage = itemView.findViewById(R.id.story_image);
             mTitle = itemView.findViewById(R.id.story_title);
             mPremium = itemView.findViewById(R.id.premium);
-            mPremium.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext,"Premium => "+mStories.get(getAdapterPosition()).getIsPremium(),Toast.LENGTH_SHORT).show();
-                }
-            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -197,12 +191,6 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             dislikes = itemView.findViewById(R.id.dislikes);
             reactionProgress = itemView.findViewById(R.id.reactionProgress);
             mPremium = itemView.findViewById(R.id.premium_text);
-            mPremium.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext,"Premium => "+mStories.get(getAdapterPosition()).getIsPremium(),Toast.LENGTH_SHORT).show();
-                }
-            });
             mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
