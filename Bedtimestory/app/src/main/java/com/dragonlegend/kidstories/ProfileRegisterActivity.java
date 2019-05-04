@@ -138,10 +138,10 @@ public class ProfileRegisterActivity extends AppCompatActivity {
                 mDesignation = mDesignationField.getSelectedItem().toString().trim();
                 register();
 
-                String profilePath = Prefs.getString("profile_path",null).replace(".jpg","");
+                /*String profilePath = Prefs.getString("profile_path",null);
                 if(profilePath!=null){
                     UploadImage.uploadProfilePic(profilePath);
-                }
+                }*/
 
             }
         });
@@ -184,6 +184,13 @@ public class ProfileRegisterActivity extends AppCompatActivity {
                     Prefs.putString("user_profile_email", user_profile_email);
                     Prefs.putString("user_profile_name", user_profile_name);
                     Prefs.putString("user_profile_number", user_profile_number);
+
+                    //UPLOAD PROFILE IMAGE
+                    String profilePath = Prefs.getString("profile_path",null);
+                    if(profilePath!=null){
+                        UploadImage.uploadProfilePic( Prefs.getString("reg_token", ""),profilePath);
+                    }
+
                     Intent intent = new Intent(ProfileRegisterActivity.this,Home.class);
                     startActivity(intent);
                     finish();
@@ -225,6 +232,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
                 int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
 
                 Prefs.putString("profile_path",cursor.getString(idx));
+                cursor.close();
 
             } catch (FileNotFoundException e) {
 
