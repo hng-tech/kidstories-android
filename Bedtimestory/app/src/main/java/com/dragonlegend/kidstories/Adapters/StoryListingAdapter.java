@@ -70,6 +70,17 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             storyHolder.likes.setText(String.valueOf(story.getLikesCount()));
             Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
+            switch (story.getReaction()){
+                case "0":{
+                    storyHolder.mDislike.setSelected(true);
+                    break;
+                }
+
+                case "1":{
+                    storyHolder.mLike.setSelected(true);
+                }
+            }
+
             storyHolder.mLike.setOnClickListener(v -> {
                 if (Prefs.getBoolean("isLoggedIn", false)) {
                     reactToStory(true, String.valueOf(story.getId()), i, storyHolder);

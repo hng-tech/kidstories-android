@@ -126,7 +126,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 mDetail.setText(content);
                                 mStoryAge.setText("For Kids " +story.getAge() +" years");
                                 mScrollView.setVisibility(View.VISIBLE);
-                                mCommentAdapter.setComment(story.getComments().getComments());
+//                                mCommentAdapter.setComment(story.getComments().getComments());
 
 
                             }else if(response.code() !=200){
