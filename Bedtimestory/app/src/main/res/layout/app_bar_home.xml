@@ -36,7 +36,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Welcome Team Legend"
+                        android:text="Welcome!"
                         android:textColor="@color/colorBlack"
                         style="@style/TextAppearance.AppCompat.Title"
                         android:textSize="14sp"/>
