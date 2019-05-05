@@ -62,19 +62,25 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-                <ImageButton
+                <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/imageButton"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="32dp"
+                    android:scaleType="centerInside"
                     android:background="@drawable/camera_circle_background"
                     android:padding="5dp"
                     app:layout_constraintEnd_toStartOf="@+id/textView7"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6"
                     app:srcCompat="@drawable/ic_camera_alt_black_24dp"
-                    tools:ignore="VectorDrawableCompat" />
+                    tools:ignore="VectorDrawableCompat"
+                    app:civ_border_color="#EEEEEE"
+                    app:civ_border_width="4dp"
+                    app:civ_shadow="true"
+                    app:civ_shadow_radius="10"
+                    app:civ_shadow_color="@color/colorAccent"/>
 
                 <TextView
                     android:id="@+id/textView7"

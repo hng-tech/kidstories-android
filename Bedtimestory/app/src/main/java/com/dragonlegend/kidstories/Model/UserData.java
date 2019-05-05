@@ -32,6 +32,10 @@ public class UserData {
     @Expose
     private String token;
 
+    @SerializedName("image_url")
+    @Expose
+    private String image;
+
     public UserData(String id, String first_name, String last_name, Integer is_admin, String email, String location, String postal_code, String phone, String token) {
         this.id = id;
         this.first_name = first_name;
@@ -78,5 +82,9 @@ public class UserData {
 
     public String getToken() {
         return token;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

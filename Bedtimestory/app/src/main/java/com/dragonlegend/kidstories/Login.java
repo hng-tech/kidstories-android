@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.dragonlegend.kidstories.Api.ApiInterface;
@@ -25,6 +27,12 @@ public class Login extends AppCompatActivity {
     EditText mEmailField, mPasswordField;
     Button mLoginButton;
     String mEmail, mPassword;
+    String lg = "lg";
+
+    AlphaAnimation inAnimation;
+    AlphaAnimation outAnimation;
+
+    FrameLayout mHolder_ProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +40,14 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mEmailField = findViewById(R.id.login_email);
         mPasswordField = findViewById(R.id.login_password);
+        mHolder_ProgressBar = (FrameLayout) findViewById(R.id.progressHolder);
         mLoginButton = findViewById(R.id.login_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doLogin();
-                Toast.makeText(Login.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+                mHolder_ProgressBar.setVisibility(View.VISIBLE);
+//                Toast.makeText(Login.this, "Login Clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -65,7 +75,7 @@ public class Login extends AppCompatActivity {
                         Prefs.putBoolean("isLoggedIn", true);
                         Log.d("TAG", "tokenResponse: -> " + Prefs.getString("token", ""));
                         BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);
-                        dbHelper.addUser(userResponse.getData());
+                        //dbHelper.addUser(userResponse.getData());
 
 
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
@@ -74,6 +84,7 @@ public class Login extends AppCompatActivity {
                         startActivity(intent);
                     }else{
                         Toast.makeText(Login.this,"Invalid Login details",Toast.LENGTH_SHORT).show();
+                        mHolder_ProgressBar.setVisibility(View.GONE);
                     }
                 }
 
