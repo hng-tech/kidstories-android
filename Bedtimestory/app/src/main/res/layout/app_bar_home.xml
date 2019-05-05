@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:fontFamily="@font/worksans_regular"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
 
         <RelativeLayout
@@ -21,6 +22,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:background="@color/colorWhite">
 
                 <ImageView
