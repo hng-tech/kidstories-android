@@ -322,9 +322,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_filter) {
-            return true;
-        }
+//        if (id == R.id.action_filter) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
