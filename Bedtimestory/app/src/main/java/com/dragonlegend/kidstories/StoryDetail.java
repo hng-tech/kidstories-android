@@ -2,6 +2,7 @@ package com.dragonlegend.kidstories;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -91,12 +92,14 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
+
         initViews();
         if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
             mTitle.setText(getIntent().getExtras().getString("title"));
             Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
             mDetail.setText(getIntent().getExtras().getString("content"));
             mBookmark.setVisibility(View.INVISIBLE);
+            mScrollView.setVisibility(View.VISIBLE);
 
         }else {
             Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
@@ -118,8 +121,10 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 mTitle.setText(title);
                                 mDetail.setText(content);
                                 mStoryAge.setText("For Kids " +story.getAge() +" years");
-                                mCommentAdapter.setComment(story.getComments().getComments());
                                 mScrollView.setVisibility(View.VISIBLE);
+                                mCommentAdapter.setComment(story.getComments().getComments());
+
+
                             }else if(response.code() !=200){
                                 mScrollView.setVisibility(View.GONE);
                                 mPremiumMessage.setVisibility(View.VISIBLE);
@@ -180,19 +185,20 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mScrollView = findViewById(R.id.detail_scroll);
         mCommentRv  = findViewById(R.id.comment_rv);
 
-        mCommentRv.setNestedScrollingEnabled(false);
+
+        //mCommentRv.setNestedScrollingEnabled(false);
 //        mCommentRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mCommentRv.setLayoutManager(new LinearLayoutManager(this));
         mCommentRv.setAdapter(mCommentAdapter);
-        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
-                if(mScrollView.getScrollY() == 0){
-                    mCommentLayout.setVisibility(View.GONE);
-                }
-            }
-        });
+//        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+//            @Override
+//            public void onScrollChanged() {
+//                 imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
+//                if(mScrollView.getScrollY() == 0){
+//                    mCommentLayout.setVisibility(View.GONE);
+//                }
+//            }
+//        });
         //Set onClickListeners on Views with actions
         mAddComment.setOnClickListener(this);
         mBookmark.setOnClickListener(this);
@@ -206,8 +212,11 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         switch (id){
             case R.id.add_comment:
                 mCommentLayout.setVisibility(View.VISIBLE);
-                mCommentField.requestFocus();
-                imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
+                if(mCommentField.hasFocus()){
+                    imm.showSoftInput(mCommentField, InputMethodManager.SHOW_FORCED);
+
+                }
+               // mCommentField.requestFocus();
                 break;
             case R.id.comment_send:
                 addComment(mCommentField.getText().toString().trim());
@@ -308,6 +317,11 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                     public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                         if (response.isSuccessful()){
                             Toast.makeText(StoryDetail.this, "Successful upload", Toast.LENGTH_SHORT).show();
+
+                            mCommentField.setText("");
+                            imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
+                            mCommentLayout.setVisibility(View.INVISIBLE);
+                            mScrollView.setVisibility(View.VISIBLE);
                         }else{
                             Toast.makeText(StoryDetail.this, "Failed", Toast.LENGTH_SHORT).show();
                         }
