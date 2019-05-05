@@ -60,6 +60,7 @@ public class Bookmark extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_primary);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
 
+
         favRec = v.findViewById(R.id.favRec);
         linearLayout = v.findViewById(R.id.textLogin);
         stories = new ArrayList<>();
