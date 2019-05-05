@@ -56,7 +56,7 @@ import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
 
 public class Home extends AppCompatActivity implements View.OnClickListener {
-    ShimmerRecyclerView mStoriesRecycler;
+    RecyclerView mStoriesRecycler;
     RecyclerView mCategoriesRecycler;
     StoryListingAdapter mAdapter;
     List<Story> mStories;
@@ -120,7 +120,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 //        mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
         mStoriesRecycler.setAdapter(mAdapter);
 
-        mStoriesRecycler.showShimmerAdapter();
+//        mStoriesRecycler.showShimmerAdapter();
 
 //        //checking if user is logged in
 //        checkUser();
@@ -437,7 +437,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         MainAplication.getApiInterface().getAllStories().enqueue(new Callback<StoryAllResponse>() {
             @Override
             public void onResponse(Call<StoryAllResponse> call, Response<StoryAllResponse> response) {
-                mStoriesRecycler.hideShimmerAdapter();
+//                mStoriesRecycler.hideShimmerAdapter();
                 if (response.isSuccessful()) {
                     StoryAllResponse storyAllResponse = response.body();
                     List<Story> story = storyAllResponse.getData();
@@ -457,7 +457,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<StoryAllResponse> call, Throwable t) {
-                mStoriesRecycler.hideShimmerAdapter();
+//                mStoriesRecycler.hideShimmerAdapter();
                 Log.e("Story = ", t.toString());
                 showNetworkError();
             }
