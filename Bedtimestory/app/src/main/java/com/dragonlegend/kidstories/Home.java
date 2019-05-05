@@ -11,6 +11,8 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -117,6 +119,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 //        //checking if user is logged in
 //        checkUser();
 
+
         loadData();
 
 
@@ -126,11 +129,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 //                 Handle navigation view item clicks here.
                 int id = item.getItemId();
                 if (id == R.id.home) {
-            //start Home activity .
-            Intent i = new Intent(getBaseContext(), Home.class);
-            startActivity(i);
-        }else if(id == R.id.action_favorites) {
-                    startActivity(new Intent(getBaseContext(), Bookmark.class));
+                    //start Home activity .
+                    Intent i = new Intent(getBaseContext(), Home.class);
+                    startActivity(i);
+                }else if(id == R.id.action_favorites) {
+                   openFragment(new Bookmark(), "bookmark");
+
+
+//                    startActivity(new Intent(getBaseContext(), Bookmark.class));
 ////              ShowSnackbar();
                     return true;
                 }
@@ -200,14 +206,68 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     //method to call bottommenu Fragment
     public void showBottomMenu(){
 
-        BottomMenuFragment bottomSheetFragment = new BottomMenuFragment();
-        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
 
-        View view = getLayoutInflater().inflate(R.layout.bottom_menu_dialog, null);
+        /**
+         * showing bottom sheet dialog
+         */
+
+//        BottomMenuFragment bottomSheetFragment = new BottomMenuFragment();
+//        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+
+
+
 
         BottomSheetDialog dialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.bottom_menu_dialog, null);
         dialog.setContentView(view);
         dialog.show();
+
+        if (isLoggedIn){
+            view.findViewById(R.id.signout).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.loginn).setVisibility(View.GONE);
+            view.findViewById(R.id.pro).setVisibility(View.VISIBLE);
+
+            view.findViewById(R.id.signout).setOnClickListener(view15 -> {
+                validate("Logging you out!!!!");
+                Prefs.putBoolean("isLoggedIn", false);
+                Prefs.putString("token", "");
+                view.findViewById(R.id.signout).setVisibility(View.GONE);
+                dialog.dismiss();
+                view.findViewById(R.id.loginn).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.pro).setVisibility(View.GONE);
+            });
+
+        }else{
+            view.findViewById(R.id.loginn).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.signout).setVisibility(View.GONE);
+            view.findViewById(R.id.pro).setVisibility(View.GONE);
+
+            view.findViewById(R.id.loginn).setOnClickListener(view15 -> {
+                dialog.dismiss();
+                startActivity(new Intent(getBaseContext(), Login.class));
+            });
+        }
+        //start categories
+        view.findViewById(R.id.cat).setOnClickListener(view1 -> {
+            dialog.dismiss();
+            startActivity(new Intent(getBaseContext(), CategoriesActivity.class));
+        });
+
+        //start profile
+        view.findViewById(R.id.pro).setOnClickListener(view12 -> {
+            dialog.dismiss();
+            startActivity(new Intent(getBaseContext(), ProfileActivity.class));
+        });
+        //start add story
+        view.findViewById(R.id.story_add).setOnClickListener(view13 -> {
+            dialog.dismiss();
+            startActivity(new Intent(getBaseContext(), AddStoryActivity.class));
+        });
+        //start donate
+        view.findViewById(R.id.donate).setOnClickListener(view14 -> {
+            dialog.dismiss();
+//            startActivity(new Intent(getBaseContext(), Do.class));
+        });
     }
   public void checkUser(){
       if (isLoggedIn) {
@@ -239,10 +299,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 //        return super.onOptionsItemSelected(item);
 //    }
 
-        @Override
-        protected void onSaveInstanceState (Bundle outState){
-            super.onSaveInstanceState(outState);
-        }
+    @Override
+    protected void onSaveInstanceState (Bundle outState){
+        super.onSaveInstanceState(outState);
+    }
 
 
 
@@ -450,7 +510,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 // show the snackbar
         snackbar.show();
     }
-
+    private void openFragment(Fragment fragment, String tag){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.cont, fragment, tag);
+        transaction.addToBackStack(fragment.getTag());
+        Log.d("TAG","fragment tag: "+fragment.getTag());
+        transaction.commit();
+    }
 
 }
-

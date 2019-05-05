@@ -241,13 +241,15 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         MainAplication.getApiInterface().addBookmark(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)).enqueue(new Callback<BookmarkResponse>() {
             @Override
             public void onResponse(Call<BookmarkResponse> call, Response<BookmarkResponse> response) {
+                Log.d("code", "onResponse: "+ String.valueOf(response.code()));
                 if (response.isSuccessful()){
-                    if (response.code()== 200){
+                    if (response.code()== 200 || response.code() == 201){
                         //if successfull add story offline
+                        dialog.dismiss();
                         addFavorite(title, story, image, time);
                     }else{
                         dialog.dismiss();
-                        Toast.makeText(StoryDetail.this, "Oops! Story not found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StoryDetail.this, "Oops! Try again", Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     dialog.dismiss();
