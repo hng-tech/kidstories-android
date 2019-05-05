@@ -5,6 +5,7 @@
     <color name="colorAccent">#6F8EF5</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorAsh">#AEE2E2E2</color>
+    <color name="colorAshLight">#f9f9f9</color>
     <color name="colorPrimaryTransparent">#e14e53f7</color>
     <color name="colorBlack">#000000</color>
     <color name="hamburgerBlack">#000000</color>
