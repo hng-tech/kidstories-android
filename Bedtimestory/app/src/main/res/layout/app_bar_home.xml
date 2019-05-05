@@ -37,11 +37,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-<<<<<<< HEAD
                         android:text="Welcome!"
-=======
-                        android:text="Welcome"
->>>>>>> 12c2aab76f7039f306ef907598e603b5c2ecf604
                         android:textColor="@color/colorBlack"
                         style="@style/TextAppearance.AppCompat.Title"
                         android:textSize="14sp"/>
@@ -54,11 +50,6 @@
 
 
                 </LinearLayout>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_search"/>
                 <!--<TextView-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
