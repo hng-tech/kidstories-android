@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dragonlegend.kidstories.Adapters.FavAdapter;
@@ -44,6 +46,9 @@ public class Bookmark extends Fragment {
     ProgressBar progressBar;
     StoryListingAdapter adapter;
     LinearLayout linearLayout;
+    ListView favRec2;
+    TextView text;
+    Button loog;
 
     @Nullable
     @Override
@@ -60,8 +65,10 @@ public class Bookmark extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_primary);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
 
-
         favRec = v.findViewById(R.id.favRec);
+        favRec2 = v.findViewById(R.id.favRec2);
+        text = v.findViewById(R.id.txt);
+        loog = v.findViewById(R.id.looog);
         linearLayout = v.findViewById(R.id.textLogin);
         stories = new ArrayList<>();
 
@@ -94,24 +101,40 @@ public class Bookmark extends Fragment {
     private void getDatabaseColunms() {
         mHelper = new BedTimeDbHelper(getActivity());
         SQLiteDatabase db =  mHelper.getReadableDatabase();
+        if (!Prefs.getBoolean("isLoggedIn", false)){
+            favRec.setVisibility(View.INVISIBLE);
+            linearLayout.setVisibility(View.VISIBLE);
+            favRec2.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }else{
+            favRec.setVisibility(View.INVISIBLE);
+            favRec2.setVisibility(View.VISIBLE);
 
-        String[] projection = {
-                FavoriteContract.FavoriteColumn._ID,
-                FavoriteContract.FavoriteColumn.COLUMN_TITLE,
-                FavoriteContract.FavoriteColumn.COLUMN_CONTENT,
-                FavoriteContract.FavoriteColumn.COLUMN_TIME,
-                FavoriteContract.FavoriteColumn.COLUMN_IMAGE,
-        };
-        c  = db.query(
-                FavoriteContract.FavoriteColumn.TABLE_NAME,
-                projection,
-                null, null, null, null, null);
+            String[] projection = {
+                    FavoriteContract.FavoriteColumn._ID,
+                    FavoriteContract.FavoriteColumn.COLUMN_TITLE,
+                    FavoriteContract.FavoriteColumn.COLUMN_CONTENT,
+                    FavoriteContract.FavoriteColumn.COLUMN_TIME,
+                    FavoriteContract.FavoriteColumn.COLUMN_IMAGE,
+            };
+            c  = db.query(
+                    FavoriteContract.FavoriteColumn.TABLE_NAME,
+                    projection,
+                    null, null, null, null, null);
+
+            if (c.moveToFirst()){
+                FavAdapter adapter = new FavAdapter(getActivity(), c, 0);
+
+                favRec2.setAdapter(adapter);
+            }else{
+                text.setText("You have no offline favourites");
+                loog.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
+            }
 
 
+        }
 
-//        FavAdapter adapter = new FavAdapter(this, c, 0);
-
-//        favRec.setAdapter(adapter);
 
     }
 
@@ -129,8 +152,8 @@ public class Bookmark extends Fragment {
                     stories.addAll(allStories);
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getActivity(), "Oops!!! An error occurred", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getActivity(), "Oops!!! An error occurred. Switched to offline favorites", Toast.LENGTH_SHORT).show();
+                    getDatabaseColunms();
 
                 }
             }
@@ -139,8 +162,8 @@ public class Bookmark extends Fragment {
             public void onFailure(Call<BaseResponse<List<Story>>> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
 
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getActivity(), "Oops!!! Request failure. Switched to offline favorites", Toast.LENGTH_SHORT).show();
+                getDatabaseColunms();
             }
         });
     }

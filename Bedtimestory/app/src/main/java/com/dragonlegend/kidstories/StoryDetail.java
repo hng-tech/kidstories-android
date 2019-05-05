@@ -230,10 +230,12 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 if (storyExist(title)){
                     Toast.makeText(this, "Story already added to Favorite", Toast.LENGTH_SHORT).show();
                     return;
+                }else{
+                    addFavoriteOnline(Prefs.getString("token", " "), getIntent().getIntExtra(StoryDetail.STORY_ID, 1), title, content, image, time);
+                    //addFavorite(title, content, image, time);
+                    Log.d("check", "onClick: id is:"+ getIntent().getIntExtra(StoryDetail.STORY_ID, 1));
                 }
-                addFavoriteOnline(Prefs.getString("token", " "), getIntent().getIntExtra(StoryDetail.STORY_ID, 1), title, content, image, time);
-                //addFavorite(title, content, image, time);
-                Log.d("check", "onClick: id is:"+ getIntent().getIntExtra(StoryDetail.STORY_ID, 1));
+
             default:
                 break;
         }
