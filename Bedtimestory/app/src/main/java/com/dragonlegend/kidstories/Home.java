@@ -51,7 +51,7 @@ import retrofit2.Response;
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements View.OnClickListener {
     RecyclerView mStoriesRecycler, mCategoriesRecycler;
     StoryListingAdapter mAdapter;
     List<Story> mStories;
@@ -114,8 +114,11 @@ public class Home extends AppCompatActivity {
         mAdapter = new StoryListingAdapter(this, mStories);
         mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
         mStoriesRecycler.setAdapter(mAdapter);
+//        //checking if user is logged in
+//        checkUser();
 
         loadData();
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -131,39 +134,71 @@ public class Home extends AppCompatActivity {
 ////              ShowSnackbar();
                     return true;
                 }
-
                 else if(id == R.id.more) {
-
-
                     showBottomMenu();
-
                     return true;
                 }
-
 
                 else {
                 }
 
                 return true;
+
+
             }
         });
 
-
-
-
-/**
- * showing bottom sheet dialog fragment
- * same layout is used in both dialog and dialog fragment
- */
-
-
-
     }
-    public void showBottomMenu(){
 
-        /**
-         * showing bottom sheet dialog
-         */
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.cat_activity:
+                //start category activity .
+            Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
+            startActivity(i);
+
+                break;
+            case R.id.profile_activity:
+                //start Profile activity .
+            if(mUser !=null ){
+                Intent p = new Intent(getBaseContext(), ProfileActivity.class);
+                p.putExtra(Config.USER_ID,mUser.getId());
+                startActivity(p);
+            }
+                break;
+            case R.id.add_story_activity:
+                //start addstory activity .
+            if (Prefs.getBoolean("isLoggedIn", false)){
+                Intent a = new Intent(getBaseContext(), AddStoryActivity.class);
+                startActivity(a);
+            }else {
+                validate("Please Log in to add story !!!");
+            }
+                break;
+            case R.id.donate_url:
+                //do ur code;
+                String url = "https://paystack.com/pay/kidstoriesapp";
+                Intent d = new Intent(Intent.ACTION_VIEW);
+                d.setData(Uri.parse(url));
+                startActivity(d);
+                break;
+            case R.id.signout_activity:
+                //do ur code;
+            if (!Prefs.getBoolean("isLoggedIn", false)){
+                ShowSnackbar("You have never logged In");
+            }
+            else {
+                validate("Logging you out!!!!");
+            }
+            default:
+                //do ur code;
+        }
+    }
+
+
+    //method to call bottommenu Fragment
+    public void showBottomMenu(){
 
         BottomMenuFragment bottomSheetFragment = new BottomMenuFragment();
         bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
@@ -174,38 +209,19 @@ public class Home extends AppCompatActivity {
         dialog.setContentView(view);
         dialog.show();
     }
+  public void checkUser(){
+      if (isLoggedIn) {
+          bottomNavigationView.getMenu().findItem(R.id.login_activity).setVisible(false);
+          bottomNavigationView.getMenu().findItem(R.id.signout_activity).setVisible(true);
+          bottomNavigationView.getMenu().findItem(R.id.profile_activity).setVisible(true);
+      } else {
+          bottomNavigationView.getMenu().findItem(R.id.login_activity).setVisible(true);
+          bottomNavigationView.getMenu().findItem(R.id.signout_activity).setVisible(false);
+          bottomNavigationView.getMenu().findItem(R.id.profile_activity).setVisible(false);
+      }
 
+  }
 
-//        ImageButton close = navigationView.getHeaderView(0).findViewById(R.id.nav_close_button);
-//        close.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                drawer.closeDrawers();
-//            }
-//        });
-//        navigationView.setNavigationItemSelectedListener(this);
-//
-//        if(isLoggedIn){
-//            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
-//            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(true);
-//            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(true);
-//        }else{
-//            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
-//            navigationView.getMenu().findItem(R.id.nav_signout).setVisible(false);
-//            navigationView.getMenu().findItem(R.id.nav_profile).setVisible(false);
-//        }
-
-
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-//
 
 //
 //    @Override
