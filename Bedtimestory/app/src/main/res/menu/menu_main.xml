@@ -6,7 +6,15 @@
         android:id="@+id/action_filter"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/ic_filter_black"
+        android:icon="@drawable/baseline_filter_list_24"
+        app:showAsAction="ifRoom">
+
+    </item>
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="200"
+        android:title="User"
+        android:icon="@drawable/baseline_search_black_24"
         app:showAsAction="ifRoom">
 
     </item>
