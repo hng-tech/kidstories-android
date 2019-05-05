@@ -59,6 +59,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     RecyclerView mStoriesRecycler;
     RecyclerView mCategoriesRecycler;
     StoryListingAdapter mAdapter;
+    ProgressBar storiesProgress;
     List<Story> mStories;
     List<Category> mCategories;
     CategoriesAdapter mCategoriesAdapter;
@@ -97,6 +98,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);
+        storiesProgress = findViewById(R.id.storiesProgress);
         mAddNew = findViewById(R.id.btn_addnew);
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +115,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             }
         });
         mStories = new ArrayList<>();
+        storiesProgress.setVisibility(View.VISIBLE);
         mCategories = new ArrayList<>();
         mCategoriesAdapter = new CategoriesAdapter(this, mCategories, "home");
         mCategoriesRecycler.setAdapter(mCategoriesAdapter);
@@ -438,6 +441,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onResponse(Call<StoryAllResponse> call, Response<StoryAllResponse> response) {
 //                mStoriesRecycler.hideShimmerAdapter();
+                storiesProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     StoryAllResponse storyAllResponse = response.body();
                     List<Story> story = storyAllResponse.getData();
@@ -458,6 +462,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onFailure(Call<StoryAllResponse> call, Throwable t) {
 //                mStoriesRecycler.hideShimmerAdapter();
+                storiesProgress.setVisibility(View.GONE);
                 Log.e("Story = ", t.toString());
                 showNetworkError();
             }
