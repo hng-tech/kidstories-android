@@ -73,9 +73,9 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             storyHolder.mLike.setOnClickListener(v -> {
                 if (Prefs.getBoolean("isLoggedIn", false)) {
                     reactToStory(true, String.valueOf(story.getId()), i, storyHolder);
-                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
-                    holdProgress = ((StoryHolder) holder).reactionProgress;
-                    holdProgress.setVisibility(View.VISIBLE);
+//                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
+//                    holdProgress = ((StoryHolder) holder).reactionProgress;
+                    storyHolder.reactionProgress.setVisibility(View.VISIBLE);
 //            int addLike = Integer.parseInt(storyHolder.likes.getText().toString()) + 1;
 //            storyHolder.likes.setText(String.valueOf(addLike));
                 } else
@@ -86,9 +86,9 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             storyHolder.mDislike.setOnClickListener(v -> {
                 if (Prefs.getBoolean("isLoggedIn", false)) {
                     reactToStory(false, String.valueOf(story.getId()), i, storyHolder);
-                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
-                    holdProgress = ((StoryHolder) holder).reactionProgress;
-                    holdProgress.setVisibility(View.VISIBLE);
+//                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
+//                    holdProgress = ((StoryHolder) holder).reactionProgress;
+                    storyHolder.reactionProgress.setVisibility(View.VISIBLE);
 //            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
 //            storyHolder.dislikes.setText(String.valueOf(addDislike));
                 } else
@@ -220,7 +220,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<StoryReactionResponse>() {
             @Override
             public void onResponse(Call<StoryReactionResponse> call, Response<StoryReactionResponse> response) {
-                holdProgress.setVisibility(View.GONE);
+                storyHolder.reactionProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     StoryReactionResponse reactionResponse = response.body();
