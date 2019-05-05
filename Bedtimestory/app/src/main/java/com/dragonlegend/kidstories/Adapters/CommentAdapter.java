@@ -2,33 +2,36 @@ package com.dragonlegend.kidstories.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.dragonlegend.kidstories.Api.Responses.CommentResponse;
+import com.dragonlegend.kidstories.Model.Comment;
 import com.dragonlegend.kidstories.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private static final String TAG = "CommentAdapter";
-    private ArrayList<CommentResponse> commentsList;
+    private List<Comment> commentsList;
     private Context mcontext;
 
-    public CommentAdapter(Context context, ArrayList<CommentResponse> commentsList) {
+    public CommentAdapter(Context context,List<Comment> commentsList) {
         this.commentsList = commentsList;
         mcontext = context;
     }
 
-    public void setComment(ArrayList<CommentResponse> commentsList) {
+    public void setComment(List<Comment> commentsList) {
         this.commentsList = commentsList;
         notifyDataSetChanged();
     }
@@ -37,7 +40,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coment_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_comment, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -45,30 +48,35 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder:called.");
-        CommentResponse commentResponse = commentsList.get(position);
-        Glide.with(mcontext).asBitmap().load(commentResponse.getUserImage()).into(holder.imageView);
-        holder.username.setText(commentResponse.getPublisher());
-        holder.comment.setText(commentResponse.getComment());
+        Comment comm = commentsList.get(position);
+        if(comm.getUser().getImage() != null) {
+            Glide.with(mcontext).asBitmap().load(comm.getUser().getImage()).into(holder.imageView);
+        }
+        if(position % 2 == 0){
+            holder.parentLayout.setBackgroundColor(mcontext.getResources().getColor(R.color.colorAshLight));
+        }
+        holder.username.setText(comm.getUser().getFullName());
+        holder.comment.setText(comm.getBody());
     }
 
     @Override
     public int getItemCount() {
-        return commentsList.size();
+        return commentsList !=null?commentsList.size():0;
 
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CircleImageView imageView;
+        ImageView imageView;
         public TextView username, comment;
-        RelativeLayout parentLayout;
+        ConstraintLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.user_image);
-            username = itemView.findViewById(R.id.username);
-            comment = itemView.findViewById(R.id.Comment);
-            parentLayout = itemView.findViewById(R.id.parnt_layout);
+            imageView = itemView.findViewById(R.id.commenter_image);
+            username = itemView.findViewById(R.id.commenter);
+            comment = itemView.findViewById(R.id.comment);
+            parentLayout = itemView.findViewById(R.id.comment_cl);
         }
     }
 }
