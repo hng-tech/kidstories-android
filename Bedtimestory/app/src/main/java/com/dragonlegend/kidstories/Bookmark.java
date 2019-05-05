@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dragonlegend.kidstories.Adapters.FavAdapter;
@@ -45,6 +47,8 @@ public class Bookmark extends Fragment {
     StoryListingAdapter adapter;
     LinearLayout linearLayout;
     ListView favRec2;
+    TextView text;
+    Button loog;
 
     @Nullable
     @Override
@@ -63,6 +67,8 @@ public class Bookmark extends Fragment {
 
         favRec = v.findViewById(R.id.favRec);
         favRec2 = v.findViewById(R.id.favRec2);
+        text = v.findViewById(R.id.txt);
+        loog = v.findViewById(R.id.looog);
         linearLayout = v.findViewById(R.id.textLogin);
         stories = new ArrayList<>();
 
@@ -116,11 +122,17 @@ public class Bookmark extends Fragment {
                     projection,
                     null, null, null, null, null);
 
+            if (c.moveToFirst()){
+                FavAdapter adapter = new FavAdapter(getActivity(), c, 0);
+
+                favRec2.setAdapter(adapter);
+            }else{
+                text.setText("You have no offline favourites");
+                loog.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
+            }
 
 
-            FavAdapter adapter = new FavAdapter(getActivity(), c, 0);
-
-            favRec2.setAdapter(adapter);
         }
 
 
