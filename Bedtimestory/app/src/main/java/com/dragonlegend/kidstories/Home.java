@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.dragonlegend.kidstories.Adapters.CategoriesAdapter;
 import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
 import com.dragonlegend.kidstories.Api.ApiInterface;
@@ -41,9 +42,14 @@ import com.dragonlegend.kidstories.Fragments.BottomMenuFragment;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -54,8 +60,10 @@ import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
 
 public class Home extends AppCompatActivity implements View.OnClickListener {
-    RecyclerView mStoriesRecycler, mCategoriesRecycler;
+    RecyclerView mStoriesRecycler;
+    RecyclerView mCategoriesRecycler;
     StoryListingAdapter mAdapter;
+    ProgressBar storiesProgress;
     List<Story> mStories;
     List<Category> mCategories;
     CategoriesAdapter mCategoriesAdapter;
@@ -64,7 +72,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     ImageView mAddNew;
     ProgressBar mProgressBar;
     boolean isLoggedIn;
-
+    TextView date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +98,17 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 //            }
 //        }
 
+        date=findViewById(R.id.date);
+        Calendar calender = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
+        String  strDate = DateFormat.getDateTimeInstance()
+                .format(new Date());
+        date.setText(strDate);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);
+        storiesProgress = findViewById(R.id.storiesProgress);
         mAddNew = findViewById(R.id.btn_addnew);
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,12 +125,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             }
         });
         mStories = new ArrayList<>();
+        storiesProgress.setVisibility(View.VISIBLE);
         mCategories = new ArrayList<>();
         mCategoriesAdapter = new CategoriesAdapter(this, mCategories, "home");
         mCategoriesRecycler.setAdapter(mCategoriesAdapter);
         mAdapter = new StoryListingAdapter(this, mStories);
-        mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
+//        mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
         mStoriesRecycler.setAdapter(mAdapter);
+
+//        mStoriesRecycler.showShimmerAdapter();
+
 //        //checking if user is logged in
 //        checkUser();
 
@@ -189,7 +208,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 d.setData(Uri.parse(url));
                 startActivity(d);
                 break;
-            case R.id.signout_activity:
+            case R.id.signout:
                 //do ur code;
             if (!Prefs.getBoolean("isLoggedIn", false)){
                 ShowSnackbar("You have never logged In");
@@ -224,7 +243,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
         if (isLoggedIn){
             view.findViewById(R.id.signout).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.loginn).setVisibility(View.GONE);
+            view.findViewById(R.id.login).setVisibility(View.GONE);
             view.findViewById(R.id.pro).setVisibility(View.VISIBLE);
 
             view.findViewById(R.id.signout).setOnClickListener(view15 -> {
@@ -233,16 +252,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 Prefs.putString("token", "");
                 view.findViewById(R.id.signout).setVisibility(View.GONE);
                 dialog.dismiss();
-                view.findViewById(R.id.loginn).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.login).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.pro).setVisibility(View.GONE);
             });
 
         }else{
-            view.findViewById(R.id.loginn).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.login).setVisibility(View.VISIBLE);
             view.findViewById(R.id.signout).setVisibility(View.GONE);
             view.findViewById(R.id.pro).setVisibility(View.GONE);
 
-            view.findViewById(R.id.loginn).setOnClickListener(view15 -> {
+            view.findViewById(R.id.login).setOnClickListener(view15 -> {
                 dialog.dismiss();
                 startActivity(new Intent(getBaseContext(), Login.class));
             });
@@ -264,19 +283,23 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(getBaseContext(), AddStoryActivity.class));
         });
         //start donate
-        view.findViewById(R.id.donate).setOnClickListener(view14 -> {
+        view.findViewById(R.id.donate_url).setOnClickListener(view14 -> {
             dialog.dismiss();
-//            startActivity(new Intent(getBaseContext(), Do.class));
+//            //do ur code;
+                String url = "https://paystack.com/pay/kidstoriesapp";
+                Intent d = new Intent(Intent.ACTION_VIEW);
+                d.setData(Uri.parse(url));
+                startActivity(d);
         });
     }
   public void checkUser(){
       if (isLoggedIn) {
-          bottomNavigationView.getMenu().findItem(R.id.login_activity).setVisible(false);
-          bottomNavigationView.getMenu().findItem(R.id.signout_activity).setVisible(true);
+          bottomNavigationView.getMenu().findItem(R.id.login).setVisible(false);
+          bottomNavigationView.getMenu().findItem(R.id.signout).setVisible(true);
           bottomNavigationView.getMenu().findItem(R.id.profile_activity).setVisible(true);
       } else {
-          bottomNavigationView.getMenu().findItem(R.id.login_activity).setVisible(true);
-          bottomNavigationView.getMenu().findItem(R.id.signout_activity).setVisible(false);
+          bottomNavigationView.getMenu().findItem(R.id.login).setVisible(true);
+          bottomNavigationView.getMenu().findItem(R.id.signout).setVisible(false);
           bottomNavigationView.getMenu().findItem(R.id.profile_activity).setVisible(false);
       }
 
@@ -401,7 +424,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void loadData() {
-        mProgressBar.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.VISIBLE);
         Client.getInstance().create(ApiInterface.class).getAllCategories().enqueue(new Callback<CategoryAllResponse>() {
             @Override
             public void onResponse(Call<CategoryAllResponse> call, Response<CategoryAllResponse> response) {
@@ -424,9 +447,11 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 showNetworkError();
             }
         });
-        Client.getInstance().create(ApiInterface.class).getAllStories().enqueue(new Callback<StoryAllResponse>() {
+        MainAplication.getApiInterface().getAllStories().enqueue(new Callback<StoryAllResponse>() {
             @Override
             public void onResponse(Call<StoryAllResponse> call, Response<StoryAllResponse> response) {
+//                mStoriesRecycler.hideShimmerAdapter();
+                storiesProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     StoryAllResponse storyAllResponse = response.body();
                     List<Story> story = storyAllResponse.getData();
@@ -446,6 +471,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<StoryAllResponse> call, Throwable t) {
+//                mStoriesRecycler.hideShimmerAdapter();
+                storiesProgress.setVisibility(View.GONE);
                 Log.e("Story = ", t.toString());
                 showNetworkError();
             }

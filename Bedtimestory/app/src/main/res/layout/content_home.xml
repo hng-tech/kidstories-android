@@ -10,6 +10,15 @@
     android:fontFamily="@font/worksans_regular"
     tools:showIn="@layout/app_bar_home">
 
+    <ProgressBar
+        android:id="@+id/storiesProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+
+
     <!--<LinearLayout-->
         <!--android:layout_width="wrap_content"-->
         <!--android:orientation="vertical"-->
@@ -89,6 +98,9 @@
     <LinearLayout
         android:id="@+id/topd"
         android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/storiesProgress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
         <LinearLayout

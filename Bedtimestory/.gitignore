@@ -1,3 +1,4 @@
+".gradle"
 *.iml
 /local.properties
 /.idea/caches
@@ -12,3 +13,4 @@
 .externalNativeBuild
 /.idea/misc.xml
 /.idea/vcs.xml
+/.gradle/

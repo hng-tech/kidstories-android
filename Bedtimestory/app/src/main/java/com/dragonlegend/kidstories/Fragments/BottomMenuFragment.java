@@ -31,7 +31,7 @@ public class BottomMenuFragment extends BottomSheetDialogFragment implements Vie
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.bottom_menu_dialog, container, false);
 
-         b = (LinearLayout) v.findViewById(R.id.donate_url);
+         b =  v.findViewById(R.id.donate_url);
         b.setOnClickListener(this);
         return v;
     }
@@ -58,7 +58,7 @@ public class BottomMenuFragment extends BottomSheetDialogFragment implements Vie
                 d.setData(Uri.parse(url));
                 startActivity(d);
                 break;
-            case R.id.signout_activity:
+            case R.id.signout:
                 //do ur code;
 
             default:
