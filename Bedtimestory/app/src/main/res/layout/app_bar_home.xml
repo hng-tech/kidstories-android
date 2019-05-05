@@ -28,7 +28,8 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/profile"/>
+                    android:src="@drawable/defaultuser"
+                    android:layout_marginStart="5dp"/>
                 <LinearLayout
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Welcome Team Legend"
+                        android:text="Welcome"
                         android:textColor="@color/colorBlack"
                         style="@style/TextAppearance.AppCompat.Title"
                         android:textSize="14sp"/>
@@ -47,7 +48,13 @@
                         android:textSize="12sp"
                         android:textColor="#333333"/>
 
+
                 </LinearLayout>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_search"/>
                 <!--<TextView-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
