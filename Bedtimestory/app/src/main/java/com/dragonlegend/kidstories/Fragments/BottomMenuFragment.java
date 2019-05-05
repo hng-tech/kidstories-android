@@ -58,7 +58,7 @@ public class BottomMenuFragment extends BottomSheetDialogFragment implements Vie
                 d.setData(Uri.parse(url));
                 startActivity(d);
                 break;
-            case R.id.signout_activity:
+            case R.id.signout:
                 //do ur code;
 
             default:

@@ -96,6 +96,8 @@ public class ProfileActivity extends AppCompatActivity {
                             .load(imageUrl)
                             .apply(RequestOptions.circleCropTransform())
                             .into(mImage);
+
+                    //Log.e("TAG",imageUrl);
                 }
             }
 

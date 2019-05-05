@@ -189,7 +189,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 d.setData(Uri.parse(url));
                 startActivity(d);
                 break;
-            case R.id.signout_activity:
+            case R.id.signout:
                 //do ur code;
             if (!Prefs.getBoolean("isLoggedIn", false)){
                 ShowSnackbar("You have never logged In");
@@ -224,7 +224,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
         if (isLoggedIn){
             view.findViewById(R.id.signout).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.loginn).setVisibility(View.GONE);
+            view.findViewById(R.id.login).setVisibility(View.GONE);
             view.findViewById(R.id.pro).setVisibility(View.VISIBLE);
 
             view.findViewById(R.id.signout).setOnClickListener(view15 -> {
@@ -233,16 +233,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 Prefs.putString("token", "");
                 view.findViewById(R.id.signout).setVisibility(View.GONE);
                 dialog.dismiss();
-                view.findViewById(R.id.loginn).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.login).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.pro).setVisibility(View.GONE);
             });
 
         }else{
-            view.findViewById(R.id.loginn).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.login).setVisibility(View.VISIBLE);
             view.findViewById(R.id.signout).setVisibility(View.GONE);
             view.findViewById(R.id.pro).setVisibility(View.GONE);
 
-            view.findViewById(R.id.loginn).setOnClickListener(view15 -> {
+            view.findViewById(R.id.login).setOnClickListener(view15 -> {
                 dialog.dismiss();
                 startActivity(new Intent(getBaseContext(), Login.class));
             });
@@ -264,19 +264,23 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(getBaseContext(), AddStoryActivity.class));
         });
         //start donate
-        view.findViewById(R.id.donate).setOnClickListener(view14 -> {
+        view.findViewById(R.id.donate_url).setOnClickListener(view14 -> {
             dialog.dismiss();
-//            startActivity(new Intent(getBaseContext(), Do.class));
+//            //do ur code;
+                String url = "https://paystack.com/pay/kidstoriesapp";
+                Intent d = new Intent(Intent.ACTION_VIEW);
+                d.setData(Uri.parse(url));
+                startActivity(d);
         });
     }
   public void checkUser(){
       if (isLoggedIn) {
-          bottomNavigationView.getMenu().findItem(R.id.login_activity).setVisible(false);
-          bottomNavigationView.getMenu().findItem(R.id.signout_activity).setVisible(true);
+          bottomNavigationView.getMenu().findItem(R.id.login).setVisible(false);
+          bottomNavigationView.getMenu().findItem(R.id.signout).setVisible(true);
           bottomNavigationView.getMenu().findItem(R.id.profile_activity).setVisible(true);
       } else {
-          bottomNavigationView.getMenu().findItem(R.id.login_activity).setVisible(true);
-          bottomNavigationView.getMenu().findItem(R.id.signout_activity).setVisible(false);
+          bottomNavigationView.getMenu().findItem(R.id.login).setVisible(true);
+          bottomNavigationView.getMenu().findItem(R.id.signout).setVisible(false);
           bottomNavigationView.getMenu().findItem(R.id.profile_activity).setVisible(false);
       }
 

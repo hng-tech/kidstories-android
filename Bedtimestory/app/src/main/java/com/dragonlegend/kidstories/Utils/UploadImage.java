@@ -129,16 +129,17 @@ public class UploadImage {
 
     }
 
-    public static void uploadProfilePic(String profilePath){
+    public static void uploadProfilePic(String userToken,String profilePath){
         Log.e("TAG",profilePath);
-        File profPic = new File(profilePath);
+        File profPic = new File(Uri.decode(profilePath));
 
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("image/*"),profPic);
         MultipartBody.Part photo =
                 MultipartBody.Part.createFormData("photo", profPic.getName(), requestFile);
 
-        String userToken = Prefs.getString("token", "");
+        //String userToken = Prefs.getString("token", "");
+        //Log.e("TAG 2",userToken);
 
         Client.getInstance().create(ApiInterface.class).uploadProfilPic(userToken,photo).enqueue(new Callback<ResponseBody>() {
             @Override
