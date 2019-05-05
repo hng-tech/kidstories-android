@@ -72,7 +72,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:shimmer_demo_child_count="10"
+        app:shimmer_demo_layout="@layout/post_single_demo"
+        app:shimmer_demo_layout_manager_type="linear_vertical"
+        app:shimmer_demo_angle="40"
+        app:shimmer_demo_view_holder_item_background="@color/colorAsh"
         android:id="@+id/stories_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
