@@ -43,7 +43,11 @@ import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -64,7 +68,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     ImageView mAddNew;
     ProgressBar mProgressBar;
     boolean isLoggedIn;
-
+    TextView date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +94,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 //            }
 //        }
 
+        date=findViewById(R.id.date);
+        Calendar calender = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
+        String  strDate = DateFormat.getDateTimeInstance()
+                .format(new Date());
+        date.setText(strDate);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
