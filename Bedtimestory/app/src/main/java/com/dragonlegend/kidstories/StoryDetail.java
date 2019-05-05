@@ -2,6 +2,7 @@ package com.dragonlegend.kidstories;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -184,15 +185,15 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 //        mCommentRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mCommentRv.setLayoutManager(new LinearLayoutManager(this));
         mCommentRv.setAdapter(mCommentAdapter);
-        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
-                if(mScrollView.getScrollY() == 0){
-                    mCommentLayout.setVisibility(View.GONE);
-                }
-            }
-        });
+//        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+//            @Override
+//            public void onScrollChanged() {
+//                imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
+//                if(mScrollView.getScrollY() == 0){
+//                    mCommentLayout.setVisibility(View.GONE);
+//                }
+//            }
+//        });
         //Set onClickListeners on Views with actions
         mAddComment.setOnClickListener(this);
         mBookmark.setOnClickListener(this);
@@ -206,8 +207,11 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         switch (id){
             case R.id.add_comment:
                 mCommentLayout.setVisibility(View.VISIBLE);
-                mCommentField.requestFocus();
-                imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
+                if(mCommentField.hasFocus()){
+                    imm.showSoftInput(mCommentField, InputMethodManager.SHOW_FORCED);
+
+                }
+               // mCommentField.requestFocus();
                 break;
             case R.id.comment_send:
                 addComment(mCommentField.getText().toString().trim());
