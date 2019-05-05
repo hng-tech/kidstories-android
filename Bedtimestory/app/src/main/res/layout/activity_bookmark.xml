@@ -17,7 +17,17 @@
             android:id="@+id/fav"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorWhite" />
+            android:background="@color/colorWhite">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favourites"
+                android:textColor="#000"
+                android:textSize="18sp"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title" />
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
     <ProgressBar
@@ -27,7 +37,9 @@
         android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,5 +49,33 @@
         tools:listitem="@layout/post_single"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:layout_margin="5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textLogin"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="invisible">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please login to see favourites"
+        android:textSize="18sp"
+        />
 
+        <Button
+            android:id="@+id/looog"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/worksans_regular"
+            android:background="@drawable/button_primary_background"
+            android:text="@string/log_in"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            android:padding="5dp"/>
+    </LinearLayout>
+</RelativeLayout>
 </LinearLayout>

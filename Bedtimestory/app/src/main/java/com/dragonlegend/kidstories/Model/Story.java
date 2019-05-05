@@ -47,6 +47,10 @@ public class Story {
     @SerializedName("dislikes_count")
     @Expose
     private Integer dislikesCount;
+    @SerializedName("comments")
+    @Expose
+    private Comments comments;
+
 
     public Integer getId() {
         return id;
@@ -150,5 +154,19 @@ public class Story {
 
     public void setDislikesCount(Integer dislikesCount) {
         this.dislikesCount = dislikesCount;
+    }
+
+    public Comments getComments() {
+        return comments;
+    }
+
+    public class Comments {
+        @SerializedName("comments")
+        @Expose
+        private List<Comment> mComments;
+
+        public List<Comment> getComments() {
+            return mComments;
+        }
     }
 }

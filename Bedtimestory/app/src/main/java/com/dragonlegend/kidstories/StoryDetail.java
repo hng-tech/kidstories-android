@@ -2,12 +2,16 @@ package com.dragonlegend.kidstories;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.dragonlegend.kidstories.Adapters.CommentAdapter;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
@@ -32,11 +37,14 @@ import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
+import com.dragonlegend.kidstories.Model.Comment;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +68,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     LinearLayout mLinearLayout,mCommentLayout;
     InputMethodManager imm;
     ScrollView mScrollView;
+    CommentAdapter mCommentAdapter;
+    RecyclerView mCommentRv;
+    List<Comment> mComments = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +88,10 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         //add db helper
         helper = new BedTimeDbHelper(this);
 
-
+        mCommentAdapter = new CommentAdapter(this,mComments);
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
 
         initViews();
         if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
@@ -87,6 +99,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
             Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
             mDetail.setText(getIntent().getExtras().getString("content"));
             mBookmark.setVisibility(View.INVISIBLE);
+            mScrollView.setVisibility(View.VISIBLE);
 
         }else {
             Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
@@ -109,6 +122,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 mDetail.setText(content);
                                 mStoryAge.setText("For Kids " +story.getAge() +" years");
                                 mScrollView.setVisibility(View.VISIBLE);
+                                mCommentAdapter.setComment(story.getComments().getComments());
+
+
                             }else if(response.code() !=200){
                                 mScrollView.setVisibility(View.GONE);
                                 mPremiumMessage.setVisibility(View.VISIBLE);
@@ -167,15 +183,22 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mCommentSend = findViewById(R.id.comment_send);
         mCommentLayout = findViewById(R.id.comment_layout);
         mScrollView = findViewById(R.id.detail_scroll);
-        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
-                if(mScrollView.getScrollY() == 0){
-                    mCommentLayout.setVisibility(View.GONE);
-                }
-            }
-        });
+        mCommentRv  = findViewById(R.id.comment_rv);
+
+
+        //mCommentRv.setNestedScrollingEnabled(false);
+//        mCommentRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mCommentRv.setLayoutManager(new LinearLayoutManager(this));
+        mCommentRv.setAdapter(mCommentAdapter);
+//        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+//            @Override
+//            public void onScrollChanged() {
+//                 imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
+//                if(mScrollView.getScrollY() == 0){
+//                    mCommentLayout.setVisibility(View.GONE);
+//                }
+//            }
+//        });
         //Set onClickListeners on Views with actions
         mAddComment.setOnClickListener(this);
         mBookmark.setOnClickListener(this);
@@ -189,8 +212,11 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         switch (id){
             case R.id.add_comment:
                 mCommentLayout.setVisibility(View.VISIBLE);
-                mCommentField.requestFocus();
-                imm.showSoftInput(mCommentField, InputMethodManager.SHOW_IMPLICIT);
+                if(mCommentField.hasFocus()){
+                    imm.showSoftInput(mCommentField, InputMethodManager.SHOW_FORCED);
+
+                }
+               // mCommentField.requestFocus();
                 break;
             case R.id.comment_send:
                 addComment(mCommentField.getText().toString().trim());
@@ -214,23 +240,25 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     }
 
     //Add the story online first
-    private void addFavoriteOnline(String token, int id, String title, String story, String image, String time) {
+    private void addFavoriteOnline(String token, int id, final String title, final String story, final String image, final String time) {
 
         Log.d("token", "token: "+ Prefs.getString("token", ""));
-        ProgressDialog dialog = new ProgressDialog(this);
+        final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Adding to bookmarks");
         dialog.show();
 
         MainAplication.getApiInterface().addBookmark(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)).enqueue(new Callback<BookmarkResponse>() {
             @Override
             public void onResponse(Call<BookmarkResponse> call, Response<BookmarkResponse> response) {
+                Log.d("code", "onResponse: "+ String.valueOf(response.code()));
                 if (response.isSuccessful()){
-                    if (response.code()== 200){
+                    if (response.code()== 200 || response.code() == 201){
                         //if successfull add story offline
+                        dialog.dismiss();
                         addFavorite(title, story, image, time);
                     }else{
                         dialog.dismiss();
-                        Toast.makeText(StoryDetail.this, "Oops! Story not found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StoryDetail.this, "Oops! Try again", Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     dialog.dismiss();
@@ -289,6 +317,11 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                     public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                         if (response.isSuccessful()){
                             Toast.makeText(StoryDetail.this, "Successful upload", Toast.LENGTH_SHORT).show();
+
+                            mCommentField.setText("");
+                            imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
+                            mCommentLayout.setVisibility(View.INVISIBLE);
+                            mScrollView.setVisibility(View.VISIBLE);
                         }else{
                             Toast.makeText(StoryDetail.this, "Failed", Toast.LENGTH_SHORT).show();
                         }

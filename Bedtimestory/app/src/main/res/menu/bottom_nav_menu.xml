@@ -5,21 +5,23 @@
     <item
         android:id="@+id/home"
         android:enabled="true"
-        android:icon="@drawable/ic_home_big"
+        android:icon="@drawable/ic_home"
         android:title="Home"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_favorites"
         android:enabled="true"
-        android:icon="@drawable/ic_favourite_big"
+        android:icon="@drawable/ic_favorites"
         android:title="Favorites"
         app:showAsAction="always" />
+
+
 
     <item
         android:id="@+id/more"
         android:enabled="true"
-        android:icon="@drawable/ic_three_dot_big"
+        android:icon="@drawable/ic_more"
         android:title="More"
         app:showAsAction="always" />
 

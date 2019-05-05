@@ -7,11 +7,20 @@
     android:layout_height="match_parent"
    >
 
-
-    <include
-        layout="@layout/app_bar_home"
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/cont">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <include
+            layout="@layout/app_bar_home"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+</FrameLayout>
+
 
     <!--<android.support.design.widget.NavigationView-->
         <!--android:id="@+id/nav_view"-->
