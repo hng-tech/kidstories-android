@@ -46,7 +46,8 @@
                         android:layout_height="wrap_content"
                         android:text="Saturday April 12, 2019"
                         android:textSize="12sp"
-                        android:textColor="#333333"/>
+                        android:textColor="#333333"
+                        android:id="@+id/date"/>
 
 
                 </LinearLayout>
