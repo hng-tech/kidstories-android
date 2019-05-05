@@ -70,6 +70,27 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             storyHolder.likes.setText(String.valueOf(story.getLikesCount()));
             Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
+
+            switch (story.getReaction()){
+                case "0":{
+                    storyHolder.mDislike.setSelected(true);
+                    storyHolder.mLike.setSelected(false);
+                    break;
+                }
+
+                case "1":{
+                    storyHolder.mLike.setSelected(true);
+                    storyHolder.mDislike.setSelected(false);
+                    break;
+                }
+                default:{
+                    storyHolder.mLike.setSelected(false);
+                    storyHolder.mDislike.setSelected(false);
+                    break;
+                }
+
+            }
+
             storyHolder.mLike.setOnClickListener(v -> {
                 if (Prefs.getBoolean("isLoggedIn", false)) {
                     reactToStory(true, String.valueOf(story.getId()), i, storyHolder);
@@ -198,6 +219,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Intent intent = new Intent(mContext.getApplicationContext(), StoryDetail.class);
                     intent.putExtra(StoryDetail.STORY_ID, mStories.get(getAdapterPosition()).getId());
                     Prefs.putInt("story_id", mStories.get(getAdapterPosition()).getId());
+                    Prefs.putString("reactionStatus", mStories.get(getAdapterPosition()).getReaction());
 
                     Log.d("TAG", "onClick: -> " + Prefs.getInt("story_id", 0));
                     mContext.startActivity(intent);
@@ -224,12 +246,17 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     StoryReactionResponse reactionResponse = response.body();
-                    mStories.get(pos).setLikesCount(reactionResponse.getLikesCount());
-                    mStories.get(pos).setDislikesCount(reactionResponse.getDislikesCount());
-                    notifyDataSetChanged();
+                    storyHolder.likes.setText(String.valueOf(reactionResponse.getLikesCount()));
+                    storyHolder.dislikes.setText(String.valueOf(reactionResponse.getDislikesCount()));
                     Toast.makeText(mContext, reactionResponse.getAction(), Toast.LENGTH_SHORT).show();
-                    if (isLike) storyHolder.mLike.setSelected(!storyHolder.mLike.isSelected());
-                    else storyHolder.mDislike.setSelected(!storyHolder.mDislike.isSelected());
+                    if (isLike) {
+                        storyHolder.mLike.setSelected(!storyHolder.mLike.isSelected());
+                        storyHolder.mDislike.setSelected(false);
+                    } else {
+                        storyHolder.mDislike.setSelected(!storyHolder.mDislike.isSelected());
+                        storyHolder.mLike.setSelected(false);
+                    }
+//                    Toast.makeText(mContext, isLike + ": " + !storyHolder.mLike.isSelected(), Toast.LENGTH_SHORT).show();
 
 
                 } else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
