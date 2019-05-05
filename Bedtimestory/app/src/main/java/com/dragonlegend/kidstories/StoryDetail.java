@@ -60,10 +60,11 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     ImageView mStoryImage;
     TextView mTitle, mDetail,mStoryAge,mPremiumMessage, likes, dislikes;
     ImageButton mBookmark,mCommentSend, likeButton, dislikeButton;
+    ProgressBar storyDetailProgress;
     EditText mCommentField;
     Button mAddComment;
     String title, content, image;
-    ProgressBar mProgressBar;
+//    ProgressBar mProgressBar;
     BedTimeDbHelper helper;
     Long date;
     Cursor c;
@@ -109,6 +110,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         @Override
                         public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
                             Log.d("TAG", "detailsResponse: -> " +response.message());
+                            storyDetailProgress.setVisibility(View.GONE);
                             if(response.isSuccessful()){
 
                                 Story story = response.body().getData();
@@ -137,7 +139,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                                 validate("We are having trouble fetching the story, please try again");
                             }
 
-                            mProgressBar.setVisibility(View.GONE);
+//                            mProgressBar.setVisibility(View.GONE);
 
                         }
 
@@ -181,7 +183,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mBookmark = findViewById(R.id.bookmark_button);
         mPremiumMessage = findViewById(R.id.premium_message);
         mAddComment = findViewById(R.id.add_comment);
-        mProgressBar = findViewById(R.id.progress);
+//        mProgressBar = findViewById(R.id.progress);
         likes = findViewById(R.id.likes);
         dislikes = findViewById(R.id.dislikes);
         likeButton = findViewById(R.id.like_button);
@@ -192,6 +194,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mCommentLayout = findViewById(R.id.comment_layout);
         mScrollView = findViewById(R.id.detail_scroll);
         mCommentRv  = findViewById(R.id.comment_rv);
+        storyDetailProgress = findViewById(R.id.storyDetailProgress);
 
         String reaction = Prefs.getString("reactionStatus", "nil");
         switch (reaction){
@@ -234,6 +237,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         likeButton.setOnClickListener(v -> {
             if (Prefs.getBoolean("isLoggedIn", false)) {
+                storyDetailProgress.setVisibility(View.VISIBLE);
                 reactToStory(true, String.valueOf(String.valueOf(Prefs.getInt("story_id", 0))));
 //                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
 //                    holdProgress = ((StoryHolder) holder).reactionProgress;
@@ -245,6 +249,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         });
         dislikeButton.setOnClickListener(v -> {
             if (Prefs.getBoolean("isLoggedIn", false)) {
+                storyDetailProgress.setVisibility(View.VISIBLE);
                 reactToStory(false, String.valueOf(String.valueOf(Prefs.getInt("story_id", 0))));
 //                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
 //                    holdProgress = ((StoryHolder) holder).reactionProgress;
@@ -391,6 +396,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<StoryReactionResponse>() {
             @Override
             public void onResponse(Call<StoryReactionResponse> call, Response<StoryReactionResponse> response) {
+                storyDetailProgress.setVisibility(View.GONE);
 //                storyHolder.reactionProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     assert response.body() != null;
@@ -413,6 +419,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onFailure(Call<StoryReactionResponse> call, Throwable t) {
 //                holdProgress.setVisibility(View.GONE);
+                storyDetailProgress.setVisibility(View.GONE);
                 Toast.makeText(StoryDetail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
