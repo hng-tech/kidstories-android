@@ -16,10 +16,14 @@
         android:title="Favorites"
         app:showAsAction="always" />
 
+
+
     <item
         android:id="@+id/more"
         android:enabled="true"
         android:icon="@drawable/ic_three_dot_big"
         android:title="More"
         app:showAsAction="always" />
+
+
 </menu>
