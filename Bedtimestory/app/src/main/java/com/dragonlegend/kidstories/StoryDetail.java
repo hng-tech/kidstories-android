@@ -194,7 +194,6 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mCommentRv  = findViewById(R.id.comment_rv);
 
         String reaction = Prefs.getString("reactionStatus", "nil");
-        Toast.makeText(this, reaction, Toast.LENGTH_SHORT).show();
         switch (reaction){
             case "0":{
                 dislikeButton.setSelected(true);
