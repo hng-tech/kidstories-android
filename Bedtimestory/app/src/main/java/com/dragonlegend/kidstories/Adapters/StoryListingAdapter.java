@@ -73,11 +73,19 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             switch (story.getReaction()){
                 case "0":{
                     storyHolder.mDislike.setSelected(true);
+                    storyHolder.mLike.setSelected(false);
                     break;
                 }
 
                 case "1":{
                     storyHolder.mLike.setSelected(true);
+                    storyHolder.mDislike.setSelected(false);
+                    break;
+                }
+                default:{
+                    storyHolder.mLike.setSelected(false);
+                    storyHolder.mDislike.setSelected(false);
+                    break;
                 }
             }
 
@@ -235,12 +243,17 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     StoryReactionResponse reactionResponse = response.body();
-                    mStories.get(pos).setLikesCount(reactionResponse.getLikesCount());
-                    mStories.get(pos).setDislikesCount(reactionResponse.getDislikesCount());
-                    notifyDataSetChanged();
+                    storyHolder.likes.setText(String.valueOf(reactionResponse.getLikesCount()));
+                    storyHolder.dislikes.setText(String.valueOf(reactionResponse.getDislikesCount()));
                     Toast.makeText(mContext, reactionResponse.getAction(), Toast.LENGTH_SHORT).show();
-                    if (isLike) storyHolder.mLike.setSelected(!storyHolder.mLike.isSelected());
-                    else storyHolder.mDislike.setSelected(!storyHolder.mDislike.isSelected());
+                    if (isLike) {
+                        storyHolder.mLike.setSelected(!storyHolder.mLike.isSelected());
+                        storyHolder.mDislike.setSelected(false);
+                    } else {
+                        storyHolder.mDislike.setSelected(!storyHolder.mDislike.isSelected());
+                        storyHolder.mLike.setSelected(false);
+                    }
+//                    Toast.makeText(mContext, isLike + ": " + !storyHolder.mLike.isSelected(), Toast.LENGTH_SHORT).show();
 
 
                 } else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
