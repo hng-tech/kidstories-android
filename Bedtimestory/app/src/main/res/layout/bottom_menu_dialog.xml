@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Category"
+            android:id="@+id/cat_activity"
             android:textColor="#737373"
             android:textSize="20sp" />
 
@@ -56,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Profile"
+            android:id="@+id/profile_activity"
             android:textColor="#737373"
             android:textSize="20sp"  />
 
@@ -82,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Add Story"
+            android:id="@+id/add_story_activity"
             android:textColor="#737373"
             android:textSize="20sp"  />
 
@@ -91,6 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:id="@+id/donate_url"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
@@ -159,6 +163,61 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Donate"
+
+            android:textColor="#737373"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="32dp"
+
+            android:tint="#737373" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Login"
+            android:id="@+id/login_activity"
+            android:textColor="#737373"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="32dp"
+
+            android:tint="#737373" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Signout"
+            android:id="@+id/signout_activity"
             android:textColor="#737373"
             android:textSize="20sp"  />
 
