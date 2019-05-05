@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.dragonlegend.kidstories.Adapters.CategoriesAdapter;
 import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
 import com.dragonlegend.kidstories.Api.ApiInterface;
@@ -41,6 +42,7 @@ import com.dragonlegend.kidstories.Fragments.BottomMenuFragment;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.text.DateFormat;
@@ -58,8 +60,10 @@ import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
 
 public class Home extends AppCompatActivity implements View.OnClickListener {
-    RecyclerView mStoriesRecycler, mCategoriesRecycler;
+    RecyclerView mStoriesRecycler;
+    RecyclerView mCategoriesRecycler;
     StoryListingAdapter mAdapter;
+    ProgressBar storiesProgress;
     List<Story> mStories;
     List<Category> mCategories;
     CategoriesAdapter mCategoriesAdapter;
@@ -104,6 +108,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);
+        storiesProgress = findViewById(R.id.storiesProgress);
         mAddNew = findViewById(R.id.btn_addnew);
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,12 +125,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
             }
         });
         mStories = new ArrayList<>();
+        storiesProgress.setVisibility(View.VISIBLE);
         mCategories = new ArrayList<>();
         mCategoriesAdapter = new CategoriesAdapter(this, mCategories, "home");
         mCategoriesRecycler.setAdapter(mCategoriesAdapter);
         mAdapter = new StoryListingAdapter(this, mStories);
-        mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
+//        mStoriesRecycler.setLayoutManager(new LinearLayoutManager(this));
         mStoriesRecycler.setAdapter(mAdapter);
+
+//        mStoriesRecycler.showShimmerAdapter();
+
 //        //checking if user is logged in
 //        checkUser();
 
@@ -415,7 +424,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void loadData() {
-        mProgressBar.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.VISIBLE);
         Client.getInstance().create(ApiInterface.class).getAllCategories().enqueue(new Callback<CategoryAllResponse>() {
             @Override
             public void onResponse(Call<CategoryAllResponse> call, Response<CategoryAllResponse> response) {
@@ -438,9 +447,11 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 showNetworkError();
             }
         });
-        Client.getInstance().create(ApiInterface.class).getAllStories().enqueue(new Callback<StoryAllResponse>() {
+        MainAplication.getApiInterface().getAllStories().enqueue(new Callback<StoryAllResponse>() {
             @Override
             public void onResponse(Call<StoryAllResponse> call, Response<StoryAllResponse> response) {
+//                mStoriesRecycler.hideShimmerAdapter();
+                storiesProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     StoryAllResponse storyAllResponse = response.body();
                     List<Story> story = storyAllResponse.getData();
@@ -460,6 +471,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<StoryAllResponse> call, Throwable t) {
+//                mStoriesRecycler.hideShimmerAdapter();
+                storiesProgress.setVisibility(View.GONE);
                 Log.e("Story = ", t.toString());
                 showNetworkError();
             }
