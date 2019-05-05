@@ -70,6 +70,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             storyHolder.likes.setText(String.valueOf(story.getLikesCount()));
             Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
+
             switch (story.getReaction()){
                 case "0":{
                     storyHolder.mDislike.setSelected(true);
@@ -87,6 +88,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     storyHolder.mDislike.setSelected(false);
                     break;
                 }
+
             }
 
             storyHolder.mLike.setOnClickListener(v -> {
@@ -217,6 +219,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Intent intent = new Intent(mContext.getApplicationContext(), StoryDetail.class);
                     intent.putExtra(StoryDetail.STORY_ID, mStories.get(getAdapterPosition()).getId());
                     Prefs.putInt("story_id", mStories.get(getAdapterPosition()).getId());
+                    Prefs.putString("reactionStatus", mStories.get(getAdapterPosition()).getReaction());
 
                     Log.d("TAG", "onClick: -> " + Prefs.getInt("story_id", 0));
                     mContext.startActivity(intent);

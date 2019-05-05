@@ -193,6 +193,27 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mScrollView = findViewById(R.id.detail_scroll);
         mCommentRv  = findViewById(R.id.comment_rv);
 
+        String reaction = Prefs.getString("reactionStatus", "nil");
+        Toast.makeText(this, reaction, Toast.LENGTH_SHORT).show();
+        switch (reaction){
+            case "0":{
+                dislikeButton.setSelected(true);
+                likeButton.setSelected(false);
+                break;
+            }
+
+            case "1":{
+                likeButton.setSelected(true);
+                dislikeButton.setSelected(false);
+                break;
+            }
+            default:{
+                likeButton.setSelected(false);
+                dislikeButton.setSelected(false);
+                break;
+            }
+
+        }
 
         //mCommentRv.setNestedScrollingEnabled(false);
 //        mCommentRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
@@ -378,8 +399,13 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                     likes.setText(String.valueOf(reactionResponse.getLikesCount()));
                     dislikes.setText(String.valueOf(reactionResponse.getDislikesCount()));
                     Toast.makeText(StoryDetail.this, reactionResponse.getAction(), Toast.LENGTH_SHORT).show();
-                    if (isLike) likeButton.setSelected(!likeButton.isSelected());
-                    else dislikeButton.setSelected(!dislikeButton.isSelected());
+                    if (isLike) {
+                        likeButton.setSelected(!likeButton.isSelected());
+                        dislikeButton.setSelected(false);
+                    } else {
+                        dislikeButton.setSelected(!dislikeButton.isSelected());
+                        likeButton.setSelected(false);
+                    }
 
 
                 } else Toast.makeText(StoryDetail.this, response.message(), Toast.LENGTH_SHORT).show();
