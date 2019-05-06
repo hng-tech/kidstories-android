@@ -25,6 +25,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -104,5 +105,8 @@ public interface ApiInterface {
 
     @GET("bookmarks/stories")
     Call<BaseResponse<List<Story>>> getBookmarks();
+
+    @DELETE("bookmarks/stories/{storyId}")
+    Call<BookmarkResponse>deleteBookmark(@Path("storyId") int storyId);
 
 }

@@ -2,11 +2,14 @@ package com.dragonlegend.kidstories;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -66,6 +69,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     Long date;
     Cursor c;
     LinearLayout mLinearLayout,mCommentLayout;
+    ProgressDialog dialog2;
     InputMethodManager imm;
     ScrollView mScrollView;
     CommentAdapter mCommentAdapter;
@@ -75,6 +79,8 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_detail);
+
+        Log.d("type", "onCreate: "+ getIntent().getExtras().getString("type"));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         //customize custom toolbar
@@ -94,62 +100,116 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
 
         initViews();
-        if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
+
+        //check if searching from offline storage
+
+        if (getIntent().getExtras().getString("type2")!= null && getIntent().getExtras().getString("type2").equals("cache")){
             mTitle.setText(getIntent().getExtras().getString("title"));
-            Glide.with(this).load(getIntent().getExtras().getString("image")).into(mStoryImage);
+            Glide.with(getApplicationContext()).load(getIntent().getExtras().getString("image")).into(mStoryImage);
             mDetail.setText(getIntent().getExtras().getString("content"));
             mBookmark.setVisibility(View.INVISIBLE);
-            mScrollView.setVisibility(View.VISIBLE);
-
-        }else {
-            Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
-                    .enqueue(new Callback<StoryResponse>() {
-                        @Override
-                        public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
-                            Log.d("TAG", "detailsResponse: -> " +response.message());
-                            if(response.isSuccessful()){
-
-                                Story story = response.body().getData();
-                                title = story.getTitle();
-                                content = story.getBody();
-                                image = story.getImageUrl();
-                                if(image != null) {
-                                    Glide.with(StoryDetail.this)
-                                            .load(image)
-                                            .into(mStoryImage);
-                                }
-                                mTitle.setText(title);
-                                mDetail.setText(content);
-                                mStoryAge.setText("For Kids " +story.getAge() +" years");
-                                mScrollView.setVisibility(View.VISIBLE);
-                                mCommentAdapter.setComment(story.getComments().getComments());
-
-
-                            }else if(response.code() !=200){
-                                mScrollView.setVisibility(View.GONE);
-                                mPremiumMessage.setVisibility(View.VISIBLE);
-                            }
-                            else {
-                                validate("We are having trouble fetching the story, please try again");
-                            }
-
-                            mProgressBar.setVisibility(View.GONE);
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<StoryResponse> call, Throwable t) {
-                            t.toString();
-                            Log.d("TAG", "onFailure: -> "+t.getMessage());
-                            if (t.getMessage() == "timeout") {
-                                validate("We are having trouble fetching the story, please try again");
-                            }
-                        }
-                    });
-
         }
 
+        //fetch data
 
+        Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
+                .enqueue(new Callback<StoryResponse>() {
+                    @Override
+                    public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
+                        Log.d("TAG", "detailsResponse: -> " +response.message());
+                        if(response.isSuccessful()){
+
+                            Story story = response.body().getData();
+                            title = story.getTitle();
+                            content = story.getBody();
+                            image = story.getImageUrl();
+                            if(image != null) {
+                                Glide.with(StoryDetail.this)
+                                        .load(image)
+                                        .into(mStoryImage);
+                            }
+                            mTitle.setText(title);
+                            mDetail.setText(content);
+                            mStoryAge.setText("For Kids " +story.getAge() +" years");
+                            mScrollView.setVisibility(View.VISIBLE);
+                            mCommentAdapter.setComment(story.getComments().getComments());
+
+                            //check calling class
+                            if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
+//            getDtails();
+                                mBookmark.setImageResource(R.drawable.ic_delete_black_24dp);
+
+                                mBookmark.setOnClickListener(view -> {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(StoryDetail.this);
+                                    builder.setMessage("Are you sure you want to delete this story from favourite?")
+                                            .setPositiveButton("I am sure", (dialogInterface, i) -> {
+                                                dialog2.setMessage("Deleting from favourites");
+                                                dialog2.show();
+                                                deleteBookmark(getIntent().getIntExtra(StoryDetail.STORY_ID, 1));
+                                            }).setNegativeButton("Cancel", null);
+
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                });
+                                mScrollView.setVisibility(View.VISIBLE);
+
+                            }else {
+                                return;
+                            }
+
+
+
+                        }else if(response.code() !=200){
+                            mScrollView.setVisibility(View.GONE);
+                            mPremiumMessage.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            validate("We are having trouble fetching the story, please try again");
+                        }
+
+                        mProgressBar.setVisibility(View.GONE);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<StoryResponse> call, Throwable t) {
+                        t.toString();
+                        Log.d("TAG", "onFailure: -> "+t.getMessage());
+                        if (t.getMessage() == "timeout") {
+                            validate("We are having trouble fetching the story, please try again");
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+    }
+
+    private void getDtails() {
+
+    }
+
+    private void deleteBookmark(int story_id) {
+        MainAplication.getApiInterface().deleteBookmark(story_id).enqueue(new Callback<BookmarkResponse>() {
+            @Override
+            public void onResponse(Call<BookmarkResponse> call, Response<BookmarkResponse> response) {
+                if (response.isSuccessful()){
+                    dialog2.dismiss();
+                    Toast.makeText(StoryDetail.this, "Deleted", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(StoryDetail.this, Home.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookmarkResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 
@@ -184,6 +244,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mCommentLayout = findViewById(R.id.comment_layout);
         mScrollView = findViewById(R.id.detail_scroll);
         mCommentRv  = findViewById(R.id.comment_rv);
+        dialog2 = new ProgressDialog(this);
 
 
         //mCommentRv.setNestedScrollingEnabled(false);
@@ -246,7 +307,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         Log.d("token", "token: "+ Prefs.getString("token", ""));
         final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Adding to bookmarks");
+        dialog.setMessage("Adding to favourites");
         dialog.show();
 
         MainAplication.getApiInterface().addBookmark(getIntent().getIntExtra(StoryDetail.STORY_ID, 1)).enqueue(new Callback<BookmarkResponse>() {

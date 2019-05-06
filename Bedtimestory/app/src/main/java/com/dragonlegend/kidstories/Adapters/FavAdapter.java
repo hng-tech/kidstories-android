@@ -102,6 +102,7 @@ public class FavAdapter extends CursorAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context.getApplicationContext(), StoryDetail.class);
                 intent.putExtra("type", "fav");
+                intent.putExtra("type2", "cache");
                 intent.putExtra("title", title);
                 intent.putExtra("image", image);
                 intent.putExtra("content", content);
