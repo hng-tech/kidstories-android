@@ -5,7 +5,8 @@
     android:id="@+id/cardView"
     style="@style/CardView.Light"
     android:layout_width="match_parent"
-    android:layout_height="260dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:layout_margin="10dp"
     android:background="#FFF">
 
@@ -129,7 +130,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="4"
                         android:background="@color/colorWhite"
-                        app:srcCompat="@drawable/ic_thumbs_up_hand_symbol"
+                        app:srcCompat="@drawable/like_button_selector"
                         tools:ignore="VectorDrawableCompat" />
 
                     <TextView
@@ -154,7 +155,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="4"
                         android:background="@color/colorWhite"
-                        app:srcCompat="@drawable/thumbs_down_hand_symbol" />
+                        app:srcCompat="@drawable/dislike_button_selector" />
 
 
                     <TextView
@@ -172,6 +173,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <ProgressBar
         android:id="@+id/reactionProgress"
         android:layout_width="match_parent"
