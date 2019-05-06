@@ -26,6 +26,9 @@ public class Story {
     @SerializedName("image_url")
     @Expose
     private String imageUrl;
+    @SerializedName("comments")
+    @Expose
+    private Comments comments;
     @SerializedName("image_name")
     @Expose
     private String imageName;
@@ -84,6 +87,14 @@ public class Story {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Comments getComments() {
+        return comments;
+    }
+
+    public void setComments(Comments comments) {
+        this.comments = comments;
     }
 
     public Integer getUserId() {
@@ -172,5 +183,21 @@ public class Story {
 
     public void setBookmark(Boolean bookmark) {
         this.bookmark = bookmark;
+    }
+
+    public class Comments {
+
+        @SerializedName("comments")
+        @Expose
+        private List<Comment> comments = null;
+
+        public List<Comment> getComments() {
+            return comments;
+        }
+
+        public void setComments(List<Comment> comments) {
+            this.comments = comments;
+        }
+
     }
 }
