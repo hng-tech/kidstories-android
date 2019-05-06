@@ -119,6 +119,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 .enqueue(new Callback<StoryResponse>() {
                     @Override
                     public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
+                        storyDetailProgress.setVisibility(View.GONE);
                         Log.d("TAG", "detailsResponse: -> " +response.message());
                         if(response.isSuccessful()){
 
@@ -170,13 +171,13 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                             validate("We are having trouble fetching the story, please try again");
                         }
 
-                        storyDetailProgress.setVisibility(View.GONE);
 
                     }
 
                     @Override
                     public void onFailure(Call<StoryResponse> call, Throwable t) {
                         t.toString();
+                        storyDetailProgress.setVisibility(View.GONE);
                         Log.d("TAG", "onFailure: -> "+t.getMessage());
                         if (t.getMessage() == "timeout") {
                             validate("We are having trouble fetching the story, please try again");
