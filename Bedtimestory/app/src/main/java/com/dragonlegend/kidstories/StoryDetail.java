@@ -170,7 +170,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                             validate("We are having trouble fetching the story, please try again");
                         }
 
-                        mProgressBar.setVisibility(View.GONE);
+                        storyDetailProgress.setVisibility(View.GONE);
 
                     }
 
