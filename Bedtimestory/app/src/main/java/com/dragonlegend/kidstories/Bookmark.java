@@ -61,12 +61,12 @@ public class Bookmark extends Fragment {
         Toolbar toolbar = v.findViewById(R.id.fav);
         progressBar = v.findViewById(R.id.bookmarkProgress);
         //customize custom toolbar
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_primary);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
+//         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+//         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+//         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_primary);
+//         ((AppCompatActivity)getActivity()).getSupportActionBar().setElevation(0);
 
         favRec = v.findViewById(R.id.favRec);
         favRec2 = v.findViewById(R.id.favRec2);
