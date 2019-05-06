@@ -152,8 +152,11 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                     //start Home activity .
                     Intent i = new Intent(getBaseContext(), Home.class);
                     startActivity(i);
+                    Prefs.putString("activity", "home");
                 }else if(id == R.id.action_favorites) {
                    openFragment(new Bookmark(), "bookmark");
+                   Prefs.putString("activity", "bookmark");
+                    //Toast.makeText(Home.this, Prefs.getString("activity", ""), Toast.LENGTH_SHORT).show();
 
 
 //                    startActivity(new Intent(getBaseContext(), Bookmark.class));

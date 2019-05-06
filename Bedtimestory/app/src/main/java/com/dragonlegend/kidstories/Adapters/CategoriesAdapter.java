@@ -19,6 +19,8 @@ import com.dragonlegend.kidstories.StoryListingActivity;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context mContext;
@@ -123,7 +125,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
     class CategoryHolderRound extends RecyclerView.ViewHolder {
-        ImageView mImage;
+        CircleImageView mImage;
         TextView mName;
         public CategoryHolderRound(@NonNull View itemView) {
             super(itemView);

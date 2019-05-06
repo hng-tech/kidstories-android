@@ -15,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dragonlegend.kidstories.Adapters.BookListingAdapter;
 import com.dragonlegend.kidstories.Adapters.FavAdapter;
 import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
@@ -44,11 +46,12 @@ public class Bookmark extends Fragment {
     RecyclerView favRec;
     List<Story> stories;
     ProgressBar progressBar;
-    StoryListingAdapter adapter;
+    BookListingAdapter adapter;
     LinearLayout linearLayout;
     ListView favRec2;
     TextView text;
     Button loog;
+    ImageView refresh;
 
     @Nullable
     @Override
@@ -70,9 +73,10 @@ public class Bookmark extends Fragment {
         text = v.findViewById(R.id.txt);
         loog = v.findViewById(R.id.looog);
         linearLayout = v.findViewById(R.id.textLogin);
+        refresh = v.findViewById(R.id.refresh);
         stories = new ArrayList<>();
 
-        adapter = new StoryListingAdapter(getActivity(), stories);
+        adapter = new BookListingAdapter(getActivity(), stories);
         favRec.setHasFixedSize(true);
         favRec.setLayoutManager(new LinearLayoutManager(getActivity()));
         favRec.setAdapter(adapter);
@@ -81,6 +85,7 @@ public class Bookmark extends Fragment {
         if (!Prefs.getBoolean("isLoggedIn", false)){
             favRec.setVisibility(View.INVISIBLE);
             linearLayout.setVisibility(View.VISIBLE);
+            refresh.setVisibility(View.INVISIBLE);
             v.findViewById(R.id.looog).setOnClickListener(view -> {
                 Intent intent = new Intent(getActivity(), Login.class);
                 intent.putExtra("activity", "fav");
@@ -130,6 +135,7 @@ public class Bookmark extends Fragment {
                 text.setText("You have no offline favourites");
                 loog.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.VISIBLE);
+                refresh.setVisibility(View.VISIBLE);
             }
 
 

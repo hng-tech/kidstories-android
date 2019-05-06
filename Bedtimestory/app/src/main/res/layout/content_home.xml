@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Home"
     android:layoutDirection="ltr"
@@ -106,7 +107,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="#fff"
+            android:padding="1dp">
 
             <ImageView
                 android:id="@+id/btn_addnew"
@@ -115,10 +118,11 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="0dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginBottom="2dp"
-                android:src="@drawable/add" />
+                android:background="@drawable/addicon"
+                android:padding="15dp"
+                android:src="@drawable/ic_add_black_24dp" />
 
 
             <TextView
