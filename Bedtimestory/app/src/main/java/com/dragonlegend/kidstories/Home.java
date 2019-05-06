@@ -257,6 +257,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 dialog.dismiss();
                 view.findViewById(R.id.login).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.pro).setVisibility(View.GONE);
+                startActivity(new Intent(Home.this, Home.class));
+                finish();
             });
 
         }else{
