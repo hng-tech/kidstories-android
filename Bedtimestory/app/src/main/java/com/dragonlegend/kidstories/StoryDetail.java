@@ -33,10 +33,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dragonlegend.kidstories.Adapters.CommentAdapter;
+import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
 import com.dragonlegend.kidstories.Api.Responses.BookmarkResponse;
+import com.dragonlegend.kidstories.Api.Responses.StoryReactionResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryResponse;
 import com.dragonlegend.kidstories.Database.Contracts.FavoriteContract;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
@@ -59,12 +61,13 @@ import static android.support.design.widget.Snackbar.make;
 public class StoryDetail extends AppCompatActivity implements View.OnClickListener {
     public static final String STORY_ID = "story_id";
     ImageView mStoryImage;
-    TextView mTitle, mDetail,mStoryAge,mPremiumMessage;
-    ImageButton mBookmark,mCommentSend;
+    TextView mTitle, mDetail,mStoryAge,mPremiumMessage, likes, dislikes;
+    ImageButton mBookmark,mCommentSend, likeButton, dislikeButton;
+    ProgressBar storyDetailProgress;
     EditText mCommentField;
     Button mAddComment;
     String title, content, image;
-    ProgressBar mProgressBar;
+//    ProgressBar mProgressBar;
     BedTimeDbHelper helper;
     Long date;
     Cursor c;
@@ -103,7 +106,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         //check if searching from offline storage
 
-        if (getIntent().getExtras().getString("type2")!= null && getIntent().getExtras().getString("type2").equals("cache")){
+       if (getIntent().getExtras().getString("type2")!= null && getIntent().getExtras().getString("type2").equals("cache")){
             mTitle.setText(getIntent().getExtras().getString("title"));
             Glide.with(getApplicationContext()).load(getIntent().getExtras().getString("image")).into(mStoryImage);
             mDetail.setText(getIntent().getExtras().getString("content"));
@@ -187,6 +190,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
 
 
+
     }
 
     private void getDtails() {
@@ -237,15 +241,43 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mBookmark = findViewById(R.id.bookmark_button);
         mPremiumMessage = findViewById(R.id.premium_message);
         mAddComment = findViewById(R.id.add_comment);
-        mProgressBar = findViewById(R.id.progress);
+//        mProgressBar = findViewById(R.id.progress);
+        likes = findViewById(R.id.likes);
+        dislikes = findViewById(R.id.dislikes);
+        likeButton = findViewById(R.id.like_button);
+        dislikeButton = findViewById(R.id.dislike_button);
         mLinearLayout = findViewById(R.id.story_ll);
         mCommentField = findViewById(R.id.comment_box);
         mCommentSend = findViewById(R.id.comment_send);
         mCommentLayout = findViewById(R.id.comment_layout);
         mScrollView = findViewById(R.id.detail_scroll);
         mCommentRv  = findViewById(R.id.comment_rv);
+
         dialog2 = new ProgressDialog(this);
 
+        storyDetailProgress = findViewById(R.id.storyDetailProgress);
+
+
+        String reaction = Prefs.getString("reactionStatus", "nil");
+        switch (reaction){
+            case "0":{
+                dislikeButton.setSelected(true);
+                likeButton.setSelected(false);
+                break;
+            }
+
+            case "1":{
+                likeButton.setSelected(true);
+                dislikeButton.setSelected(false);
+                break;
+            }
+            default:{
+                likeButton.setSelected(false);
+                dislikeButton.setSelected(false);
+                break;
+            }
+
+        }
 
         //mCommentRv.setNestedScrollingEnabled(false);
 //        mCommentRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
@@ -264,6 +296,31 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mAddComment.setOnClickListener(this);
         mBookmark.setOnClickListener(this);
         mCommentSend.setOnClickListener(this);
+
+        likeButton.setOnClickListener(v -> {
+            if (Prefs.getBoolean("isLoggedIn", false)) {
+                storyDetailProgress.setVisibility(View.VISIBLE);
+                reactToStory(true, String.valueOf(String.valueOf(Prefs.getInt("story_id", 0))));
+//                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
+//                    holdProgress = ((StoryHolder) holder).reactionProgress;
+//                storyHolder.reactionProgress.setVisibility(View.VISIBLE);
+//            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
+//            storyHolder.dislikes.setText(String.valueOf(addDislike));
+            } else
+                Toast.makeText(StoryDetail.this, "You must be logged in to perform this operation", Toast.LENGTH_SHORT).show();
+        });
+        dislikeButton.setOnClickListener(v -> {
+            if (Prefs.getBoolean("isLoggedIn", false)) {
+                storyDetailProgress.setVisibility(View.VISIBLE);
+                reactToStory(false, String.valueOf(String.valueOf(Prefs.getInt("story_id", 0))));
+//                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
+//                    holdProgress = ((StoryHolder) holder).reactionProgress;
+//                storyHolder.reactionProgress.setVisibility(View.VISIBLE);
+//            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
+//            storyHolder.dislikes.setText(String.valueOf(addDislike));
+            } else
+                Toast.makeText(StoryDetail.this, "You must be logged in to perform this operation", Toast.LENGTH_SHORT).show();
+        });
 
     }
 
@@ -396,5 +453,41 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                     }
                 });
     }
+
+    private void reactToStory(boolean isLike, String storyId) {
+
+        String action = isLike ? "like" : "dislike";
+        MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<StoryReactionResponse>() {
+            @Override
+            public void onResponse(Call<StoryReactionResponse> call, Response<StoryReactionResponse> response) {
+                storyDetailProgress.setVisibility(View.GONE);
+//                storyHolder.reactionProgress.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    StoryReactionResponse reactionResponse = response.body();
+                    likes.setText(String.valueOf(reactionResponse.getLikesCount()));
+                    dislikes.setText(String.valueOf(reactionResponse.getDislikesCount()));
+                    Toast.makeText(StoryDetail.this, reactionResponse.getAction(), Toast.LENGTH_SHORT).show();
+                    if (isLike) {
+                        likeButton.setSelected(!likeButton.isSelected());
+                        dislikeButton.setSelected(false);
+                    } else {
+                        dislikeButton.setSelected(!dislikeButton.isSelected());
+                        likeButton.setSelected(false);
+                    }
+
+
+                } else Toast.makeText(StoryDetail.this, response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<StoryReactionResponse> call, Throwable t) {
+//                holdProgress.setVisibility(View.GONE);
+                storyDetailProgress.setVisibility(View.GONE);
+                Toast.makeText(StoryDetail.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }

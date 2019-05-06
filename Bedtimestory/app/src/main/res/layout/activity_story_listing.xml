@@ -23,7 +23,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp"
@@ -46,19 +46,20 @@
                 android:text="Categories"
                 android:textColor="#000"
                 android:textSize="18sp" />
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
     <ProgressBar
         android:id="@+id/progress_b"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-
-        android:layout_marginTop="184dp"
+        android:indeterminate="true"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
         tools:layout_editor_absoluteX="0dp" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stories_rv"

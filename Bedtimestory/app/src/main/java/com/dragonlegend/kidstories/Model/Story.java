@@ -26,15 +26,18 @@ public class Story {
     @SerializedName("image_url")
     @Expose
     private String imageUrl;
+    @SerializedName("comments")
+    @Expose
+    private Comments comments;
     @SerializedName("image_name")
     @Expose
     private String imageName;
-    @SerializedName("author")
-    @Expose
-    private String author;
     @SerializedName("age")
     @Expose
     private String age;
+    @SerializedName("author")
+    @Expose
+    private String author;
     @SerializedName("story_duration")
     @Expose
     private String storyDuration;
@@ -47,10 +50,12 @@ public class Story {
     @SerializedName("dislikes_count")
     @Expose
     private Integer dislikesCount;
-    @SerializedName("comments")
+    @SerializedName("reaction")
     @Expose
-    private Comments comments;
-
+    private String reaction;
+    @SerializedName("bookmark")
+    @Expose
+    private Boolean bookmark;
 
     public Integer getId() {
         return id;
@@ -84,6 +89,14 @@ public class Story {
         this.categoryId = categoryId;
     }
 
+    public Comments getComments() {
+        return comments;
+    }
+
+    public void setComments(Comments comments) {
+        this.comments = comments;
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -108,20 +121,20 @@ public class Story {
         this.imageName = imageName;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getAge() {
         return age;
     }
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getStoryDuration() {
@@ -156,17 +169,35 @@ public class Story {
         this.dislikesCount = dislikesCount;
     }
 
-    public Comments getComments() {
-        return comments;
+    public String getReaction() {
+        return reaction;
+    }
+
+    public void setReaction(String reaction) {
+        this.reaction = reaction;
+    }
+
+    public Boolean getBookmark() {
+        return bookmark;
+    }
+
+    public void setBookmark(Boolean bookmark) {
+        this.bookmark = bookmark;
     }
 
     public class Comments {
+
         @SerializedName("comments")
         @Expose
-        private List<Comment> mComments;
+        private List<Comment> comments = null;
 
         public List<Comment> getComments() {
-            return mComments;
+            return comments;
         }
+
+        public void setComments(List<Comment> comments) {
+            this.comments = comments;
+        }
+
     }
 }
