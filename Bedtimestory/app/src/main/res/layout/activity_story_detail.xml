@@ -32,12 +32,20 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+    <ProgressBar
+        android:id="@+id/storyDetailProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+
 
     <ScrollView
         android:id="@+id/detail_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible">
+        android:visibility="gone">
         <LinearLayout
             android:id="@+id/story_ll"
             android:layout_width="match_parent"
@@ -75,6 +83,14 @@
                     android:background="@null"
                     app:srcCompat="@drawable/ic_bookmark_border_primary"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/story"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="16dp"
+                />
             <android.support.constraint.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
@@ -144,14 +160,6 @@
                     style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
 
             </android.support.constraint.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/story"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginTop="16dp"
-                />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -227,6 +235,7 @@
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
