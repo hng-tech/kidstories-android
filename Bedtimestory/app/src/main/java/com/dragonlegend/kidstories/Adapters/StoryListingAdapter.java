@@ -314,4 +314,10 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
     }
+
+    public void setFilter (ArrayList<Story> newList){
+          mStories = new ArrayList<>();
+          mStories.addAll(newList);
+          notifyDataSetChanged();
+    }
 }

@@ -10,4 +10,5 @@
         <item>Christmas Stories</item>
 
     </string-array>
+    <string-array name="minutes_read">array</string-array>
 </resources>
