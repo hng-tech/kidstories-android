@@ -32,6 +32,14 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+    <ProgressBar
+        android:id="@+id/storyDetailProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+
 
     <ScrollView
         android:id="@+id/detail_scroll"
@@ -73,8 +81,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:src="@drawable/ic_bookmark_border_primary"/>
+                    app:srcCompat="@drawable/ic_bookmark_border_primary"/>
             </LinearLayout>
+
             <TextView
                 android:id="@+id/story"
                 android:layout_width="match_parent"
@@ -82,6 +91,75 @@
                 android:textSize="14sp"
                 android:layout_marginTop="16dp"
                 />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/dislike_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintBottom_toTopOf="@+id/reactionProgress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/dislike_button_selector" />
+
+                <ImageButton
+                    android:id="@+id/like_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintBottom_toTopOf="@+id/reactionProgress"
+                    app:layout_constraintEnd_toStartOf="@+id/dislike_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/like_button_selector"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <TextView
+                    android:id="@+id/likes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/badge_circle"
+                    android:textColor="#000"
+                    android:text="4"
+                    app:layout_constraintEnd_toEndOf="@id/like_button"
+                    app:layout_constraintBottom_toTopOf="@+id/like_button"
+                    app:layout_constraintStart_toEndOf="@+id/like_button"
+                    app:layout_constraintTop_toTopOf="@+id/like_button"
+                    app:layout_constraintVertical_bias="0.585" />
+                <TextView
+                    android:id="@+id/dislikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/dislike_button_badge"
+                    android:textColor="#FFF"
+                    android:text="4"
+                    app:layout_constraintBottom_toTopOf="@+id/dislike_button"
+                    app:layout_constraintStart_toEndOf="@+id/dislike_button"
+                    app:layout_constraintEnd_toEndOf="@id/dislike_button"
+                    app:layout_constraintTop_toTopOf="@+id/dislike_button"
+                    app:layout_constraintVertical_bias="0.585" />
+
+                <ProgressBar
+                    android:id="@+id/reactionProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
+
+            </android.support.constraint.ConstraintLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -122,7 +200,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_send_blue"
+                    app:srcCompat="@drawable/ic_send_blue"
                     android:background="@null"/>
 
 
@@ -157,6 +235,7 @@
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 

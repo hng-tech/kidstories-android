@@ -54,12 +54,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.post_single, viewGroup, false);
             return new StoryHolder(view);
-        }else if (getActivityName().equals("Bookmark")){
-            View view = LayoutInflater.from(mContext)
-                    .inflate(R.layout.fav_single, viewGroup, false);
-            return new StoryHolder(view);
-        }
-        else {
+        } else {
             View view = LayoutInflater.from(mContext)
                     .inflate(R.layout.story_single, viewGroup, false);
             return new StoryGridHolder(view);
@@ -78,12 +73,33 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             storyHolder.likes.setText(String.valueOf(story.getLikesCount()));
             Glide.with(mContext).load(story.getImageUrl()).into(storyHolder.mImage);
 
+
+            switch (story.getReaction()){
+                case "0":{
+                    storyHolder.mDislike.setSelected(true);
+                    storyHolder.mLike.setSelected(false);
+                    break;
+                }
+
+                case "1":{
+                    storyHolder.mLike.setSelected(true);
+                    storyHolder.mDislike.setSelected(false);
+                    break;
+                }
+                default:{
+                    storyHolder.mLike.setSelected(false);
+                    storyHolder.mDislike.setSelected(false);
+                    break;
+                }
+
+            }
+
             storyHolder.mLike.setOnClickListener(v -> {
                 if (Prefs.getBoolean("isLoggedIn", false)) {
-                    reactToStory(true, String.valueOf(story.getId()), i);
-                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
-                    holdProgress = ((StoryHolder) holder).reactionProgress;
-                    holdProgress.setVisibility(View.VISIBLE);
+                    reactToStory(true, String.valueOf(story.getId()), i, storyHolder);
+//                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
+//                    holdProgress = ((StoryHolder) holder).reactionProgress;
+                    storyHolder.reactionProgress.setVisibility(View.VISIBLE);
 //            int addLike = Integer.parseInt(storyHolder.likes.getText().toString()) + 1;
 //            storyHolder.likes.setText(String.valueOf(addLike));
                 } else
@@ -93,10 +109,10 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
             storyHolder.mDislike.setOnClickListener(v -> {
                 if (Prefs.getBoolean("isLoggedIn", false)) {
-                    reactToStory(false, String.valueOf(story.getId()), i);
-                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
-                    holdProgress = ((StoryHolder) holder).reactionProgress;
-                    holdProgress.setVisibility(View.VISIBLE);
+                    reactToStory(false, String.valueOf(story.getId()), i, storyHolder);
+//                    if (holdProgress != null) holdProgress.setVisibility(View.GONE);
+//                    holdProgress = ((StoryHolder) holder).reactionProgress;
+                    storyHolder.reactionProgress.setVisibility(View.VISIBLE);
 //            int addDislike = Integer.parseInt(storyHolder.dislikes.getText().toString()) + 1;
 //            storyHolder.dislikes.setText(String.valueOf(addDislike));
                 } else
@@ -104,8 +120,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
             storyHolder.setPremiumStatus(story.getIsPremium());
-        }
-        else {
+        } else {
             StoryGridHolder storyGridHolder = (StoryGridHolder) holder;
             storyGridHolder.mTitle.setText(story.getTitle());
             if (story.getIsPremium() == 1) {
@@ -141,10 +156,12 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             addStory(story);
         }
     }
-    public void removeAllStories(){
+
+    public void removeAllStories() {
         mStories = new ArrayList<>();
         notifyDataSetChanged();
     }
+
     public String getActivityName() {
         return mContext.getClass().getSimpleName();
     }
@@ -171,10 +188,11 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
         }
-        void setPremiumStatus(int v){
-            if(v > 0){
+
+        void setPremiumStatus(int v) {
+            if (v > 0) {
                 mPremium.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mPremium.setVisibility(View.GONE);
             }
         }
@@ -216,6 +234,7 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Intent intent = new Intent(mContext.getApplicationContext(), StoryDetail.class);
                     intent.putExtra(StoryDetail.STORY_ID, mStories.get(getAdapterPosition()).getId());
                     Prefs.putInt("story_id", mStories.get(getAdapterPosition()).getId());
+                    Prefs.putString("reactionStatus", mStories.get(getAdapterPosition()).getReaction());
 
                     Log.d("TAG", "onClick: -> " + Prefs.getInt("story_id", 0));
                     mContext.startActivity(intent);
@@ -236,29 +255,39 @@ public class StoryListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         }
-         void setPremiumStatus(int v){
-            if(v > 0){
+
+        void setPremiumStatus(int v) {
+            if (v > 0) {
                 mPremium.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mPremium.setVisibility(View.GONE);
             }
         }
     }
 
-    private void reactToStory(boolean isLike, String storyId, int pos) {
+    private void reactToStory(boolean isLike, String storyId, int pos, StoryHolder storyHolder) {
 
         String action = isLike ? "like" : "dislike";
         MainAplication.getApiInterface().reactToStory(action, storyId).enqueue(new Callback<StoryReactionResponse>() {
             @Override
             public void onResponse(Call<StoryReactionResponse> call, Response<StoryReactionResponse> response) {
-                holdProgress.setVisibility(View.GONE);
+                storyHolder.reactionProgress.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     StoryReactionResponse reactionResponse = response.body();
-                    mStories.get(pos).setLikesCount(reactionResponse.getLikesCount());
-                    mStories.get(pos).setDislikesCount(reactionResponse.getDislikesCount());
-                    notifyDataSetChanged();
+                    storyHolder.likes.setText(String.valueOf(reactionResponse.getLikesCount()));
+                    storyHolder.dislikes.setText(String.valueOf(reactionResponse.getDislikesCount()));
                     Toast.makeText(mContext, reactionResponse.getAction(), Toast.LENGTH_SHORT).show();
+                    if (isLike) {
+                        storyHolder.mLike.setSelected(!storyHolder.mLike.isSelected());
+                        storyHolder.mDislike.setSelected(false);
+                    } else {
+                        storyHolder.mDislike.setSelected(!storyHolder.mDislike.isSelected());
+                        storyHolder.mLike.setSelected(false);
+                    }
+//                    Toast.makeText(mContext, isLike + ": " + !storyHolder.mLike.isSelected(), Toast.LENGTH_SHORT).show();
+
+
                 } else Toast.makeText(mContext, response.message(), Toast.LENGTH_SHORT).show();
             }
 

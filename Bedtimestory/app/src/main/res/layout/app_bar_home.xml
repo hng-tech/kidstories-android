@@ -38,15 +38,15 @@
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/defaultuser"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="0dp"/>
                 <LinearLayout
-                    android:layout_width="200dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Welcome"
+                        android:text="Welcome!"
                         android:textColor="@color/colorBlack"
                         style="@style/TextAppearance.AppCompat.Title"
                         android:textSize="14sp"/>
@@ -60,6 +60,7 @@
 
 
                 </LinearLayout>
+
                     </LinearLayout>
                 <ImageView
                     android:layout_width="0dp"
@@ -84,13 +85,5 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_home" />
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
 
 </android.support.design.widget.CoordinatorLayout>

@@ -49,6 +49,9 @@ public class StoryListingActivity extends AppCompatActivity {
         //customize custom toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_primary);
         getSupportActionBar().setElevation(1);
         TextView toolbar_title = toolbar.findViewById(R.id.toolbar_title);
         Intent intent = getIntent();
