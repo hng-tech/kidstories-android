@@ -2,24 +2,21 @@ package com.dragonlegend.kidstories;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +30,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dragonlegend.kidstories.Adapters.CommentAdapter;
-import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.BaseResponse;
@@ -65,8 +61,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
     ImageButton mBookmark,mCommentSend, likeButton, dislikeButton;
     ProgressBar storyDetailProgress;
     EditText mCommentField;
-    Button mAddComment;
+    Button mAddComment,mSubscribeMonthly,mSubScribeYearly;
     String title, content, image;
+
 //    ProgressBar mProgressBar;
     BedTimeDbHelper helper;
     Long date;
@@ -83,7 +80,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_detail);
 
-        Log.d("type", "onCreate: "+ getIntent().getExtras().getString("type"));
+//        Log.d("type", "onCreate: "+ getIntent().getExtras().getString("type"));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         //customize custom toolbar
@@ -105,17 +102,18 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         initViews();
 
         //check if searching from offline storage
-
-       if (getIntent().getExtras().getString("type2")!= null && getIntent().getExtras().getString("type2").equals("cache")){
-            mTitle.setText(getIntent().getExtras().getString("title"));
-            Glide.with(getApplicationContext()).load(getIntent().getExtras().getString("image")).into(mStoryImage);
-            mDetail.setText(getIntent().getExtras().getString("content"));
-            mBookmark.setVisibility(View.INVISIBLE);
+        if (getIntent().hasExtra("type2")) {
+            if (getIntent().getExtras().getString("type2") != null && getIntent().getExtras().getString("type2").equals("cache")) {
+                mTitle.setText(getIntent().getExtras().getString("title"));
+                Glide.with(getApplicationContext()).load(getIntent().getExtras().getString("image")).into(mStoryImage);
+                mDetail.setText(getIntent().getExtras().getString("content"));
+                mBookmark.setVisibility(View.INVISIBLE);
+            }
         }
 
         //fetch data
 
-        Client.getInstance().create(ApiInterface.class).getStory(Prefs.getInt("story_id", 0))
+        MainAplication.getApiInterface().getStory(Prefs.getInt("story_id", 0))
                 .enqueue(new Callback<StoryResponse>() {
                     @Override
                     public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
@@ -166,6 +164,17 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         }else if(response.code() !=200){
                             mScrollView.setVisibility(View.GONE);
                             mPremiumMessage.setVisibility(View.VISIBLE);
+                            if (response.code() == 401){
+                                Intent intent = new Intent(StoryDetail.this,Login.class);
+                                intent.putExtra(Login.INTENT_STARTER,"story_detail");
+//                                intent.putExtra(Login.STORY_ID,Prefs.getInt("story_id", 0))
+                                startActivity(intent);
+                            }else {
+                                setContentView(R.layout.subscription);
+                                initPremuimView();
+                            }
+
+
                         }
                         else {
                             validate("We are having trouble fetching the story, please try again");
@@ -194,8 +203,29 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
     }
 
-    private void getDtails() {
+    private void initPremuimView() {
+        mSubscribeMonthly = findViewById(R.id.subscribe_month_button);
+        mSubScribeYearly = findViewById(R.id.subscribe_year_button);
 
+
+        mSubscribeMonthly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSubscriptionIntent();
+            }
+        });
+        mSubScribeYearly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSubscriptionIntent();
+            }
+        });
+    }
+    public void startSubscriptionIntent(){
+        String url = "https://kidstories.app/login";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     private void deleteBookmark(int story_id) {
