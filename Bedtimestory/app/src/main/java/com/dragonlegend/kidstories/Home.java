@@ -13,13 +13,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -60,7 +63,7 @@ import retrofit2.Response;
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
 
-public class Home extends AppCompatActivity implements View.OnClickListener {
+public class Home extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
     RecyclerView mStoriesRecycler;
     RecyclerView mCategoriesRecycler;
     StoryListingAdapter mAdapter;
@@ -316,6 +319,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setQueryHint(Html.fromHtml("<font color = #000000>" + getResources().getString(R.string.search) + "</font>"));
+        searchView.setOnQueryTextListener(this);
+
         return true;
     }
 
@@ -333,6 +342,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     protected void onSaveInstanceState (Bundle outState){
@@ -557,4 +568,28 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         transaction.commit();
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        newText = newText.toLowerCase();
+        ArrayList<Story> newList = new ArrayList<>();
+        for (Story story : mStories){
+            String name = story.getTitle().toLowerCase();
+            if (name.contains(newText))
+                newList.add(story);
+        }
+
+        mAdapter.setFilter(newList);
+        return true;
+    }
+
+    public void filter_activity(MenuItem item) {
+        Intent filter = new Intent(Home.this, Filter.class);
+        startActivity(filter);
+    }
 }
