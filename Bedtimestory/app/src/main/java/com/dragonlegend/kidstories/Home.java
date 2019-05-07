@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
@@ -129,9 +128,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
         userImage = findViewById(R.id.user_prof_img);
 
         if(isLoggedIn){
-            userImageIcon();
-            String name = Prefs.getString("USER_NAMES",null);
-            userName.setText(name);
+            userToolbarUpdate();
 
         }
 
@@ -203,25 +200,19 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
 
     }
 
-    private void userImageIcon(){
+    private void userToolbarUpdate(){
 
-        Client.getInstance().create(ApiInterface.class).getProfile(Prefs.getString("token",null)).enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                String imageUrl = response.body().getData().getImage();
-                if(!imageUrl.isEmpty()){
-                Glide.with(getApplicationContext())
-                        .load(imageUrl)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(userImage);
-                }
-            }
+        String name = Prefs.getString("USER_NAMES",null);
+        userName.setText(name);
 
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.e("IMAGE FAIL",t.getMessage());
-            }
-        });
+        String imageUrl = Prefs.getString("USER_IMAGE","https://res.cloudinary.com/ephaig/image/upload/v1555015808/download.png");
+        if(!imageUrl.isEmpty()){
+            Glide.with(getApplicationContext())
+                    .load(imageUrl)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(userImage);
+        }
+
     }
 
     public void onClick(View v) {
@@ -259,6 +250,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
                 break;
             case R.id.signout:
                 //do ur code;
+                Prefs.putString("USER_NAMES",null);
+                Prefs.putString("USER_IMAGE",null);
             if (!isLoggedIn){
                 ShowSnackbar("You have never logged In");
             }
