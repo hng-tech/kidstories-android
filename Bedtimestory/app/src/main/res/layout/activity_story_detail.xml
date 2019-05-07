@@ -32,6 +32,9 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ProgressBar
         android:id="@+id/storyDetailProgress"
         android:layout_width="match_parent"
@@ -174,37 +177,7 @@
                     android:textColor="@color/colorPrimary"/>
 
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/comment_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone"
-                android:background="@color/colorAsh"
-                android:orientation="horizontal">
-                <EditText
-                    android:id="@+id/comment_box"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:hint="Your comment"
-                    android:textSize="14sp"
-                    android:inputType="textMultiLine"
-                    android:padding="9dp"
-                    style="@style/EditTextWhite"/>
-                <ImageButton
-                    android:id="@+id/comment_send"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_send_blue"
-                    android:background="@null"/>
 
-
-            </LinearLayout>
             <!--<android.support.v4.widget.NestedScrollView-->
                 <!--android:layout_width="match_parent"-->
                 <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
@@ -220,6 +193,40 @@
 
 
     </ScrollView>
+        <LinearLayout
+            android:id="@+id/comment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            android:background="@color/colorAsh"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/comment_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:hint="Your comment"
+                android:textSize="14sp"
+                android:inputType="textMultiLine"
+                android:padding="9dp"
+                style="@style/EditTextWhite"/>
+            <ImageButton
+                android:id="@+id/comment_send"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_send_blue"
+                android:background="@null"/>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
     <TextView
         android:id="@+id/premium_message"
         android:layout_width="match_parent"

@@ -24,6 +24,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
+    public static final String INTENT_STARTER = "intent_starter";
+    public static final String STORY_ID = "story_id";
     EditText mEmailField, mPasswordField;
     Button mLoginButton;
     String mEmail, mPassword;
@@ -79,9 +81,16 @@ public class Login extends AppCompatActivity {
 
 
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Login.this,Home.class);
-                        intent.putExtra(Config.USER_ID,userResponse.getData().getId());
-                        startActivity(intent);
+                        Intent prevIntent = getIntent();
+                        if(prevIntent.hasExtra(INTENT_STARTER)){
+                            Intent intent = new Intent(Login.this,StoryDetail.class);
+//                            intent.putExtra(STORY_ID,prevIntent.getIntExtra(STORY_ID,0));
+                            startActivity(intent);
+                        }else {
+                            Intent intent = new Intent(Login.this, Home.class);
+                            intent.putExtra(Config.USER_ID, userResponse.getData().getId());
+                            startActivity(intent);
+                        }
                     }else{
                         Toast.makeText(Login.this,"Invalid Login details",Toast.LENGTH_SHORT).show();
                         mHolder_ProgressBar.setVisibility(View.GONE);

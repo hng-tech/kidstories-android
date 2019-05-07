@@ -45,6 +45,16 @@
     <string name="content">Content</string>
     <string name="phone_number">Phone Number</string>
     <string name="internal_storage">internal storage</string>
+    <string name="unlock_your_storytelling_potential">Unlock your \nstorytelling potential</string>
+    <string name="sub_text">A full library of interesting stories at your fingertips for your kids - never miss the next great bedtime story and improve your storytelling skills.</string>
+    <string name="benefits">Benefits</string>
+    <string name="exciting_new_contents_regularly">Exciting new contents regularly</string>
+    <string name="offline_access_to_saved_stories">Offline access to saved stories</string>
+    <string name="unlimited_access_to_all_bedtime_stories">Unlimited access to all bedtime stories</string>
+    <string name="_7_day_free_trial">7-day FREE trial</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="recurring_billing_cancel_anytime">Recurring billing. Cancel anytime.</string>
+    <string name="see_our_privacy_policy_term_of_use"><![CDATA[See our Privacy Policy & Term of Use]]></string>
     <string-array name="designation_array">
         <item>Kid</item>
         <item>Adult</item>
