@@ -26,6 +26,8 @@ public class Comment {
     @Expose
     private User user;
 
+
+
     public void setUserId(Integer userId) {
         this.userId = userId;
     }

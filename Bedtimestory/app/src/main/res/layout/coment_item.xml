@@ -49,9 +49,18 @@
             android:ems="10"
             android:textAlignment="gravity" />
 
+
     </LinearLayout>
 
-
+    <ImageView
+        android:id="@+id/comment_delete"
+        android:layout_width="51dp"
+        android:layout_height="34dp"
+        android:layout_below="@+id/commentLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="112dp"
+        android:src="@drawable/ic_delete_black_24dp" />
 
 
 

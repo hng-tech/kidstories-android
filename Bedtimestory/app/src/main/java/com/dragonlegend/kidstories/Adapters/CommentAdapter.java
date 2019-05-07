@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dragonlegend.kidstories.Api.Responses.CommentResponse;
@@ -26,7 +27,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private List<Comment> commentsList;
     private Context mcontext;
 
-    public CommentAdapter(Context context,List<Comment> commentsList) {
+
+    public CommentAdapter(Context context, List<Comment> commentsList) {
         this.commentsList = commentsList;
         mcontext = context;
     }
@@ -49,15 +51,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder:called.");
         Comment comm = commentsList.get(position);
-        if(comm.getUser().getImage() != null) {
+        if (comm.getUser().getImage() != null) {
             Glide.with(mcontext).asBitmap().load(comm.getUser().getImage()).into(holder.imageView);
         }
-        if(position % 2 == 0){
+        if (position % 2 == 0) {
             holder.parentLayout.setBackgroundColor(mcontext.getResources().getColor(R.color.colorAshLight));
         }
         holder.username.setText(comm.getUser().getFullName());
         holder.comment.setText(comm.getBody());
+
+
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -67,9 +74,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        ImageView imageView,delete;
         public TextView username, comment;
         ConstraintLayout parentLayout;
+
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +86,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             username = itemView.findViewById(R.id.commenter);
             comment = itemView.findViewById(R.id.comment);
             parentLayout = itemView.findViewById(R.id.comment_cl);
+            delete=itemView.findViewById(R.id.comment_delete);
+
+
+//            mdelete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
         }
     }
 }
