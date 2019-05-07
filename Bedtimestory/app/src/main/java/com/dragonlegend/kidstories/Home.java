@@ -34,12 +34,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.dragonlegend.kidstories.Adapters.CategoriesAdapter;
 import com.dragonlegend.kidstories.Adapters.StoryListingAdapter;
 import com.dragonlegend.kidstories.Api.ApiInterface;
 import com.dragonlegend.kidstories.Api.Client;
 import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
+import com.dragonlegend.kidstories.Api.Responses.LoginResponse;
 import com.dragonlegend.kidstories.Api.Responses.StoryAllResponse;
 import com.dragonlegend.kidstories.Database.Helper.BedTimeDbHelper;
 import com.dragonlegend.kidstories.Fragments.BottomMenuFragment;
@@ -73,10 +76,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
     CategoriesAdapter mCategoriesAdapter;
     BottomNavigationView bottomNavigationView;
     User mUser;
-    ImageView mAddNew;
+    ImageView mAddNew,userImage;
     ProgressBar mProgressBar;
     boolean isLoggedIn;
-    TextView date;
+    TextView date,userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +92,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
 
         //customize custom toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
         Intent intent = getIntent();
@@ -114,6 +118,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
         mProgressBar = findViewById(R.id.progressBar);
         storiesProgress = findViewById(R.id.storiesProgress);
         mAddNew = findViewById(R.id.btn_addnew);
+        userName = findViewById(R.id.user_name);
+        userImage = findViewById(R.id.user_prof_img);
+
+        if(isLoggedIn){
+            userImageIcon();
+            String name = Prefs.getString("USER_NAMES",null);
+            userName.setText(name);
+
+        }
+
         mAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,6 +196,27 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
 
     }
 
+    private void userImageIcon(){
+
+        Client.getInstance().create(ApiInterface.class).getProfile(Prefs.getString("token",null)).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                String imageUrl = response.body().getData().getImage();
+                if(!imageUrl.isEmpty()){
+                Glide.with(getApplicationContext())
+                        .load(imageUrl)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(userImage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.e("IMAGE FAIL",t.getMessage());
+            }
+        });
+    }
+
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
@@ -201,7 +236,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
                 break;
             case R.id.add_story_activity:
                 //start addstory activity .
-            if (Prefs.getBoolean("isLoggedIn", false)){
+            if (isLoggedIn){
                 Intent a = new Intent(getBaseContext(), AddStoryActivity.class);
                 startActivity(a);
             }else {
@@ -217,7 +252,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
                 break;
             case R.id.signout:
                 //do ur code;
-            if (!Prefs.getBoolean("isLoggedIn", false)){
+            if (!isLoggedIn){
                 ShowSnackbar("You have never logged In");
             }
             else {

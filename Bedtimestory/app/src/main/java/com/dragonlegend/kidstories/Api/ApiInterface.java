@@ -75,6 +75,9 @@ public interface ApiInterface {
     @GET("users/profile")
     Call<LoginResponse> getProfile(@Header("Authorization") String token);
 
+    @GET("users/profile")
+    Call<LoginResponse> getProfilePicture(@Header("Authorization") String token);
+
 
     @POST("stories/{storyId}/reactions/{action}")
     Call<StoryReactionResponse> reactToStory(@Path("action") String action, @Path("storyId") String storyId);
