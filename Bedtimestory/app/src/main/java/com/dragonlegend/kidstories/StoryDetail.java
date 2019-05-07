@@ -121,7 +121,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                     public void onResponse(Call<StoryResponse> call, Response<StoryResponse> response) {
                         Log.d("TAG", "detailsResponse: -> " +response.message());
                         if(response.isSuccessful()){
-
+                            storyDetailProgress.setVisibility(View.GONE);
                             Story story = response.body().getData();
                             title = story.getTitle();
                             content = story.getBody();
@@ -170,7 +170,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                             validate("We are having trouble fetching the story, please try again");
                         }
 
-                        mProgressBar.setVisibility(View.GONE);
+                        storyDetailProgress.setVisibility(View.GONE);
 
                     }
 
@@ -179,6 +179,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         t.toString();
                         Log.d("TAG", "onFailure: -> "+t.getMessage());
                         if (t.getMessage() == "timeout") {
+                            storyDetailProgress.setVisibility(View.GONE);
                             validate("We are having trouble fetching the story, please try again");
                         }
                     }
