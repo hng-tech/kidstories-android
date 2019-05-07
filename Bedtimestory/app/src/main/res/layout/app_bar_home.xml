@@ -27,7 +27,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="9">
+                    android:weightSum="9"
+                    android:layout_gravity="start">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -35,15 +36,18 @@
                         android:layout_weight="8"
                         android:layout_gravity="center_vertical">
                 <ImageView
+                    android:id = "@+id/user_prof_img"
                     android:layout_width="50dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="50dp"
                     android:src="@drawable/defaultuser"
-                    android:layout_marginStart="0dp"/>
+                    android:background="@drawable/toolbar_pic_border"
+                    android:layout_marginEnd="10dp"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+                        android:id = "@+id/user_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Welcome!"
