@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
@@ -49,6 +50,7 @@ import com.dragonlegend.kidstories.Fragments.BottomMenuFragment;
 import com.dragonlegend.kidstories.Model.Category;
 import com.dragonlegend.kidstories.Model.Story;
 import com.dragonlegend.kidstories.Model.User;
+import com.dragonlegend.kidstories.Utils.BottomNavigationViewHelper;
 import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -113,6 +115,11 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
                 .format(new Date());
         date.setText(strDate);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
         mStoriesRecycler = findViewById(R.id.stories_rv);
         mCategoriesRecycler = findViewById(R.id.cat_rv);
         mProgressBar = findViewById(R.id.progressBar);

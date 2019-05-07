@@ -14,16 +14,21 @@
         android:enabled="true"
         android:icon="@drawable/ic_favorites"
         android:title="Favorites"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom|withText" />
 
-
+    <item
+        android:id="@+id/action_addStory"
+        android:enabled="true"
+        android:icon="@drawable/ic_add"
+        android:title="Add Story"
+        app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/more"
         android:enabled="true"
         android:icon="@drawable/ic_more"
         android:title="More"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom|withText" />
 
 
 </menu>
