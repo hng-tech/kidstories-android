@@ -5,16 +5,17 @@
 
     <item
         android:id="@+id/action_search"
-        android:orderInCategory="100"
-        android:title="User"
+        android:title="Search"
         android:icon="@drawable/baseline_search_black_24"
-        app:showAsAction="always">
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always|collapseActionView">
 
     </item>
     <item
         android:id="@+id/action_filter"
         android:orderInCategory="200"
         android:title="User"
+        android:onClick="filter_activity"
         android:icon="@drawable/baseline_filter_list_black_24"
         app:showAsAction="always">
 
