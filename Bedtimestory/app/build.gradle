@@ -55,4 +55,8 @@ dependencies {
     implementation 'com.pixplicity.easyprefs:library:1.9.0'
 
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
+//    Radio-Button for Filter
+    implementation 'com.github.ceryle:RadioRealButton:v2.1.1'
+    implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
+
 }
