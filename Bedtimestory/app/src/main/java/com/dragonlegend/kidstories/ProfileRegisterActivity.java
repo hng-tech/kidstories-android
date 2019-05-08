@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
     private String mEmail,mPassword,mFirstName,mLastname,mDesignation ="";
     private EditText mFirstNameField,mLastNameField,mPhoneNumberField;
     private Spinner mDesignationField;
+    ProgressBar registrationProgress;
     private Button mRegisterButton;
     private String phoneNumber;
     CircularImageView profilePic;
@@ -60,6 +62,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_register);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Complete Registration");
         //customize custom toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -111,6 +114,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
         mDesignationField = findViewById(R.id.designation);
         mRegisterButton = findViewById(R.id.register_button);
         profilePic = findViewById(R.id.imageButton);
+        registrationProgress = findViewById(R.id.registrationProgress);
         profilePic.addShadow();
         profilePic.setBorderWidth(10);
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +163,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 
     private void register(){
         Log.d("TAG", "register: " + mFirstName+mLastname+ mEmail+ mPassword + phoneNumber);
+        registrationProgress.setVisibility(View.VISIBLE);
 //        UserReg user = new UserReg(mFirstName, mLastname, mEmail,phoneNumber,mPassword);
 
 
@@ -167,6 +172,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BaseResponse<RegistrationResponse>> call, Response<BaseResponse<RegistrationResponse>> response) {
                 Log.d("TAG", "onResponse: " +response.body());
+                registrationProgress.setVisibility(View.GONE);
 
                 if(response.isSuccessful()){
 
@@ -180,15 +186,17 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 //                        String user_profile_id = user.getData().getId();
 
                     Log.d("TAG", "dataResponse:-> " + token+user_profile_email+user_profile_name+user_profile_number);
-                    Prefs.putString("reg_token", "Bearer "+token);
+                    Prefs.putString("token", "Bearer "+token);
                     Prefs.putString("user_profile_email", user_profile_email);
                     Prefs.putString("user_profile_name", user_profile_name);
                     Prefs.putString("user_profile_number", user_profile_number);
+                    Prefs.putBoolean("isLoggedIn", true);
+                    Prefs.putString("USER_NAMES", user_profile_name);
 
                     //UPLOAD PROFILE IMAGE
                     String profilePath = Prefs.getString("profile_path",null);
                     if(profilePath!=null){
-                        UploadImage.uploadProfilePic( Prefs.getString("reg_token", ""),profilePath);
+                        UploadImage.uploadProfilePic( Prefs.getString("token", ""),profilePath);
                     }
 
                     Intent intent = new Intent(ProfileRegisterActivity.this,Home.class);
@@ -207,6 +215,7 @@ public class ProfileRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<BaseResponse<RegistrationResponse>> call, Throwable t) {
+                registrationProgress.setVisibility(View.GONE);
                 Log.d("TAG", "onFailure: " + t.getMessage());
                 Toast.makeText(ProfileRegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
