@@ -26,6 +26,22 @@ public class Comment {
     @Expose
     private User user;
 
+    public Comment(int del_image) {
+        this.del_image = del_image;
+    }
+
+    private int del_image;
+
+    public int getDel_image() {
+        return del_image;
+    }
+
+    public void setDel_image(int del_image) {
+        this.del_image = del_image;
+    }
+
+
+
 
 
     public void setUserId(Integer userId) {

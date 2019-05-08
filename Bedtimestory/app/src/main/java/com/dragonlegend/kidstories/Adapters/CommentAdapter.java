@@ -59,6 +59,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
         holder.username.setText(comm.getUser().getFullName());
         holder.comment.setText(comm.getBody());
+        //holder.delete.setImageDrawable(mcontext.getResources().getDrawable(comm.getDel_image()));
 
 
 
@@ -86,15 +87,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             username = itemView.findViewById(R.id.commenter);
             comment = itemView.findViewById(R.id.comment);
             parentLayout = itemView.findViewById(R.id.comment_cl);
-            delete=itemView.findViewById(R.id.comment_delete);
+            delete=itemView.findViewById(R.id.comm_delete);
 
 
-//            mdelete.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                }
-//            });
+            parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    delete.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            });
         }
     }
 }

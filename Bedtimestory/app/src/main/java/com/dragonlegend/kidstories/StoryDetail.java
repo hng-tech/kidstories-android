@@ -99,6 +99,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mCommentAdapter = new CommentAdapter(this,mComments);
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        //mComments.add(new Comment(R.drawable.ic_delete_black_24dp));
 
         initViews();
         //check if searching from offline storage
@@ -135,6 +136,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                             mStoryAge.setText("For Kids " +story.getAge() +" years");
                             mScrollView.setVisibility(View.VISIBLE);
                             mCommentAdapter.setComment(story.getComments().getComments());
+
 
                             //check calling class
                             if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){

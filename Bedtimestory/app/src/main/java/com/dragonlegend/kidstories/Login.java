@@ -79,6 +79,9 @@ public class Login extends AppCompatActivity {
                         BedTimeDbHelper dbHelper = new BedTimeDbHelper(Login.this);
                         //dbHelper.addUser(userResponse.getData());
 
+                        Prefs.putString("USER_NAMES",userResponse.getData().getFirst_name()+" "+userResponse.getData().getLast_name());
+                        Prefs.putString("USER_IMAGE",userResponse.getData().getImage());
+
 
                         Toast.makeText(Login.this,"Login Successful",Toast.LENGTH_SHORT).show();
                         Intent prevIntent = getIntent();
