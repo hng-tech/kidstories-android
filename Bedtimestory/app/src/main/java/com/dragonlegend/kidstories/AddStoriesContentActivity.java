@@ -12,14 +12,25 @@ import android.util.Range;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dragonlegend.kidstories.Api.Responses.CategoryAllResponse;
+import com.dragonlegend.kidstories.Model.Category;
+import com.dragonlegend.kidstories.Utils.MainAplication;
 import com.dragonlegend.kidstories.Utils.UploadImage;
 import com.pixplicity.easyprefs.library.Prefs;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
@@ -27,13 +38,14 @@ import static android.support.design.widget.Snackbar.make;
 public class AddStoriesContentActivity extends AppCompatActivity implements View.OnClickListener {
     EditText mContentField;
     Button mSaveButton,mDiscardButton;
-    String name = "image";
     private String title;
     private String filePath;
     private String content;
-    private String category;
+    private int category_id;
     private Spinner chooseCategory;
     private String duration;
+    private List<Category> mCategories;
+    private ArrayAdapter<Category> mArrayAdapter;
 
 
     @Override
@@ -55,6 +67,12 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
 //        });
 
         initViews();
+        mCategories = new ArrayList<>();
+        mCategories.add(new Category("Category"));
+        fetchCategories();
+        mArrayAdapter = new ArrayAdapter<Category>(this,android.R.layout.simple_list_item_1,mCategories);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        chooseCategory.setAdapter(mArrayAdapter);
     }
 
     public void initViews(){
@@ -78,35 +96,15 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                 ((TextView) view).setTextColor(Color.WHITE);
 
                 // Get Selected Class name from the list
-                String selectedCategory = adapterView.getItemAtPosition(i).toString();
-                    switch (selectedCategory) {
-                        case "Fantasy" :
-                            //category = Prefs.getString("fantasy", "");
-                            category ="1";
-                            Log.d("TAG", "onItemSelected:-> " + category);
-                            break;
-                        case "Bedtime stories" :
-                            //category = Prefs.getString("bedtime", "");
-                            category ="2";
-                            Log.d("TAG", "onItemSelected:-> " + category);
-                            break;
-                        case "Morning Stories" :
-                           // category = Prefs.getString("morning","");
-                            category ="3";
-                            Log.d("TAG", "onItemSelected:-> " + category);
-                            break;
-                        case "Jokes" :
-                           // category = Prefs.getString("jokes", "");
-                            category = "4";
-                            break;
-                        case "Christmas Stories" :
-                            //category = Prefs.getString("christmas", "");
-                            category = "5";
-                            break;
-                        case "Category":
-                            category = "0";
-                            break;
+                String selectedCategory = adapterView.getSelectedItem().toString();
+                for(Category category:mCategories){
+                    if(category.getName().equals(selectedCategory)){
+                        category_id = category.getId();
+                        break;
+                    }else {
+                        category_id = 0;
                     }
+                }
             }
 
             @Override
@@ -132,18 +130,28 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
         }
     }
 
-    public void getDuration(String text) {
-        String [] arr = text.split(" ", 0);
-        int length = arr.length;
-        int story_length = (int) (length * 0.1);
-        duration = Integer.toString(story_length)+":"+"00"+":"+"00";
-        Log.d("TAG", "getDuration: -> " + duration);
+    public void fetchCategories(){
+        MainAplication.getApiInterface().getAllCategories().enqueue(new Callback<CategoryAllResponse>() {
+            @Override
+            public void onResponse(Call<CategoryAllResponse> call, Response<CategoryAllResponse> response) {
+                if (response.isSuccessful()){
+                    mCategories = response.body().getData();
+                    mArrayAdapter.addAll(mCategories);
+                    mArrayAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CategoryAllResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     private void AddStory() {
         if (Prefs.getBoolean("isLoggedIn", false) == true){
             content = mContentField.getText().toString().trim();
-            getDuration(content);
             String age = "1-5";
             Log.d("TAG", "age: -> " +age);
             String author = Prefs.getString("user_profile_name", "");
@@ -152,15 +160,15 @@ public class AddStoriesContentActivity extends AppCompatActivity implements View
                 ShowSnackbar("Content cannot be empty");
             }
             else {
-                String is_premium = "1";
+                String is_premium = "0";
                 title = Prefs.getString("title", "");
                 String imageFileUri = Prefs.getString("filePath","");
                 Log.d("TAG", "AddStory: " + imageFileUri);
-                if (category == null){
+                if (category_id == 0){
                     ShowSnackbar("Category cannot be empty");
                 }else{
 
-                    UploadImage.uploadFile(imageFileUri,name,title,content,this,category,age,duration,author,is_premium);
+                    UploadImage.uploadFile(imageFileUri,title,content,this,String.valueOf(category_id),age,duration,author,is_premium);
                 }
             }
         } else {

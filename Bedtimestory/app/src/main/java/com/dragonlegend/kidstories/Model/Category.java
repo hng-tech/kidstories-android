@@ -18,6 +18,13 @@ public class Category {
     @Expose
     private String imageUrl;
 
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category() {
+    }
+
     public int getId() {
         return id;
     }
@@ -32,5 +39,10 @@ public class Category {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

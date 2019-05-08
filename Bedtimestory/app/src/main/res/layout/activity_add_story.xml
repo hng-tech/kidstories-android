@@ -72,6 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/title_input" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         style="@style/EditTextWhite"
         android:layout_width="0dp"
         android:layout_height="52dp"
@@ -114,5 +115,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/type_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
 
 </android.support.constraint.ConstraintLayout>
