@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity {
         mEmail = mEmailField.getText().toString().trim();
         mPassword = mPasswordField.getText().toString().trim();
 
-        String token = Prefs.getString("reg_token", "");
+        String token = Prefs.getString("token", "");
         if(validate()){
 
             Client.getInstance().create(ApiInterface.class).loginUser(token,mEmail,mPassword).enqueue(new Callback<LoginResponse>() {
