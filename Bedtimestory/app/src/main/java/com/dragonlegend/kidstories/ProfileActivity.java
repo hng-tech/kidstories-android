@@ -1,12 +1,19 @@
 package com.dragonlegend.kidstories;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,7 +32,7 @@ import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
     ImageView mImage;
-    TextView mUserName,mUserEmail,mUserPhoneNum;
+    EditText mUserName,mUserEmail,mUserPhoneNum;
     BedTimeDbHelper mDbHelper;
     UserData mUser;
     @Override
@@ -36,8 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         //customize custom toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
         getSupportActionBar().setElevation(0);
         mDbHelper = new BedTimeDbHelper(this);
         Intent intent = getIntent();
@@ -47,6 +54,9 @@ public class ProfileActivity extends AppCompatActivity {
         mUserEmail = findViewById(R.id.user_email);
         mUserPhoneNum = findViewById(R.id.userPhoneNum);
 
+        mUserName.setEnabled(false);
+        mUserEmail.setEnabled(false);
+        mUserPhoneNum.setEnabled(false);
 
         mUserName.setText("Loading...");
         mUserEmail.setText("Loading...");
@@ -67,6 +77,8 @@ public class ProfileActivity extends AppCompatActivity {
                     .into(mImage);
             }
         }*/
+
+
 
         loadUserProfile();
 
@@ -108,4 +120,49 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private void updateProfile(String fname,String lname,String email,String phoneNumber){
+Client.getInstance().create(ApiInterface.class).updateProfile(Prefs.getString("token",null),fname,lname,email,phoneNumber).enqueue(new Callback<LoginResponse>() {
+    @Override
+    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+        if(response.isSuccessful())
+            Toast.makeText(ProfileActivity.this,"Profile Updated",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFailure(Call<LoginResponse> call, Throwable t) {
+
+    }
+});
+    }
+
+    public void save(View view) {
+        String fName = mUserName.getText().toString().substring(0,mUserName.getText().toString().indexOf(" "));
+        String lName = mUserName.getText().toString().substring(mUserName.getText().toString().indexOf(" "));
+        updateProfile(fName,lName,mUserEmail.getText().toString(),mUserPhoneNum.getText().toString());
+        mUserName.setEnabled(false);
+        mUserEmail.setEnabled(false);
+        mUserPhoneNum.setEnabled(false);
+        recreate();
+    }
+
+    public void edit(View view) {
+        new AlertDialog.Builder(ProfileActivity.this)
+                .setTitle("Update profile")
+                .setMessage("Are you sure you want to update your profile?")
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mUserName.setEnabled(true);
+                        mUserEmail.setEnabled(true);
+                        mUserPhoneNum.setEnabled(true);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+    }
 }

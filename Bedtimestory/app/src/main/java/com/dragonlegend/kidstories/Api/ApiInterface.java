@@ -75,8 +75,9 @@ public interface ApiInterface {
     @GET("users/profile")
     Call<LoginResponse> getProfile(@Header("Authorization") String token);
 
-    @GET("users/profile")
-    Call<LoginResponse> getProfilePicture(@Header("Authorization") String token);
+    @PUT("users/profile")
+    @FormUrlEncoded
+    Call<LoginResponse> updateProfile(@Header("Authorization") String token,@Field("first_name") String fName,@Field("last_name") String lName, @Field("email") String email,@Field("phone") String phone);
 
 
     @POST("stories/{storyId}/reactions/{action}")
