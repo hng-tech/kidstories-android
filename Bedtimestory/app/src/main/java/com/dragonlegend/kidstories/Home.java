@@ -224,6 +224,12 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
             startActivity(i);
 
                 break;
+            case R.id.moreactivity:
+                //start category activity .
+                Intent m = new Intent(getBaseContext(), MoreActivity.class);
+                startActivity(m);
+
+                break;
             case R.id.profile_activity:
                 //start Profile activity .
             if(mUser !=null ){
