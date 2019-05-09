@@ -62,15 +62,7 @@
                 </LinearLayout>
 
                     </LinearLayout>
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/app_name"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textSize="18sp"-->
-                    <!--style="@style/TextAppearance.AppCompat.Title"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:id="@+id/toolbar_title" />-->
+
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
 
