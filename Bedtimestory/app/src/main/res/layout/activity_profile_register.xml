@@ -26,6 +26,14 @@
                 android:background="@color/colorWhite" />
 
         </android.support.design.widget.AppBarLayout>
+        <ProgressBar
+            android:id="@+id/registrationProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"/>
 
         <ScrollView
             android:layout_width="match_parent"

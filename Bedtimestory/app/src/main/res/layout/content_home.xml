@@ -94,8 +94,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@id/topd"
-        tools:listitem="@layout/post_single" />
+        app:layout_constraintTop_toBottomOf="@id/topd"
+        tools:listitem="@layout/post_single"
+        android:layout_marginBottom="55dp"/>
     <LinearLayout
         android:id="@+id/topd"
         android:layout_width="match_parent"
@@ -113,15 +114,15 @@
 
             <ImageView
                 android:id="@+id/btn_addnew"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/addicon"
-                android:padding="15dp"
+                android:padding="17dp"
                 android:src="@drawable/ic_add_black_24dp" />
 
 

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class AddStoryActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int STOTAGE_REQUEST_CODE = 2;
     private Uri filePath;
+    private ImageView mImagePreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,7 @@ public class AddStoryActivity extends AppCompatActivity {
         mTypeContentButton = findViewById(R.id.type_content);
         mTitleField = findViewById(R.id.title_input);
         mImagePath = findViewById(R.id.image_path_text);
+        mImagePreview = findViewById(R.id.imagePreview);
 
         mTypeContentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +141,7 @@ public class AddStoryActivity extends AppCompatActivity {
             String filePathString= cursor.getString(columnIndex);
             mImagePath.setText(selectedImage.getPath());
             Prefs.putString("filePath",filePathString);
+            mImagePreview.setImageURI(selectedImage);
 
             cursor.close();
 

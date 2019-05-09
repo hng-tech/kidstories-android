@@ -3,11 +3,14 @@
     android:shape="oval">
 
     <gradient
-        android:startColor="#9C27B0"
-        android:endColor="@color/colorPrimary"/>
+        android:startColor="#D03DE9"
+        android:endColor="#797DFF"/>
 
+    <!--<gradient-->
+        <!--android:startColor="#D03DE9"-->
+        <!--android:endColor="#797DFF"/>-->
     <size
-        android:width="70dp"
-        android:height="70dp"/>
+        android:width="60dp"
+        android:height="60dp"/>
 
 </shape>

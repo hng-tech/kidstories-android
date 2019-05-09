@@ -44,7 +44,7 @@
         <activity
             android:name=".ProfileRegisterActivity"
             android:parentActivityName=".RegisterActivity"
-            android:theme="@style/AppTheme.NoAction" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CategoriesActivity"
             android:parentActivityName=".MainActivity" />

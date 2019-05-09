@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -54,7 +56,7 @@ import retrofit2.Response;
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.make;
 
-public class StoryDetail extends AppCompatActivity implements View.OnClickListener {
+public class StoryDetail extends AppCompatActivity implements View.OnClickListener  {
     public static final String STORY_ID = "story_id";
     ImageView mStoryImage;
     TextView mTitle, mDetail,mStoryAge,mPremiumMessage, likes, dislikes;
@@ -97,10 +99,9 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
         mCommentAdapter = new CommentAdapter(this,mComments);
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
+        //mComments.add(new Comment(R.drawable.ic_delete_black_24dp));
 
         initViews();
-
         //check if searching from offline storage
         if (getIntent().hasExtra("type2")) {
             if (getIntent().getExtras().getString("type2") != null && getIntent().getExtras().getString("type2").equals("cache")) {
@@ -120,7 +121,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         storyDetailProgress.setVisibility(View.GONE);
                         Log.d("TAG", "detailsResponse: -> " +response.message());
                         if(response.isSuccessful()){
-
+                            storyDetailProgress.setVisibility(View.GONE);
                             Story story = response.body().getData();
                             title = story.getTitle();
                             content = story.getBody();
@@ -135,6 +136,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                             mStoryAge.setText("For Kids " +story.getAge() +" years");
                             mScrollView.setVisibility(View.VISIBLE);
                             mCommentAdapter.setComment(story.getComments().getComments());
+
 
                             //check calling class
                             if (getIntent().getExtras().getString("type")!= null && getIntent().getExtras().getString("type").equals("fav")){
@@ -179,6 +181,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         else {
                             validate("We are having trouble fetching the story, please try again");
                         }
+                        storyDetailProgress.setVisibility(View.GONE);
 
 
                     }
@@ -189,6 +192,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         storyDetailProgress.setVisibility(View.GONE);
                         Log.d("TAG", "onFailure: -> "+t.getMessage());
                         if (t.getMessage() == "timeout") {
+                            storyDetailProgress.setVisibility(View.GONE);
                             validate("We are having trouble fetching the story, please try again");
                         }
                     }
@@ -310,8 +314,8 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
 
         }
 
-        //mCommentRv.setNestedScrollingEnabled(false);
-//        mCommentRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mCommentRv.setNestedScrollingEnabled(false);
+       mCommentRv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mCommentRv.setLayoutManager(new LinearLayoutManager(this));
         mCommentRv.setAdapter(mCommentAdapter);
 //        mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -369,7 +373,7 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.comment_send:
                 addComment(mCommentField.getText().toString().trim());
-                Toast.makeText(this, mCommentField.getText().toString().trim(),Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, mCommentField.getText().toString().trim(),Toast.LENGTH_LONG).show();
                 break;
             case R.id.bookmark_button:
                 date = Calendar.getInstance().getTimeInMillis();
@@ -469,10 +473,12 @@ public class StoryDetail extends AppCompatActivity implements View.OnClickListen
                         if (response.isSuccessful()){
                             Toast.makeText(StoryDetail.this, "Successful upload", Toast.LENGTH_SHORT).show();
 
+
                             mCommentField.setText("");
                             imm.hideSoftInputFromWindow(mCommentField.getWindowToken(), 0);
                             mCommentLayout.setVisibility(View.INVISIBLE);
                             mScrollView.setVisibility(View.VISIBLE);
+                           // addComment(mCommentField.getText().toString().trim());
                         }else{
                             Toast.makeText(StoryDetail.this, "Failed", Toast.LENGTH_SHORT).show();
                         }
