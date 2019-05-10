@@ -321,7 +321,11 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
             dialog.dismiss();
             startActivity(new Intent(getBaseContext(), CategoriesActivity.class));
         });
-
+        //start add story
+        view.findViewById(R.id.moreactivity).setOnClickListener(view13 -> {
+            dialog.dismiss();
+            startActivity(new Intent(getBaseContext(), MoreActivity.class));
+        });
         //start profile
         view.findViewById(R.id.pro).setOnClickListener(view12 -> {
             dialog.dismiss();
@@ -390,87 +394,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
     protected void onSaveInstanceState (Bundle outState){
         super.onSaveInstanceState(outState);
     }
-
-
-
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(MenuItem item) {
-//        // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_home) {
-//            //start Home activity .
-//            Intent i = new Intent(getBaseContext(), Home.class);
-//            startActivity(i);
-//        } else if (id == R.id.nav_bookmarks) {
-//
-//                startActivity(new Intent(getBaseContext(), Bookmark.class));
-////              ShowSnackbar();
-//
-//
-//        } else if (id == R.id.nav_categories) {
-//
-//            //start category activity .
-//            Intent i = new Intent(getBaseContext(), CategoriesActivity.class);
-//            startActivity(i);
-//
-//        } else if (id == R.id.nav_profile) {
-////
-////            //start Profile activity .
-////            if(mUser !=null ){
-//                Intent i = new Intent(getBaseContext(), ProfileActivity.class);
-////                i.putExtra(Config.USER_ID,mUser.getId());
-//                startActivity(i);
-////            }
-////
-//// else if (id == R.id.nav_donate) {
-////
-////            String url = "https://paystack.com/pay/kidstoriesapp";
-////
-////            Intent i = new Intent(Intent.ACTION_VIEW);
-////            i.setData(Uri.parse(url));
-////            startActivity(i);
-////
-////        }
-//            //ShowSnackbar("comming soon");
-//
-//        }
-//        else if (id == R.id.nav_login) {
-//            //start Login activity .
-//            Intent i = new Intent(getBaseContext(), Login.class);
-//            startActivity(i);
-//
-//        }else if (id == R.id.nav_signout){
-//            if (!Prefs.getBoolean("isLoggedIn", false)){
-//                ShowSnackbar("You have never logged In");
-//            }
-//            else {
-//
-//                validate("Logging you out!!!!");
-//            }
-//
-//        }
-//
-//        else if (id == R.id.nav_addstory) {
-//
-////            start addstory activity .
-//            if (Prefs.getBoolean("isLoggedIn", false)){
-//
-//                Intent i = new Intent(getBaseContext(), AddStoryActivity.class);
-//                startActivity(i);
-//            }else{
-//                validate("Please Log in to add story !!!");
-//            }
-//
-//
-//        }
-//
-////        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-////        drawer.closeDrawer(GravityCompat.START);
-//
-//        return true;
-//    }
 
     public void ShowSnackbar(String message) {
         Snackbar snackbar = make(findViewById(android.R.id.content), message, LENGTH_LONG);

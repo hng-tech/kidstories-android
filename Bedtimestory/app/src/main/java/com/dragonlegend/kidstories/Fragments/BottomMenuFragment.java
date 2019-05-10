@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dragonlegend.kidstories.Model.More;
+import com.dragonlegend.kidstories.MoreActivity;
+import com.dragonlegend.kidstories.ProfileActivity;
 import com.dragonlegend.kidstories.R;
 import com.pixplicity.easyprefs.library.Prefs;
 
@@ -47,6 +50,11 @@ public class BottomMenuFragment extends BottomSheetDialogFragment implements Vie
                 //start Profile activity .
 
                 break;
+                case R.id.moreactivity:
+                //start category activity .
+                    Intent intent = new Intent(getActivity(), MoreActivity.class);
+                    startActivity(intent);
+                    break;
             case R.id.add_story_activity:
                 //start addstory activity .
 

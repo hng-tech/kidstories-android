@@ -97,8 +97,8 @@ public class MoreActivity extends AppCompatActivity {
 
         more = new More("Follow us on Twitter");
         moreList.add(more);
-        more = new More("Follow us on Facebook");
-        moreList.add(more);
+//        more = new More("Follow us on Facebook");
+//        moreList.add(more);
 
         more = new More("Follow us on Instagaram");
         moreList.add(more);

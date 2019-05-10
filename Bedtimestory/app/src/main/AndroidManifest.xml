@@ -46,6 +46,10 @@
             android:parentActivityName=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".MoreActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".CategoriesActivity"
             android:parentActivityName=".MainActivity" />
         <activity
