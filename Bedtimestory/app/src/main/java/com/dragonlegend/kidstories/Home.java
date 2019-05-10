@@ -184,6 +184,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener, Sea
 ////              ShowSnackbar();
                     return true;
                 }
+                else if(id == R.id.action_addStory) {
+                        Intent a = new Intent(getBaseContext(), AddStoryActivity.class);
+                        startActivity(a);
+
+                    return true;
+                }
+
                 else if(id == R.id.more) {
                     showBottomMenu();
                     return true;
